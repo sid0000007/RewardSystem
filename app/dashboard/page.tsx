@@ -21,15 +21,7 @@ import { ActionType } from "@/types";
 import Link from "next/link";
 
 export default function DashboardPage() {
-  const { addReward, getTotalRewards, getRewardsToday } = useRewards();
 
-  const totalRewards = getTotalRewards();
-  const todayRewards = getRewardsToday().length;
-
-  const handleQuickReward = () => {
-    const randomReward = generateRandomReward(ActionType.CODE_SCAN);
-    addReward(randomReward);
-  };
 
   return (
     <div className="max-w-7xl mx-auto p-4 space-y-8">
@@ -51,62 +43,6 @@ export default function DashboardPage() {
           checking in at locations.
         </p>
       </div>
-
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="bg-card/40 backdrop-blur-xl rounded-2xl p-6 border border-border shadow-2xl"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center">
-              <Wallet className="w-6 h-6 text-purple-400" />
-            </div>
-            <span className="text-3xl font-bold text-purple-400">
-              {totalRewards}
-            </span>
-          </div>
-          <h3 className="text-lg font-semibold text-foreground">
-            Total Rewards
-          </h3>
-          <p className="text-muted-foreground">Rewards in your collection</p>
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="bg-card/40 backdrop-blur-xl rounded-2xl p-6 border border-border shadow-2xl"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center">
-              <Zap className="w-6 h-6 text-green-400" />
-            </div>
-            <span className="text-3xl font-bold text-green-400">
-              {todayRewards}
-            </span>
-          </div>
-          <h3 className="text-lg font-semibold text-foreground">
-            Today&rsquo;s Rewards
-          </h3>
-          <p className="text-muted-foreground">Rewards earned today</p>
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="bg-card/40 backdrop-blur-xl rounded-2xl p-6 border border-border shadow-2xl"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center">
-              <Star className="w-6 h-6 text-yellow-400" />
-            </div>
-            <span className="text-3xl font-bold text-yellow-400">
-              {Math.floor(totalRewards / 3) + 1}
-            </span>
-          </div>
-          <h3 className="text-lg font-semibold text-foreground">Day Streak</h3>
-          <p className="text-muted-foreground">Consecutive collection days</p>
-        </motion.div>
-      </div>
-
       {/* Action Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <motion.div
@@ -173,25 +109,7 @@ export default function DashboardPage() {
         </motion.div>
       </div>
 
-      {/* Demo Section */}
-      <div className="bg-card/40 backdrop-blur-xl rounded-2xl p-8 border border-border shadow-2xl text-center">
-        <h3 className="text-2xl font-bold text-foreground mb-4">Try it out!</h3>
-        <p className="text-muted-foreground mb-6">
-          Get a random reward to see how the system works
-        </p>
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => {
-            handleQuickReward();
-            playUISound("click").catch(() => {});
-          }}
-          className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-500  rounded-xl font-semibold shadow-2xl"
-        >
-          <Gift className="w-5 h-5" />
-          Get Random Reward
-        </motion.button>
-      </div>
+     
     </div>
   );
 }
