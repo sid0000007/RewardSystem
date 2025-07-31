@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { getProductById } from "@/data/codes";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
@@ -32,7 +32,7 @@ export default function ProductDetailPage() {
             Product Not Found
           </h1>
           <p className="text-purple-300 mb-6">
-            The product you're looking for doesn't exist.
+            The product you&apos;re looking for doesn&apos;t exist.
           </p>
           <Button
             onClick={() => router.back()}

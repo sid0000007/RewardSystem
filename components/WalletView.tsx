@@ -209,10 +209,10 @@ export default function WalletView() {
             <Coins className="w-8 h-8 text-yellow-500" />
             My Wallet
           </h1>
-          <p className="text-muted-foreground mt-1">
-            {totalRewards} reward{totalRewards !== 1 ? "s" : ""} collected
-          </p>
         </div>
+        <p className="text-muted-foreground mt-1">
+          {totalRewards} reward{totalRewards !== 1 ? "s" : ""} collected
+        </p>
 
         {/* Actions */}
         <div className="flex items-center gap-2 flex-wrap">
