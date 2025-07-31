@@ -112,7 +112,7 @@ export default function Sidebar() {
               animate={{ opacity: 1 }}
               className="text-xl font-bold text-sidebar-foreground"
             >
-              Real Mint
+              
             </motion.h1>
           )}
         </Link>
