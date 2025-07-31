@@ -1,0 +1,436 @@
+'use client';
+
+import { motion } from 'framer-motion';
+import { 
+  MapPin, 
+  Navigation, 
+  CheckCircle, 
+  Clock,
+  Ruler,
+  Gift,
+  ExternalLink,
+  Target,
+  Zap,
+  AlertCircle
+} from 'lucide-react';
+import { LocationData, Coordinates } from '@/types';
+import { formatDistance, getRewardRarity } from '@/lib/utils';
+import { getDistanceToLocation } from '@/data/locations';
+
+interface EnhancedLocationCardProps {
+  location: LocationData;
+  userCoordinates?: Coordinates | null;
+  isCheckedIn?: boolean;
+  isWithinRange?: boolean;
+  onCheckIn?: (locationId: string) => void;
+  onGetDirections?: (location: LocationData) => void;
+  className?: string;
+  showCheckInButton?: boolean;
+}
+
+export default function EnhancedLocationCard({
+  location,
+  userCoordinates,
+  isCheckedIn = false,
+  isWithinRange = false,
+  onCheckIn,
+  onGetDirections,
+  className = '',
+  showCheckInButton = true
+}: EnhancedLocationCardProps) {
+  const rarity = getRewardRarity(location.reward.type);
+  
+  const distance = userCoordinates 
+    ? getDistanceToLocation(userCoordinates, location.coordinates)
+    : null;
+
+  // Calculate proximity percentage (0-100%)
+  const proximityPercentage = distance !== null 
+    ? Math.max(0, Math.min(100, ((location.radius - distance) / location.radius) * 100))
+    : 0;
+
+  // Determine card status
+  const getCardStatus = () => {
+    if (isCheckedIn) return 'checked-in';
+    if (isWithinRange) return 'available';
+    if (distance !== null && distance <= location.radius * 2) return 'nearby';
+    if (distance !== null && distance <= location.radius * 5) return 'distant';
+    return 'far';
+  };
+
+  const cardStatus = getCardStatus();
+
+  const handleCheckIn = () => {
+    if (onCheckIn && isWithinRange && !isCheckedIn) {
+      onCheckIn(location.id);
+    }
+  };
+
+  const handleGetDirections = () => {
+    if (onGetDirections) {
+      onGetDirections(location);
+    } else {
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.latitude},${location.coordinates.longitude}`;
+      window.open(url, '_blank');
+    }
+  };
+
+  // Status-based styling
+  const getStatusStyles = () => {
+    switch (cardStatus) {
+      case 'checked-in':
+        return {
+          border: 'border-success',
+          bg: 'bg-success/10',
+          glow: 'shadow-success/20'
+        };
+      case 'available':
+        return {
+          border: 'border-primary',
+          bg: 'bg-primary/10',
+          glow: 'shadow-primary/20'
+        };
+      case 'nearby':
+        return {
+          border: 'border-warning',
+          bg: 'bg-warning/10',
+          glow: 'shadow-warning/20'
+        };
+      default:
+        return {
+          border: 'border-muted',
+          bg: 'bg-background',
+          glow: 'shadow-muted/20'
+        };
+    }
+  };
+
+  const statusStyles = getStatusStyles();
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ scale: 1.02, y: -2 }}
+      className={`
+        relative group
+        rounded-xl shadow-lg hover:shadow-xl
+        ${statusStyles.border} ${statusStyles.bg}
+        overflow-hidden
+        transition-all duration-300
+        ${className}
+      `}
+    >
+      {/* Proximity Progress Bar */}
+      {distance !== null && !isCheckedIn && (
+        <div className="absolute top-0 left-0 right-0 h-1 bg-muted">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${proximityPercentage}%` }}
+            className={`h-full transition-all duration-500 ${
+              isWithinRange 
+                ? 'bg-success' 
+                : proximityPercentage > 50 
+                  ? 'bg-primary' 
+                  : proximityPercentage > 25 
+                    ? 'bg-warning' 
+                    : 'bg-destructive'
+            }`}
+          />
+        </div>
+      )}
+
+      {/* Status Indicators */}
+      <div className="absolute top-3 right-3 z-10 flex gap-2">
+        {isCheckedIn && (
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="bg-success text-background rounded-full p-1.5 shadow-lg"
+            title="Already checked in"
+          >
+            <CheckCircle className="w-4 h-4" />
+          </motion.div>
+        )}
+        
+        {isWithinRange && !isCheckedIn && (
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="bg-primary text-background rounded-full p-1.5 shadow-lg animate-pulse"
+            title="Within check-in range"
+          >
+            <Target className="w-4 h-4" />
+          </motion.div>
+        )}
+
+        {!isWithinRange && !isCheckedIn && distance !== null && distance <= location.radius * 2 && (
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="bg-warning text-background rounded-full p-1.5 shadow-lg"
+            title="Getting close"
+          >
+            <Navigation className="w-4 h-4" />
+          </motion.div>
+        )}
+      </div>
+
+      {/* Rarity Border Glow */}
+      <div className={`absolute inset-0 rounded-xl bg-gradient-to-r ${
+        location.reward.type === 'legendary' ? 'from-yellow-400 via-yellow-500 to-orange-500' :
+        location.reward.type === 'epic' ? 'from-purple-400 via-purple-500 to-pink-500' :
+        location.reward.type === 'rare' ? 'from-blue-400 via-blue-500 to-cyan-500' :
+        location.reward.type === 'special' ? 'from-pink-400 via-pink-500 to-rose-500' :
+        'from-muted via-muted to-muted'
+      } opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+
+      <div className="relative z-10 p-6">
+        {/* Location Header */}
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors">
+              {location.name}
+            </h3>
+            <p className="text-sm text-muted-foreground line-clamp-2">
+              {location.description}
+            </p>
+          </div>
+          
+          <div className="text-3xl ml-3">
+            {location.reward.icon}
+          </div>
+        </div>
+
+        {/* Enhanced Location Info */}
+        <div className="space-y-3 mb-4">
+          {/* Distance with visual indicator */}
+          {distance !== null && (
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Ruler className="w-4 h-4" />
+                <span>{formatDistance(distance)} away</span>
+              </div>
+              
+              {/* Distance status badge */}
+              <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                isWithinRange 
+                  ? 'bg-success/10 text-success'
+                  : distance <= location.radius * 2
+                    ? 'bg-warning/10 text-warning'
+                    : 'bg-muted/10 text-muted-foreground'
+              }`}>
+                {isWithinRange ? '🎯 In Range' : distance <= location.radius * 2 ? '🚶 Close' : '🗺️ Far'}
+              </span>
+            </div>
+          )}
+
+          {/* Check-in Radius with visual indicator */}
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <MapPin className="w-4 h-4" />
+              <span>{formatDistance(location.radius)} check-in radius</span>
+            </div>
+            
+            {/* Radius visualization */}
+            {distance !== null && (
+              <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden ml-2">
+                <div 
+                  className={`h-full transition-all duration-500 ${
+                    isWithinRange ? 'bg-success' : 'bg-warning'
+                  }`}
+                  style={{ 
+                    width: `${Math.min(100, (location.radius / Math.max(distance, location.radius)) * 100)}%` 
+                  }}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Enhanced Reward Info */}
+          <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+            <div className="flex items-center gap-2">
+              <Gift className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium">
+                {location.reward.name}
+              </span>
+            </div>
+            
+            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${rarity.color} bg-opacity-10`}>
+              <div className={`w-2 h-2 rounded-full mr-1 ${
+                location.reward.type === 'legendary' ? 'bg-yellow-500' :
+                location.reward.type === 'epic' ? 'bg-purple-500' :
+                location.reward.type === 'rare' ? 'bg-blue-500' :
+                location.reward.type === 'special' ? 'bg-pink-500' :
+                'bg-muted'
+              }`} />
+              {rarity.label}
+            </span>
+          </div>
+        </div>
+
+        {/* Reward Description */}
+        <div className="bg-muted/50 rounded-lg p-3 mb-4">
+          <p className="text-sm text-muted-foreground">
+            {location.reward.description}
+          </p>
+        </div>
+
+        {/* Enhanced Action Buttons */}
+        <div className="flex gap-2">
+          {showCheckInButton && (
+            <motion.button
+              whileHover={{ scale: isWithinRange && !isCheckedIn ? 1.05 : 1 }}
+              whileTap={{ scale: isWithinRange && !isCheckedIn ? 0.95 : 1 }}
+              onClick={handleCheckIn}
+              disabled={!isWithinRange || isCheckedIn}
+              className={`
+                flex-1 py-3 px-4 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2
+                ${isCheckedIn
+                  ? 'bg-success/10 text-success border border-success cursor-not-allowed'
+                  : isWithinRange
+                    ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
+                    : 'bg-muted text-muted-foreground cursor-not-allowed border'
+                }
+              `}
+            >
+              {isCheckedIn ? (
+                <>
+                  <CheckCircle className="w-4 h-4" />
+                  Checked In
+                </>
+              ) : isWithinRange ? (
+                <>
+                  <Zap className="w-4 h-4" />
+                  Check In Now!
+                </>
+              ) : (
+                <>
+                  <Clock className="w-4 h-4" />
+                  Get Closer ({formatDistance(Math.max(0, (distance || 0) - location.radius))} to go)
+                </>
+              )}
+            </motion.button>
+          )}
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleGetDirections}
+            className="px-4 py-3 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 transition-colors flex items-center gap-2 border"
+            title="Get directions"
+          >
+            <ExternalLink className="w-4 h-4" />
+            <span className="hidden sm:inline">Directions</span>
+          </motion.button>
+        </div>
+
+        {/* Enhanced Status Messages */}
+        {!userCoordinates && (
+          <div className="mt-4 p-3 bg-warning/10 border border-warning rounded-lg">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-warning" />
+              <p className="text-xs text-warning">
+                Enable location access to see distance and check-in status
+              </p>
+            </div>
+          </div>
+        )}
+
+        {userCoordinates && distance !== null && distance > location.radius && !isCheckedIn && (
+          <div className="mt-4 p-3 bg-warning/10 border border-warning rounded-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Navigation className="w-4 h-4 text-warning" />
+                <p className="text-xs text-warning">
+                  Move {formatDistance(distance - location.radius)} closer to check in
+                </p>
+              </div>
+              {distance <= location.radius * 2 && (
+                <span className="text-xs text-warning font-medium">
+                  Almost there!
+                </span>
+              )}
+            </div>
+            
+            {/* Progress visualization */}
+            <div className="mt-2 h-1 bg-warning/20 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-warning transition-all duration-500"
+                style={{ width: `${proximityPercentage}%` }}
+              />
+            </div>
+          </div>
+        )}
+
+        {isWithinRange && !isCheckedIn && (
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-4 p-3 bg-success/10 border border-success rounded-lg"
+          >
+            <div className="flex items-center gap-2">
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }}
+                transition={{ duration: 1, repeat: Infinity }}
+              >
+                <Target className="w-4 h-4 text-success" />
+              </motion.div>
+              <p className="text-xs text-success font-medium">
+                Perfect! You&apos;re close enough to check in and earn the reward!
+              </p>
+            </div>
+          </motion.div>
+        )}
+
+        {isCheckedIn && (
+          <div className="mt-4 p-3 bg-success/10 border border-success rounded-lg">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-4 h-4 text-success" />
+              <p className="text-xs text-success">
+                ✨ Reward earned! Check your wallet to see your badge.
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Enhanced Animated Background for Active Locations */}
+      {isWithinRange && !isCheckedIn && (
+        <div className="absolute inset-0 pointer-events-none">
+          <motion.div
+            animate={{ 
+              scale: [1, 1.02, 1],
+              opacity: [0.05, 0.15, 0.05]
+            }}
+            transition={{ 
+              duration: 2, 
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            className="absolute inset-0 bg-gradient-to-r from-primary to-primary rounded-xl"
+          />
+        </div>
+      )}
+
+      {/* Pulse effect for available locations */}
+      {isWithinRange && !isCheckedIn && (
+        <div className="absolute inset-0 pointer-events-none">
+          <motion.div
+            animate={{ 
+              scale: [1, 1.05, 1],
+              opacity: [0, 0.1, 0]
+            }}
+            transition={{ 
+              duration: 1.5, 
+              repeat: Infinity,
+              ease: "easeOut"
+            }}
+            className="absolute inset-0 bg-primary rounded-xl"
+          />
+        </div>
+      )}
+    </motion.div>
+  );
+}
