@@ -7,17 +7,11 @@ import {
   Save,
   X,
   Settings,
-  Trophy,
   Calendar,
   Bell,
   Volume2,
   VolumeX,
   Wallet,
-  User,
-  Crown,
-  Star,
-  Zap,
-  Gift,
 } from "lucide-react";
 import { UserProfile as UserProfileType, RewardType } from "@/types";
 import { useRewards } from "@/hooks/useRewards";
@@ -88,17 +82,6 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
     updateUserProfile({ preferences: updatedPreferences });
   };
 
-  const getMostCollectedType = (): { type: RewardType; count: number } => {
-    const types = Object.entries(userProfile.rewardsByType) as [
-      RewardType,
-      number
-    ][];
-    const sorted = types.sort(([, a], [, b]) => b - a);
-    return { type: sorted[0][0], count: sorted[0][1] };
-  };
-
-  const mostCollected = getMostCollectedType();
-
   const getStreakDays = (): number => {
     // Simple implementation - could be enhanced with actual streak tracking
     return Math.floor(totalRewards / 3) + 1;
@@ -154,77 +137,18 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
         </div>
 
         {/* Stats Grid - Shadcn Style */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
           <div className=" backdrop-blur-sm rounded-xl p-4 border ">
-            <div className="text-2xl font-bold  mb-1">
-              {totalRewards}
-            </div>
+            <div className="text-2xl font-bold  mb-1">{totalRewards}</div>
             <div className="text-sm ">Total Rewards</div>
           </div>
           <div className=" backdrop-blur-sm rounded-xl p-4 border ">
-            <div className="text-2xl font-bold  mb-1">
-              {todayRewards}
-            </div>
+            <div className="text-2xl font-bold  mb-1">{todayRewards}</div>
             <div className="text-sm ">Today</div>
           </div>
           <div className=" backdrop-blur-sm rounded-xl p-4 border ">
-            <div className="text-2xl font-bold  mb-1">
-              {getStreakDays()}
-            </div>
+            <div className="text-2xl font-bold  mb-1">{getStreakDays()}</div>
             <div className="text-sm ">Day Streak</div>
-          </div>
-          <div className=" backdrop-blur-sm rounded-xl p-4 border ">
-            <div className="text-2xl font-bold  mb-1">
-              {mostCollected.count}
-            </div>
-            <div className="text-sm ">
-              {mostCollected.type}s
-            </div>
-          </div>
-        </div>
-
-        {/* Collection Breakdown - Shadcn Style */}
-        <div>
-          <h3 className="text-xl font-semibold  mb-4 flex items-center gap-2">
-            <Trophy className="w-6 h-6 text-yellow-400" />
-            Collection Breakdown
-          </h3>
-          <div className="space-y-3">
-            {Object.entries(userProfile.rewardsByType).map(([type, count]) => {
-              const percentage =
-                totalRewards > 0 ? (count / totalRewards) * 100 : 0;
-              const colors = {
-                common: "bg-gray-500",
-                rare: "bg-blue-500",
-                epic: "bg-purple-500",
-                legendary: "bg-yellow-500",
-                special: "bg-pink-500",
-              };
-
-              return (
-                <div
-                  key={type}
-                  className="flex items-center gap-4 p-3 bg-black/20 backdrop-blur-sm rounded-xl border border-purple-500/10"
-                >
-                  <div className="w-20 text-sm  capitalize font-medium">
-                    {type}
-                  </div>
-                  <div className="flex-1 bg-black/30 rounded-full h-3">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: `${percentage}%` }}
-                      transition={{ duration: 1, delay: 0.2 }}
-                      className={`h-3 rounded-full ${
-                        colors[type as keyof typeof colors]
-                      } shadow-lg`}
-                    />
-                  </div>
-                  <div className="w-12 text-sm font-semibold">
-                    {count}
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </div>
       </motion.div>
@@ -247,9 +171,7 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
               className=" rounded-2xl p-8 max-w-md w-full border "
             >
               <div className="flex items-center justify-between mb-8">
-                <h3 className="text-xl font-semibold ">
-                  Edit Profile
-                </h3>
+                <h3 className="text-xl font-semibold ">Edit Profile</h3>
                 <button
                   onClick={handleCancel}
                   className="p-2  transition-colors"
@@ -356,9 +278,7 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
                 <div className="flex items-center justify-between p-4 bg-black/20 backdrop-blur-sm rounded-xl border border-purple-500/20">
                   <div className="flex items-center gap-3">
                     <Bell className="w-5 h-5 " />
-                    <span className="text-sm font-medium ">
-                      Notifications
-                    </span>
+                    <span className="text-sm font-medium ">Notifications</span>
                   </div>
                   <button
                     onClick={() =>
@@ -391,9 +311,7 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
                     ) : (
                       <VolumeX className="w-5 h-5 " />
                     )}
-                    <span className="text-sm font-medium ">
-                      Sound Effects
-                    </span>
+                    <span className="text-sm font-medium ">Sound Effects</span>
                   </div>
                   <SoundControl />
                 </div>
@@ -402,13 +320,9 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
                 <div className="p-4 bg-black/20 backdrop-blur-sm rounded-xl border border-purple-500/20">
                   <div className="flex items-center gap-3 mb-3">
                     <Wallet className="w-5 h-5 " />
-                    <span className="text-sm font-medium ">
-                      Wallet
-                    </span>
+                    <span className="text-sm font-medium ">Wallet</span>
                   </div>
-                  <p className="text-xs ">
-                    Wallet integration coming soon...
-                  </p>
+                  <p className="text-xs ">Wallet integration coming soon...</p>
                 </div>
               </div>
             </motion.div>
