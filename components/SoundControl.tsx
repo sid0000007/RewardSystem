@@ -142,24 +142,7 @@ export default function SoundControl({ className = '' }: SoundControlProps) {
           )}
         </div>
       )}
-
-      {/* Test Sound Button (Development) */}
-      {process.env.NODE_ENV === 'development' && soundsEnabled && (
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleTestAllSounds}
-          disabled={isTestingAll}
-          className={`p-2 rounded-lg transition-colors ${
-            isTestingAll
-              ? 'bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
-              : 'bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-400 hover:bg-yellow-200 dark:hover:bg-yellow-800'
-          }`}
-          title={isTestingAll ? 'Testing sounds...' : 'Test all sounds (Dev only)'}
-        >
-          <TestTube className="w-4 h-4" />
-        </motion.button>
-      )}
+      
     </div>
   );
 }

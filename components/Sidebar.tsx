@@ -29,7 +29,7 @@ interface SidebarItem {
 const sidebarItems: SidebarItem[] = [
   {
     id: "dashboard",
-    label: "Dashboard",
+    label: "Home",
     icon: HomeIcon,
     href: "/dashboard",
     description: "Overview & Stats",
@@ -103,7 +103,7 @@ export default function Sidebar() {
       {/* Sidebar Header */}
       <div className="flex items-center justify-between p-4 border-b border-sidebar-border">
         <Link href="/dashboard" className="flex items-center gap-3">
-          <div className=" gap-3 p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+          <div className=" gap-3 p-3  rounded-lg flex items-center justify-center">
             <Gift className="w-5 h-5 " />
           </div>
           {sidebarExpanded && (
@@ -135,16 +135,16 @@ export default function Sidebar() {
               <Link
                 href={item.href}
                 onClick={handleTabClick}
-                className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all duration-200 ${
+                className={`w-full flex items-center gap-3 p-2 rounded-lg transition-all duration-200 ${
                   isActive
-                    ? "bg-gradient-to-r from-purple-500 to-pink-500  shadow-lg"
+                    ? "bg-primary text-primary-foreground shadow-lg"
                     : "text-sidebar-foreground "
                 }`}
               >
                 <Icon className="w-5 h-5 flex-shrink-0" />
                 {sidebarExpanded && (
                   <div className="flex-1 text-left">
-                    <div className="font-medium">{item.label}</div>
+                    <div className="text-sm">{item.label}</div>
                   </div>
                 )}
               </Link>

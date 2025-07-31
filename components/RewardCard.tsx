@@ -162,7 +162,7 @@ export default function RewardCard({
           <h3
             className={`font-semibold text-gray-900  ${
               isListView ? "mb-1" : "mb-1"
-            } group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors duration-200 truncate`}
+            }   transition-colors duration-200 truncate`}
           >
             {reward.name}
           </h3>

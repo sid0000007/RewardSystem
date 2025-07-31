@@ -36,6 +36,10 @@ import RewardAnimation from "@/components/RewardAnimation";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { Card, CardContent } from "../ui/card";
+import { Input } from "../ui/input";
+import { Select, SelectContent, SelectValue } from "@radix-ui/react-select";
+import { SelectItem, SelectTrigger } from "../ui/select";
 
 interface LocationCheckerProps {
   className?: string;
@@ -384,19 +388,11 @@ export default function LocationChecker({
   return (
     <div className={`space-y-6 ${className}`}>
       {/* Header with Location Status */}
-      <div className="rounded-xl shadow-lg border p-6">
-        <div className="flex items-center justify-between mb-4">
+      <div className="bg-card shadow-lg rounded-lg p-6">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl">
-              <MapPin className="w-6 h-6 text-white" />
-            </div>
             <div>
-              <h2 className="text-xl  font-bold">Location Check-in</h2>
-              <Link href="/checkin/about">
-                <p className="text-sm  hover:underline text-muted-foreground">
-                  Check in at nearby locations to earn rewards
-                </p>
-              </Link>
+              <h2 className="text-3xl font-bold">Location Check-in</h2>
             </div>
           </div>
         </div>
@@ -404,8 +400,8 @@ export default function LocationChecker({
         {/* Location Status */}
         <div className="space-y-3">
           {permission === "denied" && (
-            <div className="flex items-center gap-3 p-4 bg-destructive/10 border rounded-lg">
-              <AlertTriangle className="w-5 h-5" />
+            <div className="flex items-center gap-3 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
+              <AlertTriangle className="w-5 h-5 text-destructive" />
               <div className="flex-1">
                 <p className="text-sm font-medium">Location access denied</p>
                 <p className="text-xs">
@@ -419,40 +415,6 @@ export default function LocationChecker({
                 >
                   Enable Location
                 </button>
-              </div>
-            </div>
-          )}
-
-          {/* {permission === "granted" && realCoordinates && (
-            <div className="flex items-center justify-between p-4 border rounded-lg">
-              <div className="flex items-center gap-3">
-                <CheckCircle className="w-5 h-5" />
-                <div>
-                  <p className="text-sm font-medium">Location enabled</p>
-                  <p className="text-xs">
-                    {accuracy
-                      ? `Accuracy: ±${Math.round(accuracy)}m`
-                      : "Position acquired"}
-                  </p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-xs">
-                  {realCoordinates?.latitude.toFixed(4)},{" "}
-                  {realCoordinates?.longitude.toFixed(4)}
-                </p>
-              </div>
-            </div>
-          )} */}
-
-          {geoError && (
-            <div className="flex items-center gap-3 p-4 border rounded-lg">
-              <div className="flex items-center gap-3">
-                <AlertTriangle className="w-5 h-5" />
-                <div>
-                  <p className="text-sm font-medium">Location error</p>
-                  <p className="text-xs">{geoError}</p>
-                </div>
               </div>
             </div>
           )}
@@ -474,48 +436,7 @@ export default function LocationChecker({
           return null;
         })()}
       </div>
-
-      {/* Search and Filter */}
-      <div className="rounded-xl shadow-lg border p-4">
-        <div className="flex flex-col lg:flex-row gap-4">
-          {/* Search */}
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Search locations..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-ring text-sm"
-            />
-          </div>
-
-          {/* Filter */}
-          <div className="relative">
-            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <select
-              value={filter}
-              onChange={(e) => setFilter(e.target.value as FilterType)}
-              className="pl-10 pr-8 py-2 border rounded-lg focus:ring-2 focus:ring-ring text-sm appearance-none cursor-pointer min-w-[160px]"
-            >
-              <option value="all">All</option>
-              <option value="available">Available to Check-in</option>
-              <option value="checked-in">Already Checked-in</option>
-            </select>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={refresh}
-              className="p-2 rounded-lg hover:bg-accent transition-colors"
-              title="Refresh location"
-            >
-              <RefreshCw
-                className={`w-4 h-4 ${isGeoLoading ? "animate-spin" : ""}`}
-              />
-            </button>
-          </div>
-        </div>
-      </div>
+     
 
       {/* Location List */}
       <div className="space-y-4">
@@ -526,7 +447,58 @@ export default function LocationChecker({
           {searchQuery && ` (${sortedLocations.length} results)`}
         </h3>
 
+         {/* Filters and Search */}
+      <Card>
+        <CardContent className="">
+          <div className="flex flex-col lg:flex-row gap-4">
+            {/* Search */}
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search locations..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+
+            {/* Filters */}
+            <div className="flex gap-2 flex-wrap">
+              <Select
+                value={filter}
+                onValueChange={(value) => setFilter(value as FilterType)}
+              >
+                <SelectTrigger className="">
+                  <SelectValue placeholder="All Locations" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Locations</SelectItem>
+                  <SelectItem value="available">
+                    Available to Check-in
+                  </SelectItem>
+                  <SelectItem value="checked-in">Already Checked-in</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Button
+                variant="outline"
+                onClick={refresh}
+                className="p-2"
+                title="Refresh location"
+              >
+                <RefreshCw
+                  className={`w-4 h-4 ${isGeoLoading ? "animate-spin" : ""}`}
+                />
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
         {sortedLocations.length === 0 ? (
+
+          
           <div className="text-center py-12 rounded-xl shadow-lg border">
             <MapPin className="w-12 h-12 mx-auto mb-4" />
             <p className="mb-2">No locations found</p>
@@ -540,14 +512,14 @@ export default function LocationChecker({
                 : "Try changing your filter"}
             </p>
             {!realCoordinates && (
-              <button
+              <Button
                 onClick={requestPermission}
-                className="px-4 py-2 bg-purple-500 rounded-lg hover:opacity-90 transition-opacity"
+                className="px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
               >
                 {permission === "denied"
                   ? "Re-enable Location Access"
                   : "Enable Location Access"}
-              </button>
+              </Button>
             )}
           </div>
         ) : (

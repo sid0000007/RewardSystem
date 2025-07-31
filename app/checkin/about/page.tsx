@@ -25,8 +25,8 @@ export default function LocationAboutPage() {
         className="text-center space-y-4"
       >
         <div className="flex items-center justify-center gap-3 mb-6">
-          <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl">
-            <MapPin className="w-8 h-8 text-white" />
+          <div className="p-3 bg-gradient-to-br  rounded-xl">
+            <MapPin className="w-8 h-8 " />
           </div>
           <h1 className="text-4xl font-bold">Location Check-in</h1>
         </div>
@@ -38,7 +38,7 @@ export default function LocationAboutPage() {
 
         <div className="flex items-center justify-center gap-8 mt-8">
           <div className="text-center">
-            <div className="text-3xl font-bold text-purple-500">8</div>
+            <div className="text-3xl font-bold ">8</div>
             <div className="text-sm text-muted-foreground">
               Locations Generated
             </div>
@@ -59,7 +59,7 @@ export default function LocationAboutPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl p-8 text-center text-white"
+        className="bg-gradient-to-r rounded-xl p-8 text-center "
       >
         <h2 className="text-2xl font-bold mb-4">
           Interactive Location Check-in - Try it now!
@@ -69,7 +69,7 @@ export default function LocationAboutPage() {
         </p>
         <Link
           href="/checkin"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-white text-purple-600 rounded-lg font-semibold hover:bg-purple-50 transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3  rounded-lg font-semibold  transition-colors"
         >
           <Navigation className="w-5 h-5" />
           Explore
@@ -90,8 +90,8 @@ export default function LocationAboutPage() {
         <div className="grid md:grid-cols-3 gap-6">
           {/* Step 1 */}
           <div className="bg-card rounded-xl p-6 border text-center">
-            <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-white font-bold">1</span>
+            <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className=" font-bold">1</span>
             </div>
             <h3 className="text-xl font-semibold mb-3">
               Enable Location Access
@@ -105,7 +105,7 @@ export default function LocationAboutPage() {
           {/* Step 2 */}
           <div className="bg-card rounded-xl p-6 border text-center">
             <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-white font-bold">2</span>
+              <span className=" font-bold">2</span>
             </div>
             <h3 className="text-xl font-semibold mb-3">
               Find Generated Locations
@@ -119,7 +119,7 @@ export default function LocationAboutPage() {
           {/* Step 3 */}
           <div className="bg-card rounded-xl p-6 border text-center">
             <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-white font-bold">3</span>
+              <span className=" font-bold">3</span>
             </div>
             <h3 className="text-xl font-semibold mb-3">
               Check In & Earn Rewards
@@ -144,7 +144,7 @@ export default function LocationAboutPage() {
         <div className="grid md:grid-cols-2 gap-6">
           <div className="flex items-start gap-4">
             <div className="p-3 bg-blue-500 rounded-lg">
-              <Globe className="w-6 h-6 text-white" />
+              <Globe className="w-6 h-6 " />
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">
@@ -158,7 +158,7 @@ export default function LocationAboutPage() {
 
           <div className="flex items-start gap-4">
             <div className="p-3 bg-green-500 rounded-lg">
-              <Smartphone className="w-6 h-6 text-white" />
+              <Smartphone className="w-6 h-6 " />
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">Real GPS Required</h3>
@@ -170,8 +170,8 @@ export default function LocationAboutPage() {
           </div>
 
           <div className="flex items-start gap-4">
-            <div className="p-3 bg-purple-500 rounded-lg">
-              <Award className="w-6 h-6 text-white" />
+            <div className="p-3  rounded-lg">
+              <Award className="w-6 h-6 " />
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">
@@ -185,7 +185,7 @@ export default function LocationAboutPage() {
 
           <div className="flex items-start gap-4">
             <div className="p-3 bg-orange-500 rounded-lg">
-              <Users className="w-6 h-6 text-white" />
+              <Users className="w-6 h-6 " />
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">Social Experience</h3>
@@ -211,7 +211,7 @@ export default function LocationAboutPage() {
         </p>
         <Link
           href="/checkin"
-          className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-lg font-semibold hover:opacity-90 transition-opacity"
+          className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-600  rounded-lg font-semibold hover:opacity-90 transition-opacity"
         >
           <MapPin className="w-5 h-5" />
           Start Location Check-in

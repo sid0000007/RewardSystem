@@ -61,9 +61,7 @@ const createDefaultUserProfile = (): UserProfile => ({
     [RewardType.LEGENDARY]: 0,
     [RewardType.SPECIAL]: 0
   },
-  preferences: {
-    theme: 'auto',
-    notifications: true,
+  preferences: {   
     sounds: true
   }
 });
@@ -236,9 +234,7 @@ export const useRewards = create<RewardsStore>()(
           [RewardType.SPECIAL]: updatedProfile.rewardsByType?.[RewardType.SPECIAL] || 0
         },
         preferences: {
-          ...updatedProfile.preferences,
-          theme: updatedProfile.preferences?.theme || 'auto',
-          notifications: updatedProfile.preferences?.notifications !== false,
+          ...updatedProfile.preferences,          
           sounds: updatedProfile.preferences?.sounds !== false
         }
       };

@@ -122,10 +122,9 @@ export default function EnhancedLocationCard({
       whileHover={{ scale: 1.02, y: -2 }}
       className={`
         relative group
-        rounded-xl shadow-lg hover:shadow-xl
+        rounded-lg shadow-lg hover:shadow-xl
         ${statusStyles.border} ${statusStyles.bg}
-        overflow-hidden
-        transition-all duration-300
+        overflow-hidden        
         ${className}
       `}
     >
@@ -165,7 +164,7 @@ export default function EnhancedLocationCard({
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="bg-primary text-background rounded-full p-1.5 shadow-lg animate-pulse"
+            className="text-background rounded-full p-1.5 shadow-lg animate-pulse"
             title="Within check-in range"
           >
             <Target className="w-4 h-4" />
@@ -189,7 +188,7 @@ export default function EnhancedLocationCard({
 
       {/* Rarity Border Glow */}
       <div
-        className={`absolute inset-0 rounded-xl bg-gradient-to-r ${
+        className={`absolute inset-0 rounded-lg bg-gradient-to-r ${
           location.reward.type === "legendary"
             ? "from-yellow-400 via-yellow-500 to-orange-500"
             : location.reward.type === "epic"

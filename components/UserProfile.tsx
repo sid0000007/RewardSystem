@@ -74,14 +74,6 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
     setEditedProfile((prev) => ({ ...prev, avatar }));
   };
 
-  const handlePreferenceUpdate = (
-    key: keyof UserProfileType["preferences"],
-    value: string | boolean
-  ) => {
-    const updatedPreferences = { ...userProfile.preferences, [key]: value };
-    updateUserProfile({ preferences: updatedPreferences });
-  };
-
   const getStreakDays = (): number => {
     // Simple implementation - could be enhanced with actual streak tracking
     return Math.floor(totalRewards / 3) + 1;
@@ -93,12 +85,12 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className=" rounded-2xl p-8 border "
+        className="bg-card rounded-2xl p-8 border"
       >
         <div className="flex items-start justify-between mb-8">
           <div className="flex items-center gap-6">
             <div className="relative">
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 via-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-4xl shadow-lg">
+              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center text-4xl shadow-lg">
                 {userProfile.avatar}
               </div>
               <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-black flex items-center justify-center">
@@ -121,7 +113,7 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setShowSettings(true)}
-              className="p-3  rounded-xl border   transition-all duration-200"
+              className="p-3 bg-muted rounded-xl border transition-all duration-200"
             >
               <Settings className="w-5 h-5" />
             </motion.button>
@@ -129,7 +121,7 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setIsEditing(true)}
-              className="p-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl  hover:from-purple-600 hover:to-pink-600 transition-all duration-200"
+              className="p-3 rounded-xl border-2 hover:bg-primary hover:text-primary transition-all duration-200"
             >
               <Edit2 className="w-5 h-5" />
             </motion.button>
@@ -138,17 +130,17 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
 
         {/* Stats Grid - Shadcn Style */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
-          <div className=" backdrop-blur-sm rounded-xl p-4 border ">
-            <div className="text-2xl font-bold  mb-1">{totalRewards}</div>
-            <div className="text-sm ">Total Rewards</div>
+          <div className="bg-muted rounded-xl p-4 border">
+            <div className="text-2xl font-bold mb-1">{totalRewards}</div>
+            <div className="text-sm text-muted-foreground">Total Rewards</div>
           </div>
-          <div className=" backdrop-blur-sm rounded-xl p-4 border ">
-            <div className="text-2xl font-bold  mb-1">{todayRewards}</div>
-            <div className="text-sm ">Today</div>
+          <div className="bg-muted rounded-xl p-4 border">
+            <div className="text-2xl font-bold mb-1">{todayRewards}</div>
+            <div className="text-sm text-muted-foreground">Today</div>
           </div>
-          <div className=" backdrop-blur-sm rounded-xl p-4 border ">
-            <div className="text-2xl font-bold  mb-1">{getStreakDays()}</div>
-            <div className="text-sm ">Day Streak</div>
+          <div className="bg-muted rounded-xl p-4 border">
+            <div className="text-2xl font-bold mb-1">{getStreakDays()}</div>
+            <div className="text-sm text-muted-foreground">Day Streak</div>
           </div>
         </div>
       </motion.div>
@@ -168,7 +160,7 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className=" rounded-2xl p-8 max-w-md w-full border "
+              className="bg-card rounded-2xl p-8 max-w-md w-full border"
             >
               <div className="flex items-center justify-between mb-8">
                 <h3 className="text-xl font-semibold ">Edit Profile</h3>
@@ -215,7 +207,7 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
                         onClick={() => handleAvatarSelect(avatar)}
                         className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl transition-all duration-200 ${
                           editedProfile.avatar === avatar
-                            ? "bg-gradient-to-r from-purple-500 to-pink-500  shadow-lg"
+                            ? "bg-gradient-to-r   shadow-lg"
                             : " border"
                         }`}
                       >
@@ -274,35 +266,6 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
               </div>
 
               <div className="space-y-6">
-                {/* Notifications */}
-                <div className="flex items-center justify-between p-4 bg-black/20 backdrop-blur-sm rounded-xl border border-purple-500/20">
-                  <div className="flex items-center gap-3">
-                    <Bell className="w-5 h-5 " />
-                    <span className="text-sm font-medium ">Notifications</span>
-                  </div>
-                  <button
-                    onClick={() =>
-                      handlePreferenceUpdate(
-                        "notifications",
-                        !userProfile.preferences.notifications
-                      )
-                    }
-                    className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors ${
-                      userProfile.preferences.notifications
-                        ? "bg-gradient-to-r from-purple-500 to-pink-500"
-                        : "bg-black/50 border border-purple-500/30"
-                    }`}
-                  >
-                    <span
-                      className={`inline-block h-5 w-5 transform rounded-full  transition-transform ${
-                        userProfile.preferences.notifications
-                          ? "translate-x-6"
-                          : "translate-x-1"
-                      }`}
-                    />
-                  </button>
-                </div>
-
                 {/* Sounds */}
                 <div className="flex items-center justify-between p-4 bg-black/20 backdrop-blur-sm rounded-xl border border-purple-500/20">
                   <div className="flex items-center gap-3">
@@ -314,15 +277,6 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
                     <span className="text-sm font-medium ">Sound Effects</span>
                   </div>
                   <SoundControl />
-                </div>
-
-                {/* Wallet Section (Placeholder for future) */}
-                <div className="p-4 bg-black/20 backdrop-blur-sm rounded-xl border border-purple-500/20">
-                  <div className="flex items-center gap-3 mb-3">
-                    <Wallet className="w-5 h-5 " />
-                    <span className="text-sm font-medium ">Wallet</span>
-                  </div>
-                  <p className="text-xs ">Wallet integration coming soon...</p>
                 </div>
               </div>
             </motion.div>

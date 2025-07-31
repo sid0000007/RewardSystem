@@ -205,14 +205,10 @@ export default function WalletView() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Coins className="w-8 h-8 text-yellow-500" />
+          <h1 className="text-3xl font-bold flex items-center gap-2">           
             My Wallet
           </h1>
-        </div>
-        <p className="text-muted-foreground mt-1">
-          {totalRewards} reward{totalRewards !== 1 ? "s" : ""} collected
-        </p>
+        </div>        
 
         {/* Actions */}
         <div className="flex items-center gap-2 flex-wrap">
@@ -249,51 +245,11 @@ export default function WalletView() {
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-        {[
-          {
-            label: "Common",
-            count: commonCount,
-            color: "bg-gray-500",
-            icon: "🪙",
-          },
-          { label: "Rare", count: rareCount, color: "bg-blue-500", icon: "💎" },
-          {
-            label: "Epic",
-            count: epicCount,
-            color: "bg-purple-500",
-            icon: "🏆",
-          },
-          {
-            label: "Legendary",
-            count: legendaryCount,
-            color: "bg-yellow-500",
-            icon: "👑",
-          },
-          {
-            label: "Special",
-            count: specialCount,
-            color: "bg-pink-500",
-            icon: "✨",
-          },
-        ].map((stat) => (
-          <Card key={stat.label}>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-2xl">{stat.icon}</span>
-                <div className={`w-3 h-3 rounded-full ${stat.color}`} />
-              </div>
-              <div className="text-2xl font-bold">{stat.count}</div>
-              <div className="text-sm text-muted-foreground">{stat.label}</div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+   
 
       {/* Filters and Search */}
       <Card>
-        <CardContent className="p-4">
+        <CardContent className="">
           <div className="flex flex-col lg:flex-row gap-4">
             {/* Search */}
             <div className="flex-1 relative">
@@ -487,6 +443,63 @@ export default function WalletView() {
           </Card>
         )}
       </AnimatePresence>
+
+         {/* Stats Cards */}
+         <Card className="max-w-sm">
+        <CardContent className="p-4">
+          <div className="flex flex-col gap-2">
+            {/* Total Balance */}
+            <div className="text-center mb-2">
+              <div className="text-sm text-muted-foreground">Total Balance</div>
+              <div className="text-2xl font-bold">
+                {commonCount + rareCount + epicCount + legendaryCount + specialCount}
+              </div>
+            </div>
+
+            {/* Token List */}
+            <div className="space-y-2">
+              {[
+                {
+                  label: "Common",
+                  count: commonCount,
+                  color: "bg-gray-500",
+                  icon: "🪙",
+                },
+                { label: "Rare", count: rareCount, color: "bg-blue-500", icon: "💎" },
+                {
+                  label: "Epic",
+                  count: epicCount, 
+                  color: "bg-purple-500",
+                  icon: "🏆",
+                },
+                {
+                  label: "Legendary",
+                  count: legendaryCount,
+                  color: "bg-yellow-500", 
+                  icon: "👑",
+                },
+                {
+                  label: "Special",
+                  count: specialCount,
+                  color: "bg-pink-500",
+                  icon: "✨",
+                },
+              ].map((token) => (
+                <div key={token.label} className="flex items-center justify-between py-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">{token.icon}</span>
+                    <span className="text-sm">{token.label}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium">{token.count}</span>
+                    <div className={`w-2 h-2 rounded-full ${token.color}`} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Clear Confirmation Modal */}
       <AnimatePresence>

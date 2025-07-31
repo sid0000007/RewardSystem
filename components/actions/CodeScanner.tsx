@@ -284,17 +284,17 @@ export default function CodeScanner() {
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
       case "common":
-        return "bg-gray-500";
+        return "text-gray-500";
       case "rare":
-        return "bg-blue-500";
+        return "text-blue-500";
       case "epic":
-        return "bg-purple-500";
+        return "text-purple-500";
       case "legendary":
-        return "bg-yellow-500";
+        return "text-yellow-500";
       case "special":
-        return "bg-pink-500";
+        return "text-pink-500";
       default:
-        return "bg-gray-500";
+        return "text-gray-500";
     }
   };
 
@@ -309,16 +309,10 @@ export default function CodeScanner() {
   return (
     <div className="p-4 mx-auto space-y-6">
       {/* Scanner Interface */}
-      <Card className="bg-black/40 backdrop-blur-xl border border-purple-500/20 shadow-2xl">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-white">
-            <QrCode className="w-6 h-6 text-purple-400" />
-            Snack Product Scanner
-          </CardTitle>
-        </CardHeader>
+      <Card className=" border  shadow-2xl">
         <CardContent className="space-y-6 max-w-xl lg:max-w-3xl mx-auto">
           <div className="text-center">
-            <p className="text-purple-300">
+            <p className="">
               Enter code from your products to collect rewards
             </p>
           </div>
@@ -333,7 +327,7 @@ export default function CodeScanner() {
                 onKeyPress={handleKeyPress}
                 placeholder="Enter snack product code here..."
                 disabled={isScanning || cooldownStatus.isActive}
-                className="text-center text-lg font-mono bg-black/30 backdrop-blur-sm border-purple-500/30 text-white placeholder-purple-400 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
+                className="text-center text-lg font-mono   transition-all duration-200"
                 maxLength={30}
               />
               {code && (
@@ -352,7 +346,7 @@ export default function CodeScanner() {
             <Button
               onClick={handleValidateCode}
               disabled={isScanning || cooldownStatus.isActive || !code.trim()}
-              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 transition-all duration-200"
+              className="w-full font-semibold py-3 "
               size="lg"
             >
               {isScanning ? (
@@ -385,12 +379,12 @@ export default function CodeScanner() {
 
           {/* Cooldown Info */}
           {cooldownStatus.isActive && (
-            <div className="p-4 bg-black/30 backdrop-blur-sm rounded-xl border border-purple-500/20">
-              <div className="flex items-center gap-3 text-sm text-purple-300">
-                <Clock className="w-4 h-4 text-purple-400" />
+            <div className="p-4rounded-xl border">
+              <div className="flex items-center gap-3 text-sm ">
+                <Clock className="w-4 h-4 " />
                 <span>
                   Please wait{" "}
-                  <span className="font-semibold text-white">
+                  <span className="font-semibold ">
                     {formatCooldownTime(cooldownTimer)}
                   </span>{" "}
                   before scanning another snack code
@@ -402,43 +396,28 @@ export default function CodeScanner() {
       </Card>
 
       {/* Available Snack Products */}
-      <Card className="bg-black/40 backdrop-blur-xl border border-purple-500/20 shadow-2xl">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-white">
-            <Package className="w-6 h-6 text-purple-400" />
-            Available Snack Products
-          </CardTitle>
-        </CardHeader>
+      <Card className=" border shadow-2xl">
         <CardContent>
           {/* Search and Filter */}
           <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-6">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-purple-300" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Search snack products..."
+                placeholder="Search products..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-black/30 backdrop-blur-sm border-purple-500/30 text-white placeholder-purple-400 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
+                className="pl-10"
               />
             </div>
             <Select value={selectedBrand} onValueChange={setSelectedBrand}>
-              <SelectTrigger className="w-full sm:w-[200px] bg-black/30 backdrop-blur-sm border-purple-500/30 text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200">
+              <SelectTrigger className="w-full sm:w-[200px]">
                 <SelectValue placeholder="All Brands" />
               </SelectTrigger>
-              <SelectContent className="bg-black/90 backdrop-blur-xl border-purple-500/20">
-                <SelectItem
-                  value="all"
-                  className="text-white hover:bg-purple-500/20"
-                >
-                  All Brands
-                </SelectItem>
+              <SelectContent>
+                <SelectItem value="all">All Brands</SelectItem>
                 {brands.map((brand) => (
-                  <SelectItem
-                    key={brand}
-                    value={brand}
-                    className="text-white hover:bg-purple-500/20"
-                  >
+                  <SelectItem key={brand} value={brand}>
                     {brand}
                   </SelectItem>
                 ))}
@@ -463,33 +442,15 @@ export default function CodeScanner() {
                 className="group cursor-pointer"
                 onClick={() => window.open(`/product/${product.id}`, "_blank")}
               >
-                <Card className="h-full bg-black/40 backdrop-blur-xl border border-purple-500/20 hover:border-purple-500/40 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 overflow-hidden flex flex-col">
+                <Card className="h-full hover:shadow-lg transition-all duration-100 overflow-hidden flex flex-col">
                   {/* Rarity Glow Effect */}
                   <div
-                    className={`absolute inset-0 rounded-xl bg-gradient-to-r opacity-0 group-hover:opacity-10 transition-opacity duration-300 ${
-                      product.rarity === "legendary"
-                        ? "from-yellow-400 via-yellow-500 to-orange-500"
-                        : product.rarity === "epic"
-                        ? "from-purple-400 via-purple-500 to-pink-500"
-                        : product.rarity === "rare"
-                        ? "from-blue-400 via-blue-500 to-cyan-500"
-                        : product.rarity === "special"
-                        ? "from-pink-400 via-pink-500 to-rose-500"
-                        : "from-gray-400 via-gray-500 to-gray-600"
-                    }`}
-                  />
+                    className="absolute  rounded-lg"/>
 
                   <CardContent className="p-2 md:p-5 relative z-10 flex flex-col flex-1">
                     {/* Rarity Badge and Copy Button */}
                     <div className="flex justify-end gap-2">
-                      <Badge
-                        variant="secondary"
-                        className={`${getRarityColor(
-                          product.rarity
-                        )} text-xs font-semibold px-2 py-1 rounded-full flex-shrink-0`}
-                      >
-                        {product.rarity}
-                      </Badge>
+                     
                     </div>
                     {/* Product Header */}
                     <div className="flex items-start gap-3 mb-4">
@@ -501,13 +462,21 @@ export default function CodeScanner() {
                         />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-sm md:text-base text-white mb-1 leading-tight break-words overflow-hidden">
+                        <h3 className="font-semibold text-sm md:text-base mb-1 leading-tight break-words overflow-hidden">
                           {product.name}
                         </h3>
-                        <p className="text-xs md:text-sm text-purple-300 font-medium truncate">
+                        <p className="text-xs md:text-sm text-muted-foreground font-medium truncate">
                           {product.brand}
                         </p>
                       </div>
+                      <Badge
+                        variant="secondary"
+                        className={`${getRarityColor(
+                          product.rarity
+                        )} text-xs font-semibold rounded-sm w-18`}
+                      >
+                        {product.rarity}
+                      </Badge>
                     </div>
 
                     {/* Product Details */}
@@ -520,9 +489,9 @@ export default function CodeScanner() {
                           e.stopPropagation();
                           copyToClipboard(`${product.code}-DEMO`);
                         }}
-                        className="text-xs font-mono hover:bg-purple-500/20 hover:text-white transition-all duration-200 group/btn flex-shrink-0"
+                        className="text-xs font-mono group/btn flex-shrink-0"
                       >
-                        <Copy className="w-3 h-3 mr-1 group-hover/btn:scale-110 transition-transform duration-200" />
+                        <Copy className="w-3 h-3 mr-1" />
                         <span className="hidden sm:inline truncate">
                           {product.code}-DEMO
                         </span>
@@ -533,13 +502,13 @@ export default function CodeScanner() {
 
                       {/* View Details Button */}
                       <Button
-                        variant="outline"
+                        
                         size="sm"
                         onClick={(e) => {
                           e.stopPropagation();
                           window.open(`/product/${product.id}`, "_blank");
                         }}
-                        className="text-xs border-purple-500/30 text-purple-300 hover:bg-purple-500/20 hover:text-white transition-all duration-200"
+                        className="text-xs "
                       >
                         View Details
                       </Button>
@@ -552,11 +521,11 @@ export default function CodeScanner() {
 
           {filteredProducts.length === 0 && (
             <div className="text-center py-12">
-              <Package className="w-16 h-16 text-purple-400 mx-auto mb-4 opacity-50" />
-              <p className="text-purple-300 text-lg font-medium">
+              <Package className="w-16 h-16  mx-auto mb-4 opacity-50" />
+              <p className=" text-lg font-medium">
                 No snack products found
               </p>
-              <p className="text-purple-400 text-sm mt-2">
+              <p className=" text-sm mt-2">
                 Try adjusting your search or filter criteria
               </p>
             </div>
@@ -584,9 +553,9 @@ export default function CodeScanner() {
                 }`}
               >
                 {result.success ? (
-                  <Check className="w-4 h-4 text-white" />
+                  <Check className="w-4 h-4 " />
                 ) : (
-                  <AlertCircle className="w-4 h-4 text-white" />
+                  <AlertCircle className="w-4 h-4 " />
                 )}
               </div>
               <div className="flex-1">

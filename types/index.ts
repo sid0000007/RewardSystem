@@ -49,8 +49,6 @@ export interface UserProfile {
   totalRewards: number;
   rewardsByType: Record<RewardType, number>;
   preferences: {
-    theme: 'light' | 'dark' | 'auto';
-    notifications: boolean;
     sounds: boolean;
   };
 }

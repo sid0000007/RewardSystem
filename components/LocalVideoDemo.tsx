@@ -140,17 +140,17 @@ export default function LocalVideoDemo({
 
   return (
     <>
-      <Card className="bg-black/40 backdrop-blur-xl border border-purple-500/20 shadow-2xl">
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-white">
+          <CardTitle className="flex items-center gap-2">
             <Trophy className="w-5 h-5 text-yellow-500" />
             Local Video Demo
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
-            <p className="text-purple-300 text-sm">{description}</p>
+            <h3 className="text-lg font-semibold mb-2">{title}</h3>
+            <p className="text-muted-foreground text-sm">{description}</p>
           </div>
 
           {/* Video Player */}
@@ -173,7 +173,7 @@ export default function LocalVideoDemo({
                   onClick={togglePlay}
                   variant="ghost"
                   size="sm"
-                  className="text-white hover:bg-white/20"
+                  className=" hover:bg-white/20"
                 >
                   {isPlaying ? (
                     <Pause className="w-4 h-4" />
@@ -181,7 +181,7 @@ export default function LocalVideoDemo({
                     <Play className="w-4 h-4" />
                   )}
                 </Button>
-                <span className="text-white text-sm">
+                <span className=" text-sm">
                   {formatTime(currentTime)} / {formatTime(totalDuration || 0)}
                 </span>
               </div>
@@ -190,18 +190,33 @@ export default function LocalVideoDemo({
 
           {/* Progress Tracking */}
           <div className="space-y-3">
-            <h1>Progress</h1>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">Watch Progress</span>
+              <span>
+                {formatTime(watchTime)} / {formatTime(minWatchTime)}
+              </span>
+            </div>
             <Progress
               value={Math.min(progressPercentage, 100)}
               className="h-2"
             />
+            <div className="flex items-center justify-between text-xs text-muted-foreground">
+              <span>Progress: {progressPercentage.toFixed(1)}%</span>
+              <span>
+                Required:{" "}
+                {totalDuration
+                  ? ((minWatchTime / totalDuration) * 100).toFixed(1)
+                  : 0}
+                %
+              </span>
+            </div>
           </div>
 
           {/* Status & Actions */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-purple-400" />
-              <span className="text-sm text-purple-300">
+              <Clock className="w-4 h-4 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">
                 {isEligible
                   ? hasEarned
                     ? "✅ Reward earned!"
@@ -217,16 +232,10 @@ export default function LocalVideoDemo({
                 onClick={handleReward}
                 disabled={!isEligible || hasEarned}
                 size="sm"
-                className="bg-purple-500 hover:bg-purple-600 text-white"
               >
                 Claim Reward
               </Button>
-              <Button
-                onClick={resetProgress}
-                variant="outline"
-                size="sm"
-                className="border-purple-500/30 text-purple-300 hover:bg-purple-500/20"
-              >
+              <Button onClick={resetProgress} variant="outline" size="sm">
                 <RotateCcw className="w-4 h-4" />
               </Button>
             </div>

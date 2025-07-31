@@ -29,7 +29,7 @@ export default function DashboardPage() {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl"
+          className="w-24 h-24 bg-gradient-to-br  rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl"
         >
           <Gift className="w-12 h-12 " />
         </motion.div>

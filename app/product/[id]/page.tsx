@@ -28,15 +28,15 @@ export default function ProductDetailPage() {
     return (
       <div className="p-4 mx-auto max-w-4xl">
         <div className="text-center py-12">
-          <h1 className="text-2xl font-bold text-white mb-4">
+          <h1 className="text-2xl font-bold  mb-4">
             Product Not Found
           </h1>
-          <p className="text-purple-300 mb-6">
+          <p className=" mb-6">
             The product you&apos;re looking for doesn&apos;t exist.
           </p>
           <Button
             onClick={() => router.back()}
-            className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+            className="bg-gradient-to-r "
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Go Back
@@ -49,15 +49,15 @@ export default function ProductDetailPage() {
   const getRarityColor = (rarity: string) => {
     switch (rarity) {
       case "legendary":
-        return "bg-gradient-to-r from-yellow-400 to-orange-500 text-white";
+        return "bg-gradient-to-r from-yellow-400 to-orange-500 ";
       case "epic":
-        return "bg-gradient-to-r from-purple-400 to-pink-500 text-white";
+        return "bg-gradient-to-r from-purple-400 to-pink-500 ";
       case "rare":
-        return "bg-gradient-to-r from-blue-400 to-cyan-500 text-white";
+        return "bg-gradient-to-r from-blue-400 to-cyan-500 ";
       case "special":
-        return "bg-gradient-to-r from-pink-400 to-rose-500 text-white";
+        return "bg-gradient-to-r from-pink-400 to-rose-500 ";
       default:
-        return "bg-gray-500 text-white";
+        return "bg-gray-500 ";
     }
   };
 
@@ -83,7 +83,7 @@ export default function ProductDetailPage() {
       <Button
         onClick={() => router.push("/product")}
         variant="ghost"
-        className="text-purple-300 hover:text-white mb-4"
+        className=" hover: mb-4"
       >
         <ArrowLeft className="w-4 h-4 mr-2" />
         Back to Products
@@ -127,22 +127,22 @@ export default function ProductDetailPage() {
                 <Badge className={getRarityColor(product.rarity)}>
                   {product.rarity}
                 </Badge>
-                <span className="text-sm text-purple-300">{product.brand}</span>
+                <span className="text-sm ">{product.brand}</span>
               </div>
-              <h1 className="text-3xl lg:text-4xl font-bold text-white mb-2">
+              <h1 className="text-3xl lg:text-4xl font-bold  mb-2">
                 {product.name}
               </h1>
-              <p className="text-purple-300 text-lg">{product.description}</p>
+              <p className=" text-lg">{product.description}</p>
             </div>
 
             {/* Product Code */}
             <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-medium text-purple-300 mb-1">
+                  <h3 className="text-sm font-medium  mb-1">
                     Product Code
                   </h3>
-                  <p className="text-lg font-mono font-semibold text-white">
+                  <p className="text-lg font-mono font-semibold ">
                     {product.code}
                   </p>
                 </div>
@@ -150,7 +150,7 @@ export default function ProductDetailPage() {
                   onClick={() => copyToClipboard(`${product.code}-DEMO`)}
                   variant="ghost"
                   size="sm"
-                  className="text-purple-300 hover:text-white"
+                  className=" hover:"
                 >
                   <Copy className="w-4 h-4 mr-2" />
                   Copy
@@ -169,23 +169,23 @@ export default function ProductDetailPage() {
         className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 border border-purple-500/20 shadow-2xl"
       >
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-white">
-            <Gift className="w-6 h-6 text-purple-400" />
+          <CardTitle className="flex items-center gap-2 ">
+            <Gift className="w-6 h-6 " />
             Reward Information
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20">
-              <h3 className="text-lg font-semibold text-white mb-2">
+              <h3 className="text-lg font-semibold  mb-2">
                 {product.reward}
               </h3>
-              <p className="text-purple-300">{product.rewardDescription}</p>
+              <p className="">{product.rewardDescription}</p>
             </div>
             <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20">
               <div className="flex items-center gap-2 mb-2">
                 <Star className="w-5 h-5 text-yellow-400" />
-                <h3 className="text-lg font-semibold text-white">Rarity</h3>
+                <h3 className="text-lg font-semibold ">Rarity</h3>
               </div>
               <Badge className={`${getRarityColor(product.rarity)} text-sm`}>
                 {product.rarity}
@@ -203,8 +203,8 @@ export default function ProductDetailPage() {
         className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 border border-purple-500/20 shadow-2xl"
       >
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-white">
-            <Info className="w-6 h-6 text-purple-400" />
+          <CardTitle className="flex items-center gap-2 ">
+            <Info className="w-6 h-6 " />
             Scheme Details
           </CardTitle>
         </CardHeader>
@@ -212,21 +212,21 @@ export default function ProductDetailPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20">
               <div className="flex items-center gap-2 mb-2">
-                <Calendar className="w-5 h-5 text-purple-400" />
-                <h3 className="text-lg font-semibold text-white">
+                <Calendar className="w-5 h-5 " />
+                <h3 className="text-lg font-semibold ">
                   Expiry Date
                 </h3>
               </div>
-              <p className="text-purple-300">
+              <p className="">
                 {formatDate(product.expiryDate)}
               </p>
             </div>
             <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20">
               <div className="flex items-center gap-2 mb-2">
-                <Clock className="w-5 h-5 text-purple-400" />
-                <h3 className="text-lg font-semibold text-white">Validity</h3>
+                <Clock className="w-5 h-5 " />
+                <h3 className="text-lg font-semibold ">Validity</h3>
               </div>
-              <p className="text-purple-300">{product.schemeDetails}</p>
+              <p className="">{product.schemeDetails}</p>
             </div>
           </div>
         </CardContent>
@@ -241,7 +241,7 @@ export default function ProductDetailPage() {
       >
         <Button
           onClick={() => copyToClipboard(`${product.code}-DEMO`)}
-          className="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3"
+          className="flex-1 bg-gradient-to-r   font-semibold py-3"
         >
           <Copy className="w-5 h-5 mr-2" />
           Copy Product Code
@@ -249,7 +249,7 @@ export default function ProductDetailPage() {
         <Button
           onClick={() => router.push("/product")}
           variant="outline"
-          className="flex-1 border-purple-500/30 text-purple-300 hover:bg-purple-500/20 hover:text-white font-semibold py-3"
+          className="flex-1  hover: font-semibold py-3"
         >
           <Gift className="w-5 h-5 mr-2" />
           Scan Code Now

@@ -34,7 +34,7 @@ export default function VideoDetailPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full mx-auto mb-4 animate-spin" />
-          <p className="text-purple-300">Loading video...</p>
+          <p className="">Loading video...</p>
         </div>
       </div>
     );
@@ -81,7 +81,7 @@ export default function VideoDetailPage() {
         <Button
           variant="ghost"
           onClick={() => router.back()}
-          className="flex items-center gap-2 text-purple-300 hover:text-white transition-colors"
+          className="flex items-center gap-2  transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Video Library
@@ -118,29 +118,27 @@ export default function VideoDetailPage() {
           className="space-y-6"
         >
           {/* Video Info Card */}
-          <Card className="bg-black/40 backdrop-blur-xl border border-purple-500/20 shadow-2xl">
+          <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-white">
-                <Play className="w-5 h-5 text-purple-400" />
+              <CardTitle className="flex items-center gap-2">
+                <Play className="w-5 h-5" />
                 Video Details
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  {video.title}
-                </h3>
-                <p className="text-purple-300 text-sm leading-relaxed">
+                <h3 className="text-lg font-semibold mb-2">{video.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">
                   {video.description}
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 text-sm text-purple-300">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Clock className="w-4 h-4" />
                 <span>Duration: {formatDuration(video.duration)}</span>
               </div>
 
-              <div className="flex items-center gap-2 text-sm text-purple-300">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Eye className="w-4 h-4" />
                 <span>Minimum Watch: {video.minWatchTime}s</span>
               </div>
@@ -148,9 +146,9 @@ export default function VideoDetailPage() {
           </Card>
 
           {/* Reward Card */}
-          <Card className="bg-black/40 backdrop-blur-xl border border-purple-500/20 shadow-2xl">
+          <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-white">
+              <CardTitle className="flex items-center gap-2">
                 <Trophy className="w-5 h-5 text-yellow-500" />
                 Reward
               </CardTitle>
@@ -159,10 +157,8 @@ export default function VideoDetailPage() {
               <div className="flex items-center gap-3">
                 <div className="text-3xl">{video.reward.icon}</div>
                 <div>
-                  <h4 className="font-semibold text-white">
-                    {video.reward.name}
-                  </h4>
-                  <p className="text-sm text-purple-300">
+                  <h4 className="font-semibold">{video.reward.name}</h4>
+                  <p className="text-sm text-muted-foreground">
                     {video.reward.description}
                   </p>
                 </div>
@@ -178,14 +174,14 @@ export default function VideoDetailPage() {
           </Card>
 
           {/* Video Stats */}
-          <Card className="bg-black/40 backdrop-blur-xl border border-purple-500/20 shadow-2xl">
+          <Card>
             <CardHeader>
-              <CardTitle className="text-white">Video Stats</CardTitle>
+              <CardTitle>Video Stats</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between items-center text-sm">
-                <span className="text-purple-300">Category</span>
-                <span className="text-white capitalize">
+                <span className="text-muted-foreground">Category</span>
+                <span className="capitalize">
                   {video.id.includes("nature")
                     ? "Nature"
                     : video.id.includes("education")
@@ -203,38 +199,36 @@ export default function VideoDetailPage() {
               </div>
 
               <div className="flex justify-between items-center text-sm">
-                <span className="text-purple-300">Rarity</span>
-                <span className="text-white capitalize">
-                  {video.reward.type}
-                </span>
+                <span className="text-muted-foreground">Rarity</span>
+                <span className="capitalize">{video.reward.type}</span>
               </div>
 
               <div className="flex justify-between items-center text-sm">
-                <span className="text-purple-300">Reward Type</span>
-                <span className="text-white">Video Watch</span>
+                <span className="text-muted-foreground">Reward Type</span>
+                <span>Video Watch</span>
               </div>
             </CardContent>
           </Card>
 
           {/* Tips */}
-          <Card className="bg-black/40 backdrop-blur-xl border border-purple-500/20 shadow-2xl">
+          <Card>
             <CardHeader>
-              <CardTitle className="text-white">Tips</CardTitle>
+              <CardTitle>Tips</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm text-purple-300">
+            <CardContent className="space-y-2 text-sm text-muted-foreground">
               <div className="flex items-start gap-2">
-                <div className="w-1.5 h-1.5 bg-purple-400 rounded-full mt-2 flex-shrink-0" />
+                <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
                 <span>
                   Watch for at least {video.minWatchTime} seconds to earn the
                   reward
                 </span>
               </div>
               <div className="flex items-start gap-2">
-                <div className="w-1.5 h-1.5 bg-purple-400 rounded-full mt-2 flex-shrink-0" />
+                <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
                 <span>You can pause and resume without losing progress</span>
               </div>
               <div className="flex items-start gap-2">
-                <div className="w-1.5 h-1.5 bg-purple-400 rounded-full mt-2 flex-shrink-0" />
+                <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
                 <span>Each video can only be completed once per session</span>
               </div>
             </CardContent>

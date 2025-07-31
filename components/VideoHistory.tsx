@@ -80,25 +80,25 @@ export default function VideoHistory() {
 
   if (history.length === 0) {
     return (
-      <Card className="bg-black/40 backdrop-blur-xl border border-purple-500/20 shadow-2xl">
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-white">
-            <Clock className="w-5 h-5 text-purple-400" />
+          <CardTitle className="flex items-center gap-2">
+            <Clock className="w-5 h-5" />
             Watch History
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center py-12">
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center mx-auto mb-4 border border-purple-500/30">
-              <Play className="w-8 h-8 text-purple-400" />
+            <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+              <Play className="w-8 h-8 text-muted-foreground" />
             </div>
-            <h3 className="text-lg font-semibold text-white mb-2">
+            <h3 className="text-lg font-semibold mb-2">
               No videos watched yet
             </h3>
-            <p className="text-purple-300 text-sm">
+            <p className="text-muted-foreground text-sm">
               Start watching videos to see your history here
             </p>
-            <div className="mt-4 text-xs text-purple-400">
+            <div className="mt-4 text-xs text-muted-foreground">
               Your watch history will appear here once you complete videos
             </div>
           </div>
@@ -110,25 +110,25 @@ export default function VideoHistory() {
   const stats = getStats();
 
   return (
-    <Card className="bg-black/40 backdrop-blur-xl border border-purple-500/20 shadow-2xl">
+    <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2 text-white">
-            <Clock className="w-5 h-5 text-purple-400" />
+          <CardTitle className="flex items-center gap-2">
+            <Clock className="w-5 h-5" />
             Watch History
           </CardTitle>
         </div>
-        <div className="flex flex-col gap-4 text-xs text-purple-300 mt-2">
+        <div className="flex flex-col gap-4 text-xs text-muted-foreground mt-2">
           <div className="flex items-center gap-1">
-            <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
+            <span className="w-2 h-2 bg-primary rounded-full"></span>
             <span>{stats.totalVideos} videos</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+            <span className="w-2 h-2 bg-green-500 rounded-full"></span>
             <span>{stats.completedVideos} completed</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
+            <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
             <span>{stats.totalWatchTime} total</span>
           </div>
         </div>
@@ -145,24 +145,24 @@ export default function VideoHistory() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="group flex items-center gap-3 p-4 bg-black/30 backdrop-blur-sm rounded-xl border border-purple-500/20 hover:border-purple-500/40 hover:bg-black/40 transition-all duration-200"
+                className="group flex items-center gap-3 p-4 bg-muted/50 rounded-lg border hover:bg-muted transition-all duration-200"
               >
                 {/* Video Icon */}
                 <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg flex items-center justify-center border border-purple-500/30">
+                  <div className="w-12 h-12 bg-muted rounded-lg flex items-center justify-center border">
                     <span className="text-2xl">{video.reward.icon}</span>
                   </div>
                 </div>
 
                 {/* Video Info */}
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold text-white truncate text-sm">
+                  <h4 className="font-semibold truncate text-sm">
                     {video.title}
                   </h4>
-                  <div className="flex items-center gap-2 text-xs text-purple-300 mt-1">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
                     <Calendar className="w-3 h-3" />
                     <span>{formatDate(entry.watchedAt)}</span>
-                    <span className="text-purple-400">•</span>
+                    <span className="text-muted-foreground">•</span>
                     <span>{formatDuration(entry.watchTime)} watched</span>
                   </div>
                 </div>
