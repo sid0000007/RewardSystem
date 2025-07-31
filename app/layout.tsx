@@ -14,62 +14,62 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Real Mint - Collect Rewards",
-  description:
-    "A gamified reward collection app. Scan codes, watch videos, check in at locations, and collect unique digital rewards!",
-  keywords: ["rewards", "gamification", "collection", "mobile", "app"],
-  authors: [{ name: "Real Mint Team" }],
-  creator: "Real Mint",
-  publisher: "Real Mint",
-  applicationName: "Real Mint",
-  generator: "Next.js",
-  referrer: "origin-when-cross-origin",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#000000" },
-    { media: "(prefers-color-scheme: dark)", color: "#000000" },
-  ],
-  colorScheme: "dark",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
-  manifest: "/manifest.json",
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: "https://realmint.app",
-    title: "Real Mint - Collect Rewards",
-    description:
-      "A gamified reward collection app. Scan codes, watch videos, check in at locations, and collect unique digital rewards!",
-    siteName: "Real Mint",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Real Mint - Collect Rewards",
-    description:
-      "A gamified reward collection app. Scan codes, watch videos, check in at locations, and collect unique digital rewards!",
-    creator: "@realmint",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
-};
+// export const metadata: Metadata = {
+//   title: "Real Mint - Collect Rewards",
+//   description:
+//     "A gamified reward collection app. Scan codes, watch videos, check in at locations, and collect unique digital rewards!",
+//   keywords: ["rewards", "gamification", "collection", "mobile", "app"],
+//   authors: [{ name: "Real Mint Team" }],
+//   creator: "Real Mint",
+//   publisher: "Real Mint",
+//   applicationName: "Real Mint",
+//   generator: "Next.js",
+//   referrer: "origin-when-cross-origin",
+//   themeColor: [
+//     { media: "(prefers-color-scheme: light)", color: "#000000" },
+//     { media: "(prefers-color-scheme: dark)", color: "#000000" },
+//   ],
+//   colorScheme: "dark",
+//   viewport: {
+//     width: "device-width",
+//     initialScale: 1,
+//     maximumScale: 1,
+//     userScalable: false,
+//   },
+//   manifest: "/manifest.json",
+//   icons: {
+//     icon: "/favicon.ico",
+//     shortcut: "/favicon.ico",
+//     apple: "/apple-touch-icon.png",
+//   },
+//   openGraph: {
+//     type: "website",
+//     locale: "en_US",
+//     url: "https://realmint.app",
+//     title: "Real Mint - Collect Rewards",
+//     description:
+//       "A gamified reward collection app. Scan codes, watch videos, check in at locations, and collect unique digital rewards!",
+//     siteName: "Real Mint",
+//   },
+//   twitter: {
+//     card: "summary_large_image",
+//     title: "Real Mint - Collect Rewards",
+//     description:
+//       "A gamified reward collection app. Scan codes, watch videos, check in at locations, and collect unique digital rewards!",
+//     creator: "@realmint",
+//   },
+//   robots: {
+//     index: true,
+//     follow: true,
+//     googleBot: {
+//       index: true,
+//       follow: true,
+//       "max-video-preview": -1,
+//       "max-image-preview": "large",
+//       "max-snippet": -1,
+//     },
+//   },
+// };
 
 export default function RootLayout({
   children,

@@ -37,18 +37,7 @@ interface LocationCheckerProps {
   className?: string;
 }
 
-type FilterType =
-  | "all"
-  | "nearby"
-  | "available"
-  | "checked-in"
-  | "food"
-  | "culture"
-  | "nature"
-  | "shopping"
-  | "landmarks"
-  | "tech";
-
+type FilterType = "all" | "available" | "checked-in";
 // Generate fake locations around user's real location
 const generateFakeLocations = (userCoords: Coordinates): LocationData[] => {
   const locationTypes = [
@@ -148,42 +137,6 @@ const generateFakeLocations = (userCoords: Coordinates): LocationData[] => {
   }));
 };
 
-// Helper function to get nearby locations
-const getNearbyLocations = (
-  userCoords: Coordinates,
-  locations: LocationData[],
-  maxDistance: number = 5000
-): LocationData[] => {
-  const calculateDistance = (
-    coord1: Coordinates,
-    coord2: Coordinates
-  ): number => {
-    const R = 6371000; // Earth's radius in meters
-    const lat1Rad = (coord1.latitude * Math.PI) / 180;
-    const lat2Rad = (coord2.latitude * Math.PI) / 180;
-    const deltaLatRad = ((coord2.latitude - coord1.latitude) * Math.PI) / 180;
-    const deltaLonRad = ((coord2.longitude - coord1.longitude) * Math.PI) / 180;
-
-    const a =
-      Math.sin(deltaLatRad / 2) * Math.sin(deltaLatRad / 2) +
-      Math.cos(lat1Rad) *
-        Math.cos(lat2Rad) *
-        Math.sin(deltaLonRad / 2) *
-        Math.sin(deltaLonRad / 2);
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  };
-
-  return locations
-    .map((location: LocationData) => ({
-      ...location,
-      distance: calculateDistance(userCoords, location.coordinates),
-    }))
-    .filter((location) => location.distance <= maxDistance)
-    .sort((a, b) => a.distance - b.distance);
-};
-
 export default function LocationChecker({
   className = "",
 }: LocationCheckerProps) {
@@ -218,13 +171,15 @@ export default function LocationChecker({
   const { addReward, checkCooldown, setCooldown, getRewardsByAction } =
     useRewards();
 
+  // Note: useGeolocation hook automatically requests permission when requestPermission: true
+
   // Create fake locations when user coordinates are available
   useEffect(() => {
-    if (realCoordinates && fakeLocations.length === 0) {
+    if (realCoordinates) {
       const newFakeLocations = generateFakeLocations(realCoordinates);
       setFakeLocations(newFakeLocations);
     }
-  }, [realCoordinates, fakeLocations.length]);
+  }, [realCoordinates]);
 
   // Show toast when location access is needed
   useEffect(() => {
@@ -389,12 +344,6 @@ export default function LocationChecker({
 
     // Apply category filter
     switch (filter) {
-      case "nearby":
-        if (!realCoordinates) return false;
-        return getNearbyLocations(realCoordinates, allLocations, 5000).some(
-          (l) => l.id === location.id
-        );
-
       case "available":
         if (!realCoordinates) return false;
         return (
@@ -407,17 +356,6 @@ export default function LocationChecker({
 
       case "checked-in":
         return checkedInLocations.has(location.id);
-
-      case "food":
-      case "culture":
-      case "nature":
-      case "shopping":
-      case "landmarks":
-      case "tech":
-        return (
-          getLocationsByType(filter).some((l) => l.id === location.id) ||
-          (location.name.toLowerCase().includes("demo") && filter === "tech")
-        );
 
       default:
         return true;
@@ -455,17 +393,6 @@ export default function LocationChecker({
               </p>
             </div>
           </div>
-
-          <div className="flex items-center gap-2">
-            {isGeoLoading && <RefreshCw className="w-5 h-5 animate-spin" />}
-            <button
-              onClick={refresh}
-              className="p-2 rounded-lg hover:bg-accent transition-colors"
-              title="Refresh location"
-            >
-              <RefreshCw className="w-4 h-4" />
-            </button>
-          </div>
         </div>
 
         {/* Location Status */}
@@ -490,7 +417,7 @@ export default function LocationChecker({
             </div>
           )}
 
-          {permission === "granted" && realCoordinates && (
+          {/* {permission === "granted" && realCoordinates && (
             <div className="flex items-center justify-between p-4 border rounded-lg">
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5" />
@@ -510,7 +437,7 @@ export default function LocationChecker({
                 </p>
               </div>
             </div>
-          )}
+          )} */}
 
           {geoError && (
             <div className="flex items-center gap-3 p-4 border rounded-lg">
@@ -565,60 +492,22 @@ export default function LocationChecker({
               onChange={(e) => setFilter(e.target.value as FilterType)}
               className="pl-10 pr-8 py-2 border rounded-lg focus:ring-2 focus:ring-ring text-sm appearance-none cursor-pointer min-w-[160px]"
             >
-              <option value="all">All Locations</option>
-              <option value="nearby">Nearby</option>
+              <option value="all">All</option>
               <option value="available">Available to Check-in</option>
               <option value="checked-in">Already Checked-in</option>
-              <option value="food">Food & Drinks</option>
-              <option value="culture">Culture & Arts</option>
-              <option value="nature">Parks & Nature</option>
-              <option value="shopping">Shopping</option>
-              <option value="landmarks">Landmarks</option>
-              <option value="tech">Tech Hubs</option>
             </select>
           </div>
-        </div>
-      </div>
-
-      {/* Enhanced Statistics */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div className="rounded-lg shadow-md border p-4 text-center">
-          <MapPin className="w-6 h-6 mx-auto mb-2" />
-          <p className="text-2xl font-bold">{allLocations.length}</p>
-          <p className="text-xs">Total Locations</p>
-        </div>
-
-        <div className="rounded-lg shadow-md border p-4 text-center">
-          <Navigation className="w-6 h-6 mx-auto mb-2" />
-          <p className="text-2xl font-bold">
-            {realCoordinates
-              ? getNearbyLocations(realCoordinates, allLocations, 5000).length
-              : 0}
-          </p>
-          <p className="text-xs">Nearby (5km)</p>
-        </div>
-
-        <div className="rounded-lg shadow-md border p-4 text-center">
-          <Zap className="w-6 h-6 mx-auto mb-2" />
-          <p className="text-2xl font-bold">
-            {realCoordinates
-              ? sortedLocations.filter(
-                  (location) =>
-                    isWithinCheckInRadius(
-                      realCoordinates,
-                      location.coordinates,
-                      location.radius
-                    ) && !checkedInLocations.has(location.id)
-                ).length
-              : 0}
-          </p>
-          <p className="text-xs">Available</p>
-        </div>
-
-        <div className="rounded-lg shadow-md border p-4 text-center">
-          <CheckCircle className="w-6 h-6 mx-auto mb-2" />
-          <p className="text-2xl font-bold">{checkedInLocations.size}</p>
-          <p className="text-xs">Checked-in</p>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={refresh}
+              className="p-2 rounded-lg hover:bg-accent transition-colors"
+              title="Refresh location"
+            >
+              <RefreshCw
+                className={`w-4 h-4 ${isGeoLoading ? "animate-spin" : ""}`}
+              />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -626,15 +515,8 @@ export default function LocationChecker({
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">
           {filter === "all" && "All Locations"}
-          {filter === "nearby" && "Nearby Locations"}
           {filter === "available" && "Available for Check-in"}
           {filter === "checked-in" && "Already Checked-in"}
-          {filter === "food" && "Food & Drinks"}
-          {filter === "culture" && "Culture & Arts"}
-          {filter === "nature" && "Parks & Nature"}
-          {filter === "shopping" && "Shopping"}
-          {filter === "landmarks" && "Landmarks"}
-          {filter === "tech" && "Tech Hubs"}
           {searchQuery && ` (${sortedLocations.length} results)`}
         </h3>
 
@@ -645,6 +527,10 @@ export default function LocationChecker({
             <p className="text-sm mb-4">
               {searchQuery
                 ? "Try adjusting your search terms"
+                : permission === "denied"
+                ? "Location access is required to generate check-in locations"
+                : permission === "prompt" || permission === "unknown"
+                ? "Please grant location permission to see nearby locations"
                 : "Try changing your filter"}
             </p>
             {!realCoordinates && (
@@ -652,7 +538,9 @@ export default function LocationChecker({
                 onClick={requestPermission}
                 className="px-4 py-2 bg-purple-500 rounded-lg hover:opacity-90 transition-opacity"
               >
-                Enable Location Access
+                {permission === "denied"
+                  ? "Re-enable Location Access"
+                  : "Enable Location Access"}
               </button>
             )}
           </div>
