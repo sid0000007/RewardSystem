@@ -17,6 +17,8 @@ import {
   Shuffle,
   ChevronDown,
   Loader2,
+  ExternalLink,
+  SquareArrowOutUpRight,
 } from "lucide-react";
 import {
   LocationData,
@@ -32,6 +34,8 @@ import { playActionSound } from "@/lib/sounds";
 import LocationCard from "@/components/LocationCard";
 import RewardAnimation from "@/components/RewardAnimation";
 import { toast } from "sonner";
+import { Button } from "../ui/button";
+import Link from "next/link";
 
 interface LocationCheckerProps {
   className?: string;
@@ -387,10 +391,12 @@ export default function LocationChecker({
               <MapPin className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h2 className="text-xl font-bold">Location Check-in</h2>
-              <p className="text-sm text-muted-foreground">
-                Check in at nearby locations to earn rewards
-              </p>
+              <h2 className="text-xl  font-bold">Location Check-in</h2>
+              <Link href="/checkin/about">
+                <p className="text-sm  hover:underline text-muted-foreground">
+                  Check in at nearby locations to earn rewards
+                </p>
+              </Link>
             </div>
           </div>
         </div>
