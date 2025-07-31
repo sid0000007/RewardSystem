@@ -190,28 +190,14 @@ export default function LocalVideoDemo({
 
           {/* Progress Tracking */}
           <div className="space-y-3">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-purple-300">Watch Progress</span>
-              <span className="text-white">
-                {formatTime(watchTime)} / {formatTime(minWatchTime)}
-              </span>
-            </div>
 
+            <h1>Progress</h1>
             <Progress
               value={Math.min(progressPercentage, 100)}
               className="h-2"
             />
 
-            <div className="flex items-center justify-between text-xs text-purple-300">
-              <span>Progress: {progressPercentage.toFixed(1)}%</span>
-              <span>
-                Required:{" "}
-                {totalDuration
-                  ? ((minWatchTime / totalDuration) * 100).toFixed(1)
-                  : 0}
-                %
-              </span>
-            </div>
+            
           </div>
 
           {/* Status & Actions */}
