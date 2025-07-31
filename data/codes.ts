@@ -9,7 +9,7 @@ const snackProducts = [
     name: 'Lays Classic Blue 200g',
     code: 'LAYS-CLASSIC-200G',
     rarity: RewardType.COMMON,
-    icon: '🥔',
+    icon: '🍫',
     description: 'Classic salted potato chips in a family size pack',
     reward: 'Lays Classic Coin',
     rewardDescription: 'A golden coin featuring the classic Lays logo',
@@ -25,11 +25,11 @@ const snackProducts = [
     name: 'Haribo Goldbären 100g',
     code: 'HARIBO-GOLDBAREN-100G',
     rarity: RewardType.COMMON,
-    icon: '🐻',
+    icon: '🍫',
     description: 'Famous gummy bears in a classic pack',
     reward: 'Golden Bear Badge',
     rewardDescription: 'A shiny badge featuring the iconic golden bear',
-    image: '/images/products/haribo-goldbaren-100g.jpg',
+    image: '/images/products/haribo-goldbaren-100g.png',
     expiryDate: '2024-12-31',
     schemeDetails: 'Valid until December 31, 2024. One reward per code.'
   },
@@ -45,7 +45,7 @@ const snackProducts = [
     description: 'Smooth Alpine milk chocolate in a standard bar',
     reward: 'Alpine Chocolate Token',
     rewardDescription: 'A special token with Alpine mountain design',
-    image: '/images/products/milka-alpine-100g.jpg',
+    image: '/images/products/milka-alpine-100g.png',
     expiryDate: '2024-12-31',
     schemeDetails: 'Valid until December 31, 2024. One reward per code.'
   },
@@ -61,7 +61,7 @@ const snackProducts = [
     description: 'Creamy milk chocolate with a smooth filling',
     reward: 'Kinder Chocolate Medal',
     rewardDescription: 'A golden medal with Kinder chocolate design',
-    image: '/images/products/kinder-schokolade-100g.jpg',
+    image: '/images/products/kinder-schokolade-100g.png',
     expiryDate: '2024-12-31',
     schemeDetails: 'Valid until December 31, 2024. One reward per code.'
   },
@@ -77,7 +77,7 @@ const snackProducts = [
     description: 'Premium Alpine milk chocolate in square format',
     reward: 'Ritter Sport Trophy',
     rewardDescription: 'A prestigious trophy with Ritter Sport branding',
-    image: '/images/products/ritter-sport-alpine-100g.jpg',
+    image: '/images/products/ritter-sport-alpine-100g.png',
     expiryDate: '2024-12-31',
     schemeDetails: 'Valid until December 31, 2024. One reward per code.'
   },
@@ -93,7 +93,7 @@ const snackProducts = [
     description: 'Original flavored potato crisps in iconic tube',
     reward: 'Pringles Stack Coin',
     rewardDescription: 'A coin featuring the iconic Pringles stack',
-    image: '/images/products/pringles-original-110g.jpg',
+    image: '/images/products/pringles-original-110g.png',
     expiryDate: '2024-12-31',
     schemeDetails: 'Valid until December 31, 2024. One reward per code.'
   },
@@ -109,7 +109,7 @@ const snackProducts = [
     description: 'Colorful chocolate candies in a standard pack',
     reward: 'M&M Rainbow Badge',
     rewardDescription: 'A colorful badge featuring M&M characters',
-    image: '/images/products/mandms-chocolate-100g.jpg',
+    image: '/images/products/mandms-chocolate-100g.png',
     expiryDate: '2024-12-31',
     schemeDetails: 'Valid until December 31, 2024. One reward per code.'
   },
@@ -125,23 +125,7 @@ const snackProducts = [
     description: 'Satisfying chocolate bar with peanuts and caramel',
     reward: 'Snickers Energy Token',
     rewardDescription: 'A token representing the energy of Snickers',
-    image: '/images/products/snickers-100g.jpg',
-    expiryDate: '2024-12-31',
-    schemeDetails: 'Valid until December 31, 2024. One reward per code.'
-  },
-
-  // Twix Products
-  {
-    id: 'twix-100g',
-    brand: 'Twix',
-    name: 'Twix 100g',
-    code: 'TWIX-100G',
-    rarity: RewardType.RARE,
-    icon: '🍫',
-    description: 'Caramel and cookie covered in milk chocolate',
-    reward: 'Twix Duo Badge',
-    rewardDescription: 'A badge featuring the iconic Twix duo design',
-    image: '/images/products/twix-100g.jpg',
+    image: '/images/products/snickers-100g.png',
     expiryDate: '2024-12-31',
     schemeDetails: 'Valid until December 31, 2024. One reward per code.'
   },
@@ -157,7 +141,7 @@ const snackProducts = [
     description: 'Bold nacho cheese flavored tortilla chips',
     reward: 'Doritos Nacho Token',
     rewardDescription: 'A token featuring the bold nacho cheese flavor',
-    image: '/images/products/doritos-nacho-100g.jpg',
+    image: '/images/products/doritos-nacho-100g.png',
     expiryDate: '2024-12-31',
     schemeDetails: 'Valid until December 31, 2024. One reward per code.'
   }

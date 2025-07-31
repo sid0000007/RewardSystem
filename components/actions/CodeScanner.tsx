@@ -11,14 +11,34 @@ import {
   AlertCircle,
   Gift,
   History,
+  Search,
+  Filter,
+  Package,
+  Store,
+  Copy,
 } from "lucide-react";
 import { useRewards } from "@/hooks/useRewards";
 import { ActionType, Reward } from "@/types";
-import { getCodeData, isCodeValid } from "@/data/codes";
+import {
+  getCodeData,
+  isCodeValid,
+  getAvailableSnackProducts,
+} from "@/data/codes";
 import { formatCooldownTime } from "@/lib/utils";
 import { playActionSound } from "@/lib/sounds";
 import RewardAnimation from "../RewardAnimation";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ScanHistory {
   code: string;
@@ -40,8 +60,11 @@ export default function CodeScanner() {
   const [showAnimation, setShowAnimation] = useState(false);
   const [scanHistory, setScanHistory] = useState<ScanHistory[]>([]);
   const [cooldownTimer, setCooldownTimer] = useState(0);
+  const [selectedBrand, setSelectedBrand] = useState<string>("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const cooldownStatus = checkCooldown(ActionType.CODE_SCAN);
+  const snackProducts = getAvailableSnackProducts();
 
   // Update cooldown timer
   useEffect(() => {
@@ -61,7 +84,7 @@ export default function CodeScanner() {
     } else {
       setCooldownTimer(0);
     }
-  }, [cooldownStatus.isActive]); // Remove dependencies that cause infinite re-renders
+  }, [cooldownStatus.isActive]);
 
   // Load scan history from localStorage
   useEffect(() => {
@@ -88,11 +111,11 @@ export default function CodeScanner() {
     localStorage.setItem("scan-history", JSON.stringify(updated));
   };
 
-  const handleScan = async () => {
+  const handleValidateCode = async () => {
     if (!code.trim()) {
       setResult({
         success: false,
-        message: "Please enter a code to scan",
+        message: "Please enter a snack product code to scan",
       });
       return;
     }
@@ -126,14 +149,15 @@ export default function CodeScanner() {
         playActionSound(ActionType.CODE_SCAN, false).catch(() => {});
 
         // Show error toast
-        toast.error("Invalid code", {
-          description: "Please check the code and try again",
+        toast.error("Invalid snack code", {
+          description:
+            "Please check the code from your snack package and try again",
           duration: 4000,
         });
 
         setResult({
           success: false,
-          message: "Invalid or expired code. Please check and try again.",
+          message: "Invalid or expired snack code. Please check and try again.",
         });
         setIsScanning(false);
         return;
@@ -143,7 +167,7 @@ export default function CodeScanner() {
       if (!codeData) {
         setResult({
           success: false,
-          message: "Code not found in database",
+          message: "Snack code not found in database",
         });
         setIsScanning(false);
         return;
@@ -159,14 +183,14 @@ export default function CodeScanner() {
 
       if (recentScan && codeData.maxUses === 1) {
         // Show warning toast
-        toast.warning("Code already used", {
-          description: "You have already used this code recently",
+        toast.warning("Snack code already used", {
+          description: "You have already used this snack code recently",
           duration: 4000,
         });
 
         setResult({
           success: false,
-          message: "You have already used this code recently",
+          message: "You have already used this snack code recently",
         });
         setIsScanning(false);
         return;
@@ -190,7 +214,7 @@ export default function CodeScanner() {
         playActionSound(ActionType.CODE_SCAN, true).catch(() => {});
 
         // Show success toast
-        toast.success("Code scanned successfully!", {
+        toast.success("Snack code scanned successfully!", {
           description: `You earned: ${codeData.reward.name}`,
           duration: 4000,
         });
@@ -227,7 +251,7 @@ export default function CodeScanner() {
     } catch {
       setResult({
         success: false,
-        message: "An error occurred while processing the code",
+        message: "An error occurred while processing the snack code",
       });
     }
 
@@ -236,7 +260,7 @@ export default function CodeScanner() {
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !isScanning && !cooldownStatus.isActive) {
-      handleScan();
+      handleValidateCode();
     }
   };
 
@@ -244,90 +268,301 @@ export default function CodeScanner() {
     setResult(null);
   };
 
+  // Filter products based on search and brand selection
+  const filteredProducts = snackProducts.filter((product) => {
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.brand.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesBrand =
+      selectedBrand === "all" || product.brand === selectedBrand;
+    return matchesSearch && matchesBrand;
+  });
+
+  // Get unique brands for filter
+  const brands = Array.from(new Set(snackProducts.map((p) => p.brand)));
+
+  const getRarityColor = (rarity: string) => {
+    switch (rarity) {
+      case "common":
+        return "bg-gray-500";
+      case "rare":
+        return "bg-blue-500";
+      case "epic":
+        return "bg-purple-500";
+      case "legendary":
+        return "bg-yellow-500";
+      case "special":
+        return "bg-pink-500";
+      default:
+        return "bg-gray-500";
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success("Code copied to clipboard!", {
+      description: "You can now paste it in the scanner",
+      duration: 2000,
+    });
+  };
+
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <div className="p-4 mx-auto space-y-6">
       {/* Scanner Interface */}
-      <div className=" rounded-xl p-6 border  shadow-lg">
-        <div className="text-center mb-6">
-          <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-            <QrCode className="w-8 h-8 " />
-          </div>
-          <h2 className="text-2xl font-bold 2">Code Scanner</h2>
-          <p className="">Enter a valid code to unlock rewards</p>
-        </div>
-
-        {/* Code Input */}
-        <div className="space-y-4">
-          <div className="relative">
-            <input
-              type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value.toUpperCase())}
-              onKeyPress={handleKeyPress}
-              placeholder="Enter code here..."
-              disabled={isScanning || cooldownStatus.isActive}
-              className="w-full px-4 py-3 text-center text-lg font-mono border  rounded-lg   focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
-              maxLength={20}
-            />
-            {code && (
-              <button
-                onClick={() => setCode("")}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 "
-              >
-                <X className="w-5 h-5" />
-              </button>
-            )}
+      <Card className="bg-black/40 backdrop-blur-xl border border-purple-500/20 shadow-2xl">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-white">
+            <QrCode className="w-6 h-6 text-purple-400" />
+            Snack Product Scanner
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6 max-w-xl lg:max-w-3xl mx-auto">
+          <div className="text-center">
+            <p className="text-purple-300">
+              Enter code from your products to collect rewards
+            </p>
           </div>
 
-          {/* Scan Button */}
-          <motion.button
-            whileHover={{ scale: cooldownStatus.isActive ? 1 : 1.02 }}
-            whileTap={{ scale: cooldownStatus.isActive ? 1 : 0.98 }}
-            onClick={handleScan}
-            disabled={isScanning || cooldownStatus.isActive || !code.trim()}
-            className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${
-              isScanning || cooldownStatus.isActive || !code.trim()
-                ? "cursor-not-allowed"
-                : " shadow-lg hover:shadow-xl"
-            }`}
-          >
-            {isScanning ? (
-              <>
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          {/* Code Input */}
+          <div className="space-y-4">
+            <div className="relative">
+              <Input
+                type="text"
+                value={code}
+                onChange={(e) => setCode(e.target.value.toUpperCase())}
+                onKeyPress={handleKeyPress}
+                placeholder="Enter snack product code here..."
+                disabled={isScanning || cooldownStatus.isActive}
+                className="text-center text-lg font-mono bg-black/30 backdrop-blur-sm border-purple-500/30 text-white placeholder-purple-400 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
+                maxLength={30}
+              />
+              {code && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setCode("")}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2"
                 >
-                  <Scan className="w-5 h-5" />
-                </motion.div>
-                Scanning...
-              </>
-            ) : cooldownStatus.isActive ? (
-              <>
-                <Clock className="w-5 h-5" />
-                Cooldown: {formatCooldownTime(cooldownTimer)}
-              </>
-            ) : (
-              <>
-                <Scan className="w-5 h-5" />
-                Scan Code
-              </>
-            )}
-          </motion.button>
-        </div>
-
-        {/* Cooldown Info */}
-        {cooldownStatus.isActive && (
-          <div className="mt-4 p-3  rounded-lg">
-            <div className="flex items-center gap-2 ">
-              <Clock className="w-4 h-4" />
-              <span className="text-sm">
-                Please wait {formatCooldownTime(cooldownTimer)} before scanning
-                another code
-              </span>
+                  <X className="w-4 h-4" />
+                </Button>
+              )}
             </div>
+
+            {/* Scan Button */}
+            <Button
+              onClick={handleValidateCode}
+              disabled={isScanning || cooldownStatus.isActive || !code.trim()}
+              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 transition-all duration-200"
+              size="lg"
+            >
+              {isScanning ? (
+                <>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{
+                      duration: 1,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                  >
+                    <Scan className="w-5 h-5 mr-2" />
+                  </motion.div>
+                  Scanning...
+                </>
+              ) : cooldownStatus.isActive ? (
+                <>
+                  <Clock className="w-5 h-5 mr-2" />
+                  Cooldown: {formatCooldownTime(cooldownTimer)}
+                </>
+              ) : (
+                <>
+                  <Scan className="w-5 h-5 mr-2" />
+                  Validate Code
+                </>
+              )}
+            </Button>
           </div>
-        )}
-      </div>
+
+          {/* Cooldown Info */}
+          {cooldownStatus.isActive && (
+            <div className="p-4 bg-black/30 backdrop-blur-sm rounded-xl border border-purple-500/20">
+              <div className="flex items-center gap-3 text-sm text-purple-300">
+                <Clock className="w-4 h-4 text-purple-400" />
+                <span>
+                  Please wait{" "}
+                  <span className="font-semibold text-white">
+                    {formatCooldownTime(cooldownTimer)}
+                  </span>{" "}
+                  before scanning another snack code
+                </span>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Available Snack Products */}
+      <Card className="bg-black/40 backdrop-blur-xl border border-purple-500/20 shadow-2xl">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-white">
+            <Package className="w-6 h-6 text-purple-400" />
+            Available Snack Products
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {/* Search and Filter */}
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-6">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-purple-300" />
+              <Input
+                type="text"
+                placeholder="Search snack products..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10 bg-black/30 backdrop-blur-sm border-purple-500/30 text-white placeholder-purple-400 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
+              />
+            </div>
+            <Select value={selectedBrand} onValueChange={setSelectedBrand}>
+              <SelectTrigger className="w-full sm:w-[200px] bg-black/30 backdrop-blur-sm border-purple-500/30 text-white focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200">
+                <SelectValue placeholder="All Brands" />
+              </SelectTrigger>
+              <SelectContent className="bg-black/90 backdrop-blur-xl border-purple-500/20">
+                <SelectItem
+                  value="all"
+                  className="text-white hover:bg-purple-500/20"
+                >
+                  All Brands
+                </SelectItem>
+                {brands.map((brand) => (
+                  <SelectItem
+                    key={brand}
+                    value={brand}
+                    className="text-white hover:bg-purple-500/20"
+                  >
+                    {brand}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Products Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-5 gap-4 md:gap-6 auto-rows-fr">
+            {filteredProducts.map((product) => (
+              <motion.div
+                key={product.code}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                whileHover={{
+                  scale: 1.02,
+                  y: -4,
+                  transition: { duration: 0.2 },
+                }}
+                whileTap={{ scale: 0.98 }}
+                className="group cursor-pointer"
+                onClick={() => window.open(`/product/${product.id}`, "_blank")}
+              >
+                <Card className="h-full bg-black/40 backdrop-blur-xl border border-purple-500/20 hover:border-purple-500/40 hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 overflow-hidden flex flex-col">
+                  {/* Rarity Glow Effect */}
+                  <div
+                    className={`absolute inset-0 rounded-xl bg-gradient-to-r opacity-0 group-hover:opacity-10 transition-opacity duration-300 ${
+                      product.rarity === "legendary"
+                        ? "from-yellow-400 via-yellow-500 to-orange-500"
+                        : product.rarity === "epic"
+                        ? "from-purple-400 via-purple-500 to-pink-500"
+                        : product.rarity === "rare"
+                        ? "from-blue-400 via-blue-500 to-cyan-500"
+                        : product.rarity === "special"
+                        ? "from-pink-400 via-pink-500 to-rose-500"
+                        : "from-gray-400 via-gray-500 to-gray-600"
+                    }`}
+                  />
+
+                  <CardContent className="p-2 md:p-5 relative z-10 flex flex-col flex-1">
+                    {/* Rarity Badge and Copy Button */}
+                    <div className="flex justify-end gap-2">
+                      <Badge
+                        variant="secondary"
+                        className={`${getRarityColor(
+                          product.rarity
+                        )} text-xs font-semibold px-2 py-1 rounded-full flex-shrink-0`}
+                      >
+                        {product.rarity}
+                      </Badge>
+                    </div>
+                    {/* Product Header */}
+                    <div className="flex items-start gap-3 mb-4">
+                      <div className="text-3xl md:text-4xl filter drop-shadow-lg flex-shrink-0">
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className="w-12 h-12 object-contain rounded-xl"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-sm md:text-base text-white mb-1 leading-tight break-words overflow-hidden">
+                          {product.name}
+                        </h3>
+                        <p className="text-xs md:text-sm text-purple-300 font-medium truncate">
+                          {product.brand}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Product Details */}
+                    <div className="space-y-3 flex-1 flex flex-col">
+                      {/* Copy Code Button */}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          copyToClipboard(`${product.code}-DEMO`);
+                        }}
+                        className="text-xs font-mono hover:bg-purple-500/20 hover:text-white transition-all duration-200 group/btn flex-shrink-0"
+                      >
+                        <Copy className="w-3 h-3 mr-1 group-hover/btn:scale-110 transition-transform duration-200" />
+                        <span className="hidden sm:inline truncate">
+                          {product.code}-DEMO
+                        </span>
+                        <span className="sm:hidden truncate">
+                          {product.code.split("-")[0]}
+                        </span>
+                      </Button>
+
+                      {/* View Details Button */}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(`/product/${product.id}`, "_blank");
+                        }}
+                        className="text-xs border-purple-500/30 text-purple-300 hover:bg-purple-500/20 hover:text-white transition-all duration-200"
+                      >
+                        View Details
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          {filteredProducts.length === 0 && (
+            <div className="text-center py-12">
+              <Package className="w-16 h-16 text-purple-400 mx-auto mb-4 opacity-50" />
+              <p className="text-purple-300 text-lg font-medium">
+                No snack products found
+              </p>
+              <p className="text-purple-400 text-sm mt-2">
+                Try adjusting your search or filter criteria
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Result Display */}
       <AnimatePresence>
@@ -338,7 +573,7 @@ export default function CodeScanner() {
             exit={{ opacity: 0, scale: 0.9, y: -20 }}
             className={`p-4 rounded-lg border ${
               result.success
-                ? "bg- green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800"
+                ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800"
                 : "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800"
             }`}
           >
@@ -349,9 +584,9 @@ export default function CodeScanner() {
                 }`}
               >
                 {result.success ? (
-                  <Check className="w-4 h-4 " />
+                  <Check className="w-4 h-4 text-white" />
                 ) : (
-                  <AlertCircle className="w-4 h-4 " />
+                  <AlertCircle className="w-4 h-4 text-white" />
                 )}
               </div>
               <div className="flex-1">
@@ -365,12 +600,14 @@ export default function CodeScanner() {
                   {result.message}
                 </p>
               </div>
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={clearResult}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                className="text-muted-foreground hover:text-foreground"
               >
                 <X className="w-4 h-4" />
-              </button>
+              </Button>
             </div>
           </motion.div>
         )}
@@ -378,64 +615,46 @@ export default function CodeScanner() {
 
       {/* Scan History */}
       {scanHistory.length > 0 && (
-        <div className=" rounded-xl p-6 border  shadow-lg">
-          <h3 className="text-lg font-semibold  mb-4 flex items-center gap-2">
-            <History className="w-5 h-5" />
-            Recent Scans
-          </h3>
-          <div className="space-y-2">
-            {scanHistory.slice(0, 5).map((scan, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between p-3  rounded-lg"
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`w-2 h-2 rounded-full ${
-                      scan.success ? "bg-green-500" : "bg-red-500"
-                    }`}
-                  />
-                  <div>
-                    <div className="font-mono text-sm font-medium ">
-                      {scan.code}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <History className="w-5 h-5" />
+              Recent Scans
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {scanHistory.slice(0, 5).map((scan, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between p-3 bg-muted rounded-lg"
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`w-2 h-2 rounded-full ${
+                        scan.success ? "bg-green-500" : "bg-red-500"
+                      }`}
+                    />
+                    <div>
+                      <div className="font-mono text-sm font-medium">
+                        {scan.code}
+                      </div>
+                      {scan.rewardName && (
+                        <div className="text-xs text-muted-foreground">
+                          {scan.rewardName}
+                        </div>
+                      )}
                     </div>
-                    {scan.rewardName && (
-                      <div className="text-xs ">{scan.rewardName}</div>
-                    )}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {scan.timestamp.toLocaleTimeString()}
                   </div>
                 </div>
-                <div className="text-xs ">
-                  {scan.timestamp.toLocaleTimeString()}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
       )}
-
-      {/* Quick Test Codes */}
-      <div className=" rounded-xl p-6 border ">
-        <h3 className="text-lg font-semibold  mb-3 flex items-center gap-2">
-          <Gift className="w-5 h-5" />
-          Test Codes
-        </h3>
-        <p className=" text-sm mb-4">
-          Try these demo codes to test the scanner:
-        </p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-          {["TEST123", "DEMO456", "WELCOME2024", "COFFEE123"].map(
-            (testCode) => (
-              <button
-                key={testCode}
-                onClick={() => setCode(testCode)}
-                className="p-2 bg-blue-800  dark:text-blue-200 hover:bg-blue-900 rounded-lg text-sm font-mono  transition-colors"
-              >
-                {testCode}
-              </button>
-            )
-          )}
-        </div>
-      </div>
 
       {/* Reward Animation */}
       <AnimatePresence>
