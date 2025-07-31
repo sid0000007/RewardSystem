@@ -26,9 +26,7 @@ const createDefaultUserProfile = (): UserProfile => ({
     [RewardType.LEGENDARY]: 0,
     [RewardType.SPECIAL]: 0
   },
-  preferences: {
-    theme: 'auto' as const,
-    notifications: true,
+  preferences: {      
     sounds: true
   }
 });
