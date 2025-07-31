@@ -13,9 +13,10 @@ import {
   Search,
   Filter,
   Zap,
-  Settings,
   Target,
   Shuffle,
+  ChevronDown,
+  Loader2,
 } from "lucide-react";
 import {
   LocationData,
@@ -32,7 +33,7 @@ import LocationCard from "@/components/LocationCard";
 import RewardAnimation from "@/components/RewardAnimation";
 import { toast } from "sonner";
 
-interface DemoLocationSystemProps {
+interface LocationCheckerProps {
   className?: string;
 }
 
@@ -48,8 +49,8 @@ type FilterType =
   | "landmarks"
   | "tech";
 
-// Generate demo locations around user's location
-const generateDemoLocations = (userCoords: Coordinates): LocationData[] => {
+// Generate fake locations around user's real location
+const generateFakeLocations = (userCoords: Coordinates): LocationData[] => {
   const locationTypes = [
     {
       name: "Coffee Corner",
@@ -129,7 +130,7 @@ const generateDemoLocations = (userCoords: Coordinates): LocationData[] => {
   ];
 
   return offsets.map((offset, index) => ({
-    id: `demo-location-${index}`,
+    id: `fake-location-${index}`,
     name: locationTypes[index].name,
     description: locationTypes[index].description,
     coordinates: {
@@ -147,7 +148,7 @@ const generateDemoLocations = (userCoords: Coordinates): LocationData[] => {
   }));
 };
 
-// Helper function to get nearby locations (replaces the imported function)
+// Helper function to get nearby locations
 const getNearbyLocations = (
   userCoords: Coordinates,
   locations: LocationData[],
@@ -183,9 +184,9 @@ const getNearbyLocations = (
     .sort((a, b) => a.distance - b.distance);
 };
 
-export default function DemoLocationSystem({
+export default function LocationChecker({
   className = "",
-}: DemoLocationSystemProps) {
+}: LocationCheckerProps) {
   const [showRewardAnimation, setShowRewardAnimation] = useState(false);
   const [recentReward, setRecentReward] = useState<Reward | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -194,12 +195,9 @@ export default function DemoLocationSystem({
     new Set()
   );
 
-  // Demo-specific state
-  const [isDemoMode, setIsDemoMode] = useState(false);
-  const [simulatedLocation, setSimulatedLocation] =
-    useState<Coordinates | null>(null);
-  const [demoLocations, setDemoLocations] = useState<LocationData[]>([]);
-  const [showDemoControls, setShowDemoControls] = useState(false);
+  // Location state
+  const [fakeLocations, setFakeLocations] = useState<LocationData[]>([]);
+  const [isCheckingIn, setIsCheckingIn] = useState<string | null>(null);
 
   const {
     coordinates: realCoordinates,
@@ -217,43 +215,40 @@ export default function DemoLocationSystem({
     requestPermission: true,
   });
 
-  // Use simulated location if in demo mode, otherwise use real coordinates
-  const coordinates = isDemoMode ? simulatedLocation : realCoordinates;
-
   const { addReward, checkCooldown, setCooldown, getRewardsByAction } =
     useRewards();
 
-  // Create demo locations when user coordinates are available
+  // Create fake locations when user coordinates are available
   useEffect(() => {
-    if (realCoordinates && demoLocations.length === 0) {
-      const newDemoLocations = generateDemoLocations(realCoordinates);
-      setDemoLocations(newDemoLocations);
+    if (realCoordinates && fakeLocations.length === 0) {
+      const newFakeLocations = generateFakeLocations(realCoordinates);
+      setFakeLocations(newFakeLocations);
     }
-  }, [realCoordinates, demoLocations.length]);
+  }, [realCoordinates, fakeLocations.length]);
 
-  // Show toast when real location is not active
+  // Show toast when location access is needed
   useEffect(() => {
-    if (permission === "denied" && !isDemoMode) {
+    if (permission === "denied") {
       toast.error("Location access denied", {
         description:
-          "Enable location permissions or use demo mode to test check-ins",
+          "Please enable location permissions to use check-in feature",
         duration: 5000,
       });
-    } else if (geoError && !isDemoMode) {
+    } else if (geoError) {
       toast.error("Location error", {
         description: geoError,
         duration: 5000,
       });
-    } else if (permission === "granted" && realCoordinates && !isDemoMode) {
+    } else if (permission === "granted" && realCoordinates) {
       toast.success("Location enabled", {
         description: "You can now check in at nearby locations",
         duration: 3000,
       });
     }
-  }, [permission, geoError, realCoordinates, isDemoMode]);
+  }, [permission, geoError, realCoordinates]);
 
-  // Get all available locations (demo only)
-  const allLocations = useMemo(() => [...demoLocations], [demoLocations]);
+  // Get all available locations
+  const allLocations = useMemo(() => [...fakeLocations], [fakeLocations]);
 
   // Get previously checked-in locations
   useEffect(() => {
@@ -266,75 +261,25 @@ export default function DemoLocationSystem({
     setCheckedInLocations(checkedInIds);
   }, [getRewardsByAction]);
 
-  // Simulate being at a random nearby location
-  const simulateRandomLocation = useCallback(() => {
-    if (!realCoordinates) {
-      alert("Please enable location access first to use demo mode");
-      return;
-    }
-
-    const nearbyLocations = allLocations.filter((location) => {
-      const distance = Math.sqrt(
-        Math.pow(location.coordinates.latitude - realCoordinates.latitude, 2) +
-          Math.pow(
-            location.coordinates.longitude - realCoordinates.longitude,
-            2
-          )
-      );
-      return distance < 0.1; // Within rough vicinity
-    });
-
-    if (nearbyLocations.length === 0) {
-      // Create a temporary location if none exist
-      const randomOffset = {
-        lat: (Math.random() - 0.5) * 0.002, // ~200m radius
-        lng: (Math.random() - 0.5) * 0.002,
-      };
-
-      setSimulatedLocation({
-        latitude: realCoordinates.latitude + randomOffset.lat,
-        longitude: realCoordinates.longitude + randomOffset.lng,
-      });
-    } else {
-      const randomLocation =
-        nearbyLocations[Math.floor(Math.random() * nearbyLocations.length)];
-      // Simulate being very close to the location
-      const closeOffset = {
-        lat: (Math.random() - 0.5) * 0.0001, // ~10m radius
-        lng: (Math.random() - 0.5) * 0.0001,
-      };
-
-      setSimulatedLocation({
-        latitude: randomLocation.coordinates.latitude + closeOffset.lat,
-        longitude: randomLocation.coordinates.longitude + closeOffset.lng,
-      });
-    }
-
-    setIsDemoMode(true);
-  }, [realCoordinates, allLocations]);
-
-  // Exit demo mode
-  const exitDemoMode = useCallback(() => {
-    setIsDemoMode(false);
-    setSimulatedLocation(null);
-  }, []);
-
   // Handle location check-in with enhanced feedback
   const handleCheckIn = useCallback(
     async (locationId: string) => {
       const location = allLocations.find((l) => l.id === locationId);
-      if (!location || !coordinates) return;
+      if (!location || !realCoordinates) return;
+
+      setIsCheckingIn(locationId);
 
       // Check cooldown
       const cooldownCheck = checkCooldown(ActionType.LOCATION_CHECKIN);
       if (cooldownCheck.isActive) {
         alert(`Location check-in is on cooldown. ${cooldownCheck.message}`);
+        setIsCheckingIn(null);
         return;
       }
 
       // Verify user is within check-in radius
       const isWithinRadius = isWithinCheckInRadius(
-        coordinates,
+        realCoordinates,
         location.coordinates,
         location.radius
       );
@@ -342,9 +287,12 @@ export default function DemoLocationSystem({
       if (!isWithinRadius) {
         const distance =
           Math.sqrt(
-            Math.pow(coordinates.latitude - location.coordinates.latitude, 2) +
+            Math.pow(
+              realCoordinates.latitude - location.coordinates.latitude,
+              2
+            ) +
               Math.pow(
-                coordinates.longitude - location.coordinates.longitude,
+                realCoordinates.longitude - location.coordinates.longitude,
                 2
               )
           ) * 111000; // Rough conversion to meters
@@ -354,12 +302,14 @@ export default function DemoLocationSystem({
             location.name
           } to check in. You're currently ${Math.round(distance)}m away.`
         );
+        setIsCheckingIn(null);
         return;
       }
 
       // Check if already checked in
       if (checkedInLocations.has(locationId)) {
         alert("You have already checked in at this location!");
+        setIsCheckingIn(null);
         return;
       }
 
@@ -375,7 +325,7 @@ export default function DemoLocationSystem({
             locationId: location.id,
             locationName: location.name,
             checkedInAt: new Date().toISOString(),
-            coordinates: coordinates,
+            coordinates: realCoordinates,
           },
         });
 
@@ -383,7 +333,7 @@ export default function DemoLocationSystem({
           // Update checked-in locations
           setCheckedInLocations((prev) => new Set(prev).add(locationId));
 
-          // Set cooldown (reduced for demo)
+          // Set cooldown
           setCooldown(ActionType.LOCATION_CHECKIN);
 
           // Play check-in success sound
@@ -404,10 +354,12 @@ export default function DemoLocationSystem({
       } catch (error) {
         console.error("Check-in error:", error);
         alert("An error occurred during check-in");
+      } finally {
+        setIsCheckingIn(null);
       }
     },
     [
-      coordinates,
+      realCoordinates,
       checkCooldown,
       addReward,
       setCooldown,
@@ -438,16 +390,16 @@ export default function DemoLocationSystem({
     // Apply category filter
     switch (filter) {
       case "nearby":
-        if (!coordinates) return false;
-        return getNearbyLocations(coordinates, allLocations, 5000).some(
+        if (!realCoordinates) return false;
+        return getNearbyLocations(realCoordinates, allLocations, 5000).some(
           (l) => l.id === location.id
         );
 
       case "available":
-        if (!coordinates) return false;
+        if (!realCoordinates) return false;
         return (
           isWithinCheckInRadius(
-            coordinates,
+            realCoordinates,
             location.coordinates,
             location.radius
           ) && !checkedInLocations.has(location.id)
@@ -473,15 +425,15 @@ export default function DemoLocationSystem({
   });
 
   // Sort locations by distance if coordinates available
-  const sortedLocations = coordinates
+  const sortedLocations = realCoordinates
     ? [...filteredLocations].sort((a, b) => {
         const distanceA = Math.sqrt(
-          Math.pow(a.coordinates.latitude - coordinates.latitude, 2) +
-            Math.pow(a.coordinates.longitude - coordinates.longitude, 2)
+          Math.pow(a.coordinates.latitude - realCoordinates.latitude, 2) +
+            Math.pow(a.coordinates.longitude - realCoordinates.longitude, 2)
         );
         const distanceB = Math.sqrt(
-          Math.pow(b.coordinates.latitude - coordinates.latitude, 2) +
-            Math.pow(b.coordinates.longitude - coordinates.longitude, 2)
+          Math.pow(b.coordinates.latitude - realCoordinates.latitude, 2) +
+            Math.pow(b.coordinates.longitude - realCoordinates.longitude, 2)
         );
         return distanceA - distanceB;
       })
@@ -489,99 +441,20 @@ export default function DemoLocationSystem({
 
   return (
     <div className={`space-y-6 ${className}`}>
-      {/* Demo Controls */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl shadow-lg border p-4"
-      >
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <Target className="w-5 h-5" />
-            <h3 className="font-semibold">Demo Controls</h3>
-          </div>
-          <button
-            onClick={() => setShowDemoControls(!showDemoControls)}
-            className="hover:opacity-80 transition-opacity"
-          >
-            <Settings className="w-4 h-4" />
-          </button>
-        </div>
-
-        <AnimatePresence>
-          {showDemoControls && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="space-y-3"
-            >
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={simulateRandomLocation}
-                  disabled={!realCoordinates}
-                  className="flex items-center gap-2 px-3 py-2 bg-background/20 hover:bg-background/30 rounded-lg text-sm transition-colors disabled:opacity-50"
-                >
-                  <Shuffle className="w-4 h-4" />
-                  Simulate Near Location
-                </button>
-
-                {isDemoMode && (
-                  <button
-                    onClick={exitDemoMode}
-                    className="flex items-center gap-2 px-3 py-2 bg-background/20 hover:bg-background/30 rounded-lg text-sm transition-colors"
-                  >
-                    <Navigation className="w-4 h-4" />
-                    Use Real Location
-                  </button>
-                )}
-
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs opacity-80">
-                    {isDemoMode
-                      ? `🎯 Demo Mode: Simulated at ${simulatedLocation?.latitude.toFixed(
-                          4
-                        )}, ${simulatedLocation?.longitude.toFixed(4)}`
-                      : coordinates
-                      ? `📍 Real Location: ${coordinates.latitude.toFixed(
-                          4
-                        )}, ${coordinates.longitude.toFixed(4)}`
-                      : "❌ Location not available"}
-                  </p>
-                </div>
-              </div>
-
-              <div className="text-xs bg-background/10 rounded-lg p-3">
-                <p className="mb-1">
-                  💡 <strong>Demo Tips:</strong>
-                </p>
-                <ul className="space-y-1 ml-4">
-                  <li>
-                    • Click &ldquo;Simulate Near Location&rdquo; to test
-                    check-ins without moving
-                  </li>
-                  <li>
-                    • Demo locations are created around your real position
-                  </li>
-                  <li>• Use real location access for the full experience</li>
-                  <li>• Check-in radius is generous for demo purposes</li>
-                </ul>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
-
-      {/* Location Permission & Status */}
+      {/* Header with Location Status */}
       <div className="rounded-xl shadow-lg border p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold flex items-center gap-2">
-            <MapPin className="w-6 h-6" />
-            Location Check-in{" "}
-            {isDemoMode && (
-              <span className="text-sm text-purple-500">(Demo Mode)</span>
-            )}
-          </h2>
+          <div className="flex items-center gap-3">
+            <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl">
+              <MapPin className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold">Location Check-in</h2>
+              <p className="text-sm text-muted-foreground">
+                Check in at nearby locations to earn rewards
+              </p>
+            </div>
+          </div>
 
           <div className="flex items-center gap-2">
             {isGeoLoading && <RefreshCw className="w-5 h-5 animate-spin" />}
@@ -595,15 +468,15 @@ export default function DemoLocationSystem({
           </div>
         </div>
 
-        {/* Enhanced Location Status */}
+        {/* Location Status */}
         <div className="space-y-3">
-          {permission === "denied" && !isDemoMode && (
+          {permission === "denied" && (
             <div className="flex items-center gap-3 p-4 bg-destructive/10 border rounded-lg">
               <AlertTriangle className="w-5 h-5" />
               <div className="flex-1">
                 <p className="text-sm font-medium">Location access denied</p>
                 <p className="text-xs">
-                  Enable location permissions or use demo mode to test check-ins
+                  Please enable location permissions to use check-in feature
                 </p>
               </div>
               <div className="flex gap-2">
@@ -611,31 +484,20 @@ export default function DemoLocationSystem({
                   onClick={requestPermission}
                   className="px-3 py-1 bg-destructive text-xs rounded-lg hover:opacity-90 transition-opacity"
                 >
-                  Enable
-                </button>
-                <button
-                  onClick={simulateRandomLocation}
-                  className="px-3 py-1 bg-purple-500 text-xs rounded-lg hover:opacity-90 transition-opacity"
-                >
-                  Demo Mode
+                  Enable Location
                 </button>
               </div>
             </div>
           )}
 
-          {((permission === "granted" && realCoordinates) ||
-            (isDemoMode && simulatedLocation)) && (
+          {permission === "granted" && realCoordinates && (
             <div className="flex items-center justify-between p-4 border rounded-lg">
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5" />
                 <div>
-                  <p className="text-sm font-medium">
-                    {isDemoMode ? "Demo location active" : "Location enabled"}
-                  </p>
+                  <p className="text-sm font-medium">Location enabled</p>
                   <p className="text-xs">
-                    {isDemoMode
-                      ? "Simulated position for testing"
-                      : accuracy
+                    {accuracy
                       ? `Accuracy: ±${Math.round(accuracy)}m`
                       : "Position acquired"}
                   </p>
@@ -643,15 +505,15 @@ export default function DemoLocationSystem({
               </div>
               <div className="text-right">
                 <p className="text-xs">
-                  {coordinates?.latitude.toFixed(4)},{" "}
-                  {coordinates?.longitude.toFixed(4)}
+                  {realCoordinates?.latitude.toFixed(4)},{" "}
+                  {realCoordinates?.longitude.toFixed(4)}
                 </p>
               </div>
             </div>
           )}
 
-          {geoError && !isDemoMode && (
-            <div className="flex items-center justify-between p-4 border rounded-lg">
+          {geoError && (
+            <div className="flex items-center gap-3 p-4 border rounded-lg">
               <div className="flex items-center gap-3">
                 <AlertTriangle className="w-5 h-5" />
                 <div>
@@ -659,17 +521,11 @@ export default function DemoLocationSystem({
                   <p className="text-xs">{geoError}</p>
                 </div>
               </div>
-              <button
-                onClick={simulateRandomLocation}
-                className="px-3 py-1 bg-purple-500 text-xs rounded-lg hover:opacity-90 transition-opacity"
-              >
-                Try Demo Mode
-              </button>
             </div>
           )}
         </div>
 
-        {/* Enhanced Cooldown Status */}
+        {/* Cooldown Status */}
         {(() => {
           const cooldownStatus = checkCooldown(ActionType.LOCATION_CHECKIN);
           if (cooldownStatus.isActive) {
@@ -679,9 +535,6 @@ export default function DemoLocationSystem({
                   <Clock className="w-4 h-4" />
                   <p className="text-sm">{cooldownStatus.message}</p>
                 </div>
-                {isDemoMode && (
-                  <p className="text-xs">Cooldown reduced for demo</p>
-                )}
               </div>
             );
           }
@@ -689,11 +542,12 @@ export default function DemoLocationSystem({
         })()}
       </div>
 
-      {/* Search and Filter - keeping your existing implementation */}
+      {/* Search and Filter */}
       <div className="rounded-xl shadow-lg border p-4">
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col lg:flex-row gap-4">
+          {/* Search */}
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search locations..."
@@ -703,12 +557,13 @@ export default function DemoLocationSystem({
             />
           </div>
 
+          {/* Filter */}
           <div className="relative">
-            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" />
+            <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value as FilterType)}
-              className="pl-10 pr-8 py-2 border rounded-lg focus:ring-2 focus:ring-ring text-sm appearance-none cursor-pointer"
+              className="pl-10 pr-8 py-2 border rounded-lg focus:ring-2 focus:ring-ring text-sm appearance-none cursor-pointer min-w-[160px]"
             >
               <option value="all">All Locations</option>
               <option value="nearby">Nearby</option>
@@ -736,8 +591,8 @@ export default function DemoLocationSystem({
         <div className="rounded-lg shadow-md border p-4 text-center">
           <Navigation className="w-6 h-6 mx-auto mb-2" />
           <p className="text-2xl font-bold">
-            {coordinates
-              ? getNearbyLocations(coordinates, allLocations, 5000).length
+            {realCoordinates
+              ? getNearbyLocations(realCoordinates, allLocations, 5000).length
               : 0}
           </p>
           <p className="text-xs">Nearby (5km)</p>
@@ -746,11 +601,11 @@ export default function DemoLocationSystem({
         <div className="rounded-lg shadow-md border p-4 text-center">
           <Zap className="w-6 h-6 mx-auto mb-2" />
           <p className="text-2xl font-bold">
-            {coordinates
+            {realCoordinates
               ? sortedLocations.filter(
                   (location) =>
                     isWithinCheckInRadius(
-                      coordinates,
+                      realCoordinates,
                       location.coordinates,
                       location.radius
                     ) && !checkedInLocations.has(location.id)
@@ -792,12 +647,12 @@ export default function DemoLocationSystem({
                 ? "Try adjusting your search terms"
                 : "Try changing your filter"}
             </p>
-            {!coordinates && (
+            {!realCoordinates && (
               <button
-                onClick={simulateRandomLocation}
+                onClick={requestPermission}
                 className="px-4 py-2 bg-purple-500 rounded-lg hover:opacity-90 transition-opacity"
               >
-                Try Demo Mode
+                Enable Location Access
               </button>
             )}
           </div>
@@ -807,12 +662,12 @@ export default function DemoLocationSystem({
               <LocationCard
                 key={location.id}
                 location={location}
-                userCoordinates={coordinates}
+                userCoordinates={realCoordinates}
                 isCheckedIn={checkedInLocations.has(location.id)}
                 isWithinRange={
-                  coordinates
+                  realCoordinates
                     ? isWithinCheckInRadius(
-                        coordinates,
+                        realCoordinates,
                         location.coordinates,
                         location.radius
                       )
@@ -820,39 +675,13 @@ export default function DemoLocationSystem({
                 }
                 onCheckIn={handleCheckIn}
                 onGetDirections={handleGetDirections}
-                showCheckInButton={permission === "granted" || isDemoMode}
+                showCheckInButton={permission === "granted"}
+                isCheckingIn={isCheckingIn === location.id}
               />
             ))}
           </div>
         )}
       </div>
-
-      {/* Enhanced Help Text */}
-      {(permission === "granted" || isDemoMode) && (
-        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-          <div className="flex gap-3">
-            <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
-            <div className="text-sm text-blue-700 dark:text-blue-300">
-              <p className="font-medium mb-1">How location check-in works:</p>
-              <ul className="space-y-1 text-xs">
-                <li>• Move within the check-in radius of any location</li>
-                <li>
-                  • Tap &ldquo;Check In&rdquo; when you&rsquo;re close enough
-                </li>
-                <li>• Earn unique rewards for each location</li>
-                <li>• Each location can only be checked-in once</li>
-                <li>• There&rsquo;s a cooldown between check-ins</li>
-                {isDemoMode && (
-                  <li className="text-purple-600 dark:text-purple-400">
-                    • <strong>Demo Mode:</strong> Simulated location for easy
-                    testing!
-                  </li>
-                )}
-              </ul>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Reward Animation */}
       <AnimatePresence>

@@ -1,21 +1,22 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { 
-  MapPin, 
-  Navigation, 
-  CheckCircle, 
+import { motion } from "framer-motion";
+import {
+  MapPin,
+  Navigation,
+  CheckCircle,
   Clock,
   Ruler,
   Gift,
   ExternalLink,
   Target,
   Zap,
-  AlertCircle
-} from 'lucide-react';
-import { LocationData, Coordinates } from '@/types';
-import { formatDistance, getRewardRarity } from '@/lib/utils';
-import { getDistanceToLocation } from '@/data/locations';
+  AlertCircle,
+  Loader2,
+} from "lucide-react";
+import { LocationData, Coordinates } from "@/types";
+import { formatDistance, getRewardRarity } from "@/lib/utils";
+import { getDistanceToLocation } from "@/data/locations";
 
 interface EnhancedLocationCardProps {
   location: LocationData;
@@ -26,6 +27,7 @@ interface EnhancedLocationCardProps {
   onGetDirections?: (location: LocationData) => void;
   className?: string;
   showCheckInButton?: boolean;
+  isCheckingIn?: boolean;
 }
 
 export default function EnhancedLocationCard({
@@ -35,27 +37,32 @@ export default function EnhancedLocationCard({
   isWithinRange = false,
   onCheckIn,
   onGetDirections,
-  className = '',
-  showCheckInButton = true
+  className = "",
+  showCheckInButton = true,
+  isCheckingIn = false,
 }: EnhancedLocationCardProps) {
   const rarity = getRewardRarity(location.reward.type);
-  
-  const distance = userCoordinates 
+
+  const distance = userCoordinates
     ? getDistanceToLocation(userCoordinates, location.coordinates)
     : null;
 
   // Calculate proximity percentage (0-100%)
-  const proximityPercentage = distance !== null 
-    ? Math.max(0, Math.min(100, ((location.radius - distance) / location.radius) * 100))
-    : 0;
+  const proximityPercentage =
+    distance !== null
+      ? Math.max(
+          0,
+          Math.min(100, ((location.radius - distance) / location.radius) * 100)
+        )
+      : 0;
 
   // Determine card status
   const getCardStatus = () => {
-    if (isCheckedIn) return 'checked-in';
-    if (isWithinRange) return 'available';
-    if (distance !== null && distance <= location.radius * 2) return 'nearby';
-    if (distance !== null && distance <= location.radius * 5) return 'distant';
-    return 'far';
+    if (isCheckedIn) return "checked-in";
+    if (isWithinRange) return "available";
+    if (distance !== null && distance <= location.radius * 2) return "nearby";
+    if (distance !== null && distance <= location.radius * 5) return "distant";
+    return "far";
   };
 
   const cardStatus = getCardStatus();
@@ -71,36 +78,36 @@ export default function EnhancedLocationCard({
       onGetDirections(location);
     } else {
       const url = `https://www.google.com/maps/dir/?api=1&destination=${location.coordinates.latitude},${location.coordinates.longitude}`;
-      window.open(url, '_blank');
+      window.open(url, "_blank");
     }
   };
 
   // Status-based styling
   const getStatusStyles = () => {
     switch (cardStatus) {
-      case 'checked-in':
+      case "checked-in":
         return {
-          border: 'border-success',
-          bg: 'bg-success/10',
-          glow: 'shadow-success/20'
+          border: "border-success",
+          bg: "bg-success/10",
+          glow: "shadow-success/20",
         };
-      case 'available':
+      case "available":
         return {
-          border: 'border-primary',
-          bg: 'bg-primary/10',
-          glow: 'shadow-primary/20'
+          border: "border-primary",
+          bg: "bg-primary/10",
+          glow: "shadow-primary/20",
         };
-      case 'nearby':
+      case "nearby":
         return {
-          border: 'border-warning',
-          bg: 'bg-warning/10',
-          glow: 'shadow-warning/20'
+          border: "border-warning",
+          bg: "bg-warning/10",
+          glow: "shadow-warning/20",
         };
       default:
         return {
-          border: 'border-muted',
-          bg: 'bg-background',
-          glow: 'shadow-muted/20'
+          border: "border-muted",
+          bg: "bg-background",
+          glow: "shadow-muted/20",
         };
     }
   };
@@ -129,13 +136,13 @@ export default function EnhancedLocationCard({
             initial={{ width: 0 }}
             animate={{ width: `${proximityPercentage}%` }}
             className={`h-full transition-all duration-500 ${
-              isWithinRange 
-                ? 'bg-success' 
-                : proximityPercentage > 50 
-                  ? 'bg-primary' 
-                  : proximityPercentage > 25 
-                    ? 'bg-warning' 
-                    : 'bg-destructive'
+              isWithinRange
+                ? "bg-success"
+                : proximityPercentage > 50
+                ? "bg-primary"
+                : proximityPercentage > 25
+                ? "bg-warning"
+                : "bg-destructive"
             }`}
           />
         </div>
@@ -153,7 +160,7 @@ export default function EnhancedLocationCard({
             <CheckCircle className="w-4 h-4" />
           </motion.div>
         )}
-        
+
         {isWithinRange && !isCheckedIn && (
           <motion.div
             initial={{ scale: 0 }}
@@ -165,26 +172,35 @@ export default function EnhancedLocationCard({
           </motion.div>
         )}
 
-        {!isWithinRange && !isCheckedIn && distance !== null && distance <= location.radius * 2 && (
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            className="bg-warning text-background rounded-full p-1.5 shadow-lg"
-            title="Getting close"
-          >
-            <Navigation className="w-4 h-4" />
-          </motion.div>
-        )}
+        {!isWithinRange &&
+          !isCheckedIn &&
+          distance !== null &&
+          distance <= location.radius * 2 && (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="bg-warning text-background rounded-full p-1.5 shadow-lg"
+              title="Getting close"
+            >
+              <Navigation className="w-4 h-4" />
+            </motion.div>
+          )}
       </div>
 
       {/* Rarity Border Glow */}
-      <div className={`absolute inset-0 rounded-xl bg-gradient-to-r ${
-        location.reward.type === 'legendary' ? 'from-yellow-400 via-yellow-500 to-orange-500' :
-        location.reward.type === 'epic' ? 'from-purple-400 via-purple-500 to-pink-500' :
-        location.reward.type === 'rare' ? 'from-blue-400 via-blue-500 to-cyan-500' :
-        location.reward.type === 'special' ? 'from-pink-400 via-pink-500 to-rose-500' :
-        'from-muted via-muted to-muted'
-      } opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+      <div
+        className={`absolute inset-0 rounded-xl bg-gradient-to-r ${
+          location.reward.type === "legendary"
+            ? "from-yellow-400 via-yellow-500 to-orange-500"
+            : location.reward.type === "epic"
+            ? "from-purple-400 via-purple-500 to-pink-500"
+            : location.reward.type === "rare"
+            ? "from-blue-400 via-blue-500 to-cyan-500"
+            : location.reward.type === "special"
+            ? "from-pink-400 via-pink-500 to-rose-500"
+            : "from-muted via-muted to-muted"
+        } opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
+      />
 
       <div className="relative z-10 p-6">
         {/* Location Header */}
@@ -197,10 +213,8 @@ export default function EnhancedLocationCard({
               {location.description}
             </p>
           </div>
-          
-          <div className="text-3xl ml-3">
-            {location.reward.icon}
-          </div>
+
+          <div className="text-3xl ml-3">{location.reward.icon}</div>
         </div>
 
         {/* Enhanced Location Info */}
@@ -212,16 +226,22 @@ export default function EnhancedLocationCard({
                 <Ruler className="w-4 h-4" />
                 <span>{formatDistance(distance)} away</span>
               </div>
-              
+
               {/* Distance status badge */}
-              <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                isWithinRange 
-                  ? 'bg-success/10 text-success'
+              <span
+                className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                  isWithinRange
+                    ? "bg-success/10 text-success"
+                    : distance <= location.radius * 2
+                    ? "bg-warning/10 text-warning"
+                    : "bg-muted/10 text-muted-foreground"
+                }`}
+              >
+                {isWithinRange
+                  ? "🎯 In Range"
                   : distance <= location.radius * 2
-                    ? 'bg-warning/10 text-warning'
-                    : 'bg-muted/10 text-muted-foreground'
-              }`}>
-                {isWithinRange ? '🎯 In Range' : distance <= location.radius * 2 ? '🚶 Close' : '🗺️ Far'}
+                  ? "🚶 Close"
+                  : "🗺️ Far"}
               </span>
             </div>
           )}
@@ -232,16 +252,20 @@ export default function EnhancedLocationCard({
               <MapPin className="w-4 h-4" />
               <span>{formatDistance(location.radius)} check-in radius</span>
             </div>
-            
+
             {/* Radius visualization */}
             {distance !== null && (
               <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden ml-2">
-                <div 
+                <div
                   className={`h-full transition-all duration-500 ${
-                    isWithinRange ? 'bg-success' : 'bg-warning'
+                    isWithinRange ? "bg-success" : "bg-warning"
                   }`}
-                  style={{ 
-                    width: `${Math.min(100, (location.radius / Math.max(distance, location.radius)) * 100)}%` 
+                  style={{
+                    width: `${Math.min(
+                      100,
+                      (location.radius / Math.max(distance, location.radius)) *
+                        100
+                    )}%`,
                   }}
                 />
               </div>
@@ -256,15 +280,23 @@ export default function EnhancedLocationCard({
                 {location.reward.name}
               </span>
             </div>
-            
-            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${rarity.color} bg-opacity-10`}>
-              <div className={`w-2 h-2 rounded-full mr-1 ${
-                location.reward.type === 'legendary' ? 'bg-yellow-500' :
-                location.reward.type === 'epic' ? 'bg-purple-500' :
-                location.reward.type === 'rare' ? 'bg-blue-500' :
-                location.reward.type === 'special' ? 'bg-pink-500' :
-                'bg-muted'
-              }`} />
+
+            <span
+              className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${rarity.color} bg-opacity-10`}
+            >
+              <div
+                className={`w-2 h-2 rounded-full mr-1 ${
+                  location.reward.type === "legendary"
+                    ? "bg-yellow-500"
+                    : location.reward.type === "epic"
+                    ? "bg-purple-500"
+                    : location.reward.type === "rare"
+                    ? "bg-blue-500"
+                    : location.reward.type === "special"
+                    ? "bg-pink-500"
+                    : "bg-muted"
+                }`}
+              />
               {rarity.label}
             </span>
           </div>
@@ -281,21 +313,35 @@ export default function EnhancedLocationCard({
         <div className="flex gap-2">
           {showCheckInButton && (
             <motion.button
-              whileHover={{ scale: isWithinRange && !isCheckedIn ? 1.05 : 1 }}
-              whileTap={{ scale: isWithinRange && !isCheckedIn ? 0.95 : 1 }}
+              whileHover={{
+                scale:
+                  isWithinRange && !isCheckedIn && !isCheckingIn ? 1.05 : 1,
+              }}
+              whileTap={{
+                scale:
+                  isWithinRange && !isCheckedIn && !isCheckingIn ? 0.95 : 1,
+              }}
               onClick={handleCheckIn}
-              disabled={!isWithinRange || isCheckedIn}
+              disabled={!isWithinRange || isCheckedIn || isCheckingIn}
               className={`
                 flex-1 py-3 px-4 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2
-                ${isCheckedIn
-                  ? 'bg-success/10 text-success border border-success cursor-not-allowed'
-                  : isWithinRange
-                    ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
-                    : 'bg-muted text-muted-foreground cursor-not-allowed border'
+                ${
+                  isCheckingIn
+                    ? "bg-primary/80 text-primary-foreground cursor-not-allowed"
+                    : isCheckedIn
+                    ? "bg-success/10 text-success border border-success cursor-not-allowed"
+                    : isWithinRange
+                    ? "bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    : "bg-muted text-muted-foreground cursor-not-allowed border"
                 }
               `}
             >
-              {isCheckedIn ? (
+              {isCheckingIn ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Checking In...
+                </>
+              ) : isCheckedIn ? (
                 <>
                   <CheckCircle className="w-4 h-4" />
                   Checked In
@@ -308,7 +354,11 @@ export default function EnhancedLocationCard({
               ) : (
                 <>
                   <Clock className="w-4 h-4" />
-                  Get Closer ({formatDistance(Math.max(0, (distance || 0) - location.radius))} to go)
+                  Get Closer (
+                  {formatDistance(
+                    Math.max(0, (distance || 0) - location.radius)
+                  )}{" "}
+                  to go)
                 </>
               )}
             </motion.button>
@@ -338,34 +388,38 @@ export default function EnhancedLocationCard({
           </div>
         )}
 
-        {userCoordinates && distance !== null && distance > location.radius && !isCheckedIn && (
-          <div className="mt-4 p-3 bg-warning/10 border border-warning rounded-lg">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Navigation className="w-4 h-4 text-warning" />
-                <p className="text-xs text-warning">
-                  Move {formatDistance(distance - location.radius)} closer to check in
-                </p>
+        {userCoordinates &&
+          distance !== null &&
+          distance > location.radius &&
+          !isCheckedIn && (
+            <div className="mt-4 p-3 bg-warning/10 border border-warning rounded-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Navigation className="w-4 h-4 text-warning" />
+                  <p className="text-xs text-warning">
+                    Move {formatDistance(distance - location.radius)} closer to
+                    check in
+                  </p>
+                </div>
+                {distance <= location.radius * 2 && (
+                  <span className="text-xs text-warning font-medium">
+                    Almost there!
+                  </span>
+                )}
               </div>
-              {distance <= location.radius * 2 && (
-                <span className="text-xs text-warning font-medium">
-                  Almost there!
-                </span>
-              )}
+
+              {/* Progress visualization */}
+              <div className="mt-2 h-1 bg-warning/20 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-warning transition-all duration-500"
+                  style={{ width: `${proximityPercentage}%` }}
+                />
+              </div>
             </div>
-            
-            {/* Progress visualization */}
-            <div className="mt-2 h-1 bg-warning/20 rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-warning transition-all duration-500"
-                style={{ width: `${proximityPercentage}%` }}
-              />
-            </div>
-          </div>
-        )}
+          )}
 
         {isWithinRange && !isCheckedIn && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className="mt-4 p-3 bg-success/10 border border-success rounded-lg"
@@ -378,7 +432,8 @@ export default function EnhancedLocationCard({
                 <Target className="w-4 h-4 text-success" />
               </motion.div>
               <p className="text-xs text-success font-medium">
-                Perfect! You&apos;re close enough to check in and earn the reward!
+                Perfect! You&apos;re close enough to check in and earn the
+                reward!
               </p>
             </div>
           </motion.div>
@@ -400,14 +455,14 @@ export default function EnhancedLocationCard({
       {isWithinRange && !isCheckedIn && (
         <div className="absolute inset-0 pointer-events-none">
           <motion.div
-            animate={{ 
+            animate={{
               scale: [1, 1.02, 1],
-              opacity: [0.05, 0.15, 0.05]
+              opacity: [0.05, 0.15, 0.05],
             }}
-            transition={{ 
-              duration: 2, 
+            transition={{
+              duration: 2,
               repeat: Infinity,
-              ease: "easeInOut"
+              ease: "easeInOut",
             }}
             className="absolute inset-0 bg-gradient-to-r from-primary to-primary rounded-xl"
           />
@@ -418,14 +473,14 @@ export default function EnhancedLocationCard({
       {isWithinRange && !isCheckedIn && (
         <div className="absolute inset-0 pointer-events-none">
           <motion.div
-            animate={{ 
+            animate={{
               scale: [1, 1.05, 1],
-              opacity: [0, 0.1, 0]
+              opacity: [0, 0.1, 0],
             }}
-            transition={{ 
-              duration: 1.5, 
+            transition={{
+              duration: 1.5,
               repeat: Infinity,
-              ease: "easeOut"
+              ease: "easeOut",
             }}
             className="absolute inset-0 bg-primary rounded-xl"
           />
