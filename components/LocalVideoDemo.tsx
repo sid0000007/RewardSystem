@@ -190,14 +190,11 @@ export default function LocalVideoDemo({
 
           {/* Progress Tracking */}
           <div className="space-y-3">
-
             <h1>Progress</h1>
             <Progress
               value={Math.min(progressPercentage, 100)}
               className="h-2"
             />
-
-            
           </div>
 
           {/* Status & Actions */}

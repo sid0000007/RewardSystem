@@ -25,7 +25,7 @@ export default function VideoHistory() {
     if (savedHistory) {
       try {
         const parsed = JSON.parse(savedHistory);
-        const historyWithDates = parsed.map((entry: any) => ({
+        const historyWithDates = parsed.map((entry: VideoHistoryEntry) => ({
           ...entry,
           watchedAt: new Date(entry.watchedAt),
         }));
@@ -183,7 +183,7 @@ export const addVideoToHistory = (entry: VideoHistoryEntry) => {
   if (savedHistory) {
     try {
       const parsed = JSON.parse(savedHistory);
-      history = parsed.map((item: any) => ({
+      history = parsed.map((item: VideoHistoryEntry) => ({
         ...item,
         watchedAt: new Date(item.watchedAt),
       }));
