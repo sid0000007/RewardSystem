@@ -42,10 +42,10 @@ const sidebarItems: SidebarItem[] = [
     description: "Your Rewards",
   },
   {
-    id: "scan",
-    label: "Scan",
+    id: "productCode",
+    label: "Product Codes",
     icon: QrCode,
-    href: "/scan",
+    href: "/product",
     description: "Scan QR Codes",
   },
   {
@@ -111,9 +111,7 @@ export default function Sidebar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="text-xl font-bold text-sidebar-foreground"
-            >
-              
-            </motion.h1>
+            ></motion.h1>
           )}
         </Link>
       </div>
@@ -124,7 +122,8 @@ export default function Sidebar() {
           const Icon = item.icon;
           const isActive =
             pathname === item.href ||
-            (item.href === "/dashboard" && pathname === "/");
+            (item.href === "/dashboard" && pathname === "/") ||
+            (item.href === "/product" && pathname.startsWith("/product/"));
 
           return (
             <motion.div
