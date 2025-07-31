@@ -5,19 +5,42 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Trash2,
   Search,
-  Grid3X3,
-  List,
   Download,
   Upload,
   Coins,
   Sparkles,
+  MoreHorizontal,
+  Clock,
 } from "lucide-react";
 import { RewardType, ActionType } from "@/types";
 import { useRewards } from "@/hooks/useRewards";
-import RewardCard from "./RewardCard";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type SortOption = "newest" | "oldest" | "rarity" | "name";
-type ViewMode = "grid" | "list";
 
 export default function WalletView() {
   const {
@@ -27,6 +50,7 @@ export default function WalletView() {
     getRewardsByType,
     exportData,
     importData,
+    removeReward,
   } = useRewards();
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -35,7 +59,6 @@ export default function WalletView() {
     "all"
   );
   const [sortBy, setSortBy] = useState<SortOption>("newest");
-  const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [showConfirmClear, setShowConfirmClear] = useState(false);
 
   // Filter and sort rewards
@@ -114,6 +137,61 @@ export default function WalletView() {
     event.target.value = "";
   };
 
+  const handleDeleteReward = (rewardId: string) => {
+    removeReward(rewardId);
+  };
+
+  const formatDate = (date: Date) => {
+    const now = new Date();
+    const diffInMinutes = Math.floor(
+      (now.getTime() - date.getTime()) / (1000 * 60)
+    );
+
+    if (diffInMinutes < 1) return "Just now";
+    if (diffInMinutes < 60)
+      return `${diffInMinutes} minute${diffInMinutes !== 1 ? "s" : ""} ago`;
+
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24)
+      return `${diffInHours} hour${diffInHours !== 1 ? "s" : ""} ago`;
+
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays < 7)
+      return `${diffInDays} day${diffInDays !== 1 ? "s" : ""} ago`;
+
+    return date.toLocaleDateString();
+  };
+
+  const getRarityColor = (type: RewardType) => {
+    switch (type) {
+      case RewardType.COMMON:
+        return "bg-gray-500";
+      case RewardType.RARE:
+        return "bg-blue-500";
+      case RewardType.EPIC:
+        return "bg-purple-500";
+      case RewardType.LEGENDARY:
+        return "bg-yellow-500";
+      case RewardType.SPECIAL:
+        return "bg-pink-500";
+      default:
+        return "bg-gray-500";
+    }
+  };
+
+  const getActionIcon = (actionType: ActionType) => {
+    switch (actionType) {
+      case ActionType.CODE_SCAN:
+        return "📱";
+      case ActionType.VIDEO_WATCH:
+        return "📺";
+      case ActionType.LOCATION_CHECKIN:
+        return "📍";
+      default:
+        return "🎯";
+    }
+  };
+
   // Stats
   const totalRewards = getTotalRewards();
   const commonCount = getRewardsByType(RewardType.COMMON).length;
@@ -123,30 +201,25 @@ export default function WalletView() {
   const specialCount = getRewardsByType(RewardType.SPECIAL).length;
 
   return (
-    <div className="max-w-7xl mx-auto p-4 space-y-6">
+    <div className="space-y-6 p-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900  flex items-center gap-2">
+          <h1 className="text-3xl font-bold flex items-center gap-2">
             <Coins className="w-8 h-8 text-yellow-500" />
             My Wallet
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-muted-foreground mt-1">
             {totalRewards} reward{totalRewards !== 1 ? "s" : ""} collected
           </p>
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-2 flex-wrap">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleExport}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-500  rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            <Download className="w-4 h-4" />
+          <Button onClick={handleExport} variant="outline" size="sm">
+            <Download className="w-4 h-4 mr-2" />
             Export
-          </motion.button>
+          </Button>
 
           <div className="relative">
             <input
@@ -156,27 +229,23 @@ export default function WalletView() {
               className="hidden"
               id="import-file"
             />
-            <motion.label
-              htmlFor="import-file"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 px-4 py-2 bg-green-500  rounded-lg hover:bg-green-600 transition-colors cursor-pointer"
-            >
-              <Upload className="w-4 h-4" />
-              Import
-            </motion.label>
+            <Button asChild variant="outline" size="sm">
+              <label htmlFor="import-file" className="cursor-pointer">
+                <Upload className="w-4 h-4 mr-2" />
+                Import
+              </label>
+            </Button>
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+          <Button
             onClick={() => setShowConfirmClear(true)}
             disabled={totalRewards === 0}
-            className="flex items-center gap-2 px-4 py-2 bg-red-500  rounded-lg hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            variant="destructive"
+            size="sm"
           >
-            <Trash2 className="w-4 h-4" />
+            <Trash2 className="w-4 h-4 mr-2" />
             Clear All
-          </motion.button>
+          </Button>
         </div>
       </div>
 
@@ -209,106 +278,105 @@ export default function WalletView() {
             icon: "✨",
           },
         ].map((stat) => (
-          <motion.div
-            key={stat.label}
-            whileHover={{ scale: 1.05 }}
-            className=" rounded-lg p-4 border "
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-2xl">{stat.icon}</span>
-              <div className={`w-3 h-3 rounded-full ${stat.color}`} />
-            </div>
-            <div className="text-2xl font-bold">{stat.count}</div>
-            <div className="text-sm ">{stat.label}</div>
-          </motion.div>
+          <Card key={stat.label}>
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-2xl">{stat.icon}</span>
+                <div className={`w-3 h-3 rounded-full ${stat.color}`} />
+              </div>
+              <div className="text-2xl font-bold">{stat.count}</div>
+              <div className="text-sm text-muted-foreground">{stat.label}</div>
+            </CardContent>
+          </Card>
         ))}
       </div>
 
       {/* Filters and Search */}
-      <div className="rounded-lg p-4 ">
-        <div className="flex flex-col lg:flex-row gap-4">
-          {/* Search */}
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search rewards..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border  rounded-lg focus:ring-2"
-            />
-          </div>
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex flex-col lg:flex-row gap-4">
+            {/* Search */}
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search rewards..."
+                value={searchQuery}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setSearchQuery(e.target.value)
+                }
+                className="pl-10"
+              />
+            </div>
 
-          {/* Filters */}
-          <div className="flex gap-2 flex-wrap">
-            <select
-              value={selectedType}
-              onChange={(e) =>
-                setSelectedType(e.target.value as RewardType | "all")
-              }
-              className="px-3 py-2 border  rounded-lg "
-            >
-              <option value="all">All Types</option>
-              <option value={RewardType.COMMON}>Common</option>
-              <option value={RewardType.RARE}>Rare</option>
-              <option value={RewardType.EPIC}>Epic</option>
-              <option value={RewardType.LEGENDARY}>Legendary</option>
-              <option value={RewardType.SPECIAL}>Special</option>
-            </select>
-
-            <select
-              value={selectedAction}
-              onChange={(e) =>
-                setSelectedAction(e.target.value as ActionType | "all")
-              }
-              className="px-3 py-2 border  rounded-lg "
-            >
-              <option value="all">All Actions</option>
-              <option value={ActionType.CODE_SCAN}>Code Scan</option>
-              <option value={ActionType.VIDEO_WATCH}>Video Watch</option>
-              <option value={ActionType.LOCATION_CHECKIN}>
-                Location Check-in
-              </option>
-            </select>
-
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="px-3 py-2 border  rounded-lg "
-            >
-              <option value="newest">Newest First</option>
-              <option value="oldest">Oldest First</option>
-              <option value="rarity">By Rarity</option>
-              <option value="name">By Name</option>
-            </select>
-
-            <div className="flex border  rounded-lg overflow-hidden">
-              <button
-                onClick={() => setViewMode("grid")}
-                className={`p-2 ${
-                  viewMode === "grid"
-                    ? "bg-purple-500"
-                    : ""
-                }`}
+            {/* Filters */}
+            <div className="flex gap-2 flex-wrap">
+              <Select
+                value={selectedType}
+                onValueChange={(value: string) =>
+                  setSelectedType(value as RewardType | "all")
+                }
               >
-                <Grid3X3 className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setViewMode("list")}
-                className={`p-2 ${
-                  viewMode === "list"
-                    ? "bg-purple-500"
-                    : ""
-                }`}
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue placeholder="All Types" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value={RewardType.COMMON}>Common</SelectItem>
+                  <SelectItem value={RewardType.RARE}>Rare</SelectItem>
+                  <SelectItem value={RewardType.EPIC}>Epic</SelectItem>
+                  <SelectItem value={RewardType.LEGENDARY}>
+                    Legendary
+                  </SelectItem>
+                  <SelectItem value={RewardType.SPECIAL}>Special</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Select
+                value={selectedAction}
+                onValueChange={(value: string) =>
+                  setSelectedAction(value as ActionType | "all")
+                }
               >
-                <List className="w-4 h-4" />
-              </button>
+                <SelectTrigger className="w-[160px]">
+                  <SelectValue placeholder="All Actions" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Actions</SelectItem>
+                  <SelectItem value={ActionType.CODE_SCAN}>
+                    Code Scan
+                  </SelectItem>
+                  <SelectItem value={ActionType.VIDEO_WATCH}>
+                    Video Watch
+                  </SelectItem>
+                  <SelectItem value={ActionType.LOCATION_CHECKIN}>
+                    Location Check-in
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Select
+                value={sortBy}
+                onValueChange={(value: string) =>
+                  setSortBy(value as SortOption)
+                }
+              >
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="newest">Newest First</SelectItem>
+                  <SelectItem value="oldest">Oldest First</SelectItem>
+                  <SelectItem value="rarity">By Rarity</SelectItem>
+                  <SelectItem value="name">By Name</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
 
-      {/* Rewards Grid/List */}
+      {/* Rewards Display */}
       <AnimatePresence mode="wait">
         {sortedRewards.length === 0 ? (
           <motion.div
@@ -319,13 +387,13 @@ export default function WalletView() {
             className="text-center py-16"
           >
             <div className="mb-4">
-              <Sparkles className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 dark: mb-2">
+              <Sparkles className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-2">
                 {rewards.length === 0
                   ? "No rewards yet!"
                   : "No matching rewards"}
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 max-w-sm mx-auto">
+              <p className="text-muted-foreground max-w-sm mx-auto">
                 {rewards.length === 0
                   ? "Start collecting rewards by scanning codes, watching videos, or checking in at locations."
                   : "Try adjusting your search or filter criteria to find rewards."}
@@ -333,28 +401,90 @@ export default function WalletView() {
             </div>
           </motion.div>
         ) : (
-          <motion.div
-            key="rewards"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className={
-              viewMode === "grid"
-                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-                : "space-y-4"
-            }
-          >
-            <AnimatePresence>
-              {sortedRewards.map((reward) => (
-                <RewardCard
-                  key={reward.id}
-                  reward={reward}
-                  showDelete={true}
-                  className={viewMode === "list" ? "flex items-center p-4" : ""}
-                />
-              ))}
-            </AnimatePresence>
-          </motion.div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Reward History</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Reward</TableHead>
+                    <TableHead>Type</TableHead>
+                    <TableHead>Action</TableHead>
+                    <TableHead>Earned</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {sortedRewards.map((reward) => (
+                    <TableRow key={reward.id}>
+                      <TableCell>
+                        <div className="flex items-center gap-3">
+                          <div className="text-2xl">{reward.icon}</div>
+                          <div>
+                            <div className="font-medium">{reward.name}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {reward.description}
+                            </div>
+                            {reward.metadata?.code && (
+                              <div className="text-xs text-muted-foreground mt-1">
+                                Code: {reward.metadata.code}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant="secondary"
+                          className={getRarityColor(reward.type)}
+                        >
+                          {reward.type}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg">
+                            {getActionIcon(reward.actionType)}
+                          </span>
+                          <span className="text-sm capitalize">
+                            {reward.actionType.replace("_", " ")}
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Clock className="w-4 h-4 text-muted-foreground" />
+                          <span className="text-sm">
+                            {formatDate(reward.earnedAt)}
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                              <MoreHorizontal className="w-4 h-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                              onClick={() => handleDeleteReward(reward.id)}
+                              className="text-destructive"
+                            >
+                              <Trash2 className="w-4 h-4 mr-2" />
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
         )}
       </AnimatePresence>
 
@@ -365,7 +495,7 @@ export default function WalletView() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
             onClick={() => setShowConfirmClear(false)}
           >
             <motion.div
@@ -373,28 +503,28 @@ export default function WalletView() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className=" dark:bg-gray-800 rounded-lg p-6 max-w-sm w-full"
+              className="bg-card rounded-lg p-6 max-w-sm w-full border"
             >
-              <h3 className="text-lg font-semibold text-gray-900  mb-4">
-                Clear All Rewards?
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <h3 className="text-lg font-semibold mb-4">Clear All Rewards?</h3>
+              <p className="text-muted-foreground mb-6">
                 This will permanently delete all {totalRewards} rewards from
                 your wallet. This action cannot be undone.
               </p>
               <div className="flex gap-3">
-                <button
+                <Button
+                  variant="outline"
                   onClick={() => setShowConfirmClear(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                  className="flex-1"
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="destructive"
                   onClick={handleClearWallet}
-                  className="flex-1 px-4 py-2 bg-red-500  rounded-lg hover:bg-red-600 transition-colors"
+                  className="flex-1"
                 >
                   Clear All
-                </button>
+                </Button>
               </div>
             </motion.div>
           </motion.div>

@@ -97,6 +97,37 @@ body {
   transition: all 0.2s ease-in-out;
 }
 
+/* Exclude Radix UI components from global transitions to prevent animation conflicts */
+[data-radix-popper-content-wrapper],
+[data-radix-dropdown-menu-content],
+[data-radix-select-content],
+[data-radix-popover-content],
+[data-radix-tooltip-content],
+[data-radix-dialog-content],
+[data-radix-alert-dialog-content],
+[data-radix-hover-card-content],
+[data-radix-context-menu-content],
+[data-radix-menubar-content],
+[data-radix-navigation-menu-content],
+[data-radix-combobox-content],
+[data-radix-command-list],
+[data-radix-collapsible-content],
+[data-radix-accordion-content],
+[data-radix-tabs-content],
+[data-radix-aspect-ratio],
+[data-radix-avatar],
+[data-radix-checkbox],
+[data-radix-radio-group],
+[data-radix-switch],
+[data-radix-slider],
+[data-radix-progress],
+[data-radix-scroll-area],
+[data-radix-separator],
+[data-radix-label],
+[data-radix-slot] {
+  transition: none !important;
+}
+
 /* Backdrop blur effects */
 .backdrop-blur-custom {
   backdrop-filter: blur(20px);
