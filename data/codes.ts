@@ -1,242 +1,240 @@
 import { CodeData, RewardType, ActionType } from '@/types';
 
-export const validCodes: CodeData[] = [
-  // Common rewards
+// German Snack Brands and Products - Enhanced with detailed information
+const snackProducts = [
+  // Lays Products
   {
-    code: 'WELCOME2024',
-    reward: {
-      name: 'Welcome Coin',
-      type: RewardType.COMMON,
-      icon: '🪙',
-      description: 'A commemorative coin for new collectors',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'Registration Booth',
-    event: 'New User Welcome',
-    maxUses: 1
-  },
-  {
-    code: 'COFFEE123',
-    reward: {
-      name: 'Coffee Bean',
-      type: RewardType.COMMON,
-      icon: '☕',
-      description: 'A premium coffee bean collectible',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'Local Coffee Shop',
-    event: 'Morning Special'
-  },
-  {
-    code: 'BOOK42',
-    reward: {
-      name: 'Wisdom Badge',
-      type: RewardType.COMMON,
-      icon: '📚',
-      description: 'Knowledge is power badge',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'City Library',
-    event: 'Reading Challenge'
-  },
-  {
-    code: 'PIZZA789',
-    reward: {
-      name: 'Pizza Slice',
-      type: RewardType.COMMON,
-      icon: '🍕',
-      description: 'Delicious virtual pizza slice',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'Tony\'s Pizzeria',
-    event: 'Lunch Special'
+    id: 'lays-classic-200g',
+    brand: 'Lays',
+    name: 'Lays Classic Blue 200g',
+    code: 'LAYS-CLASSIC-200G',
+    rarity: RewardType.COMMON,
+    icon: '🥔',
+    description: 'Classic salted potato chips in a family size pack',
+    reward: 'Lays Classic Coin',
+    rewardDescription: 'A golden coin featuring the classic Lays logo',
+    image: '/images/products/lays-classic-200g.png',
+    expiryDate: '2024-12-31',
+    schemeDetails: 'Valid until December 31, 2024. One reward per code.'
   },
 
-  // Rare rewards
+  // Haribo Products
   {
-    code: 'CONCERT2024',
-    reward: {
-      name: 'VIP Ticket',
-      type: RewardType.RARE,
-      icon: '🎫',
-      description: 'Exclusive concert VIP access badge',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'Music Venue',
-    event: 'Summer Concert Series',
-    maxUses: 100
-  },
-  {
-    code: 'MUSEUM567',
-    reward: {
-      name: 'Ancient Artifact',
-      type: RewardType.RARE,
-      icon: '🏺',
-      description: 'Replica of a historical artifact',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'City Museum',
-    event: 'Archaeological Exhibition'
-  },
-  {
-    code: 'TECH2024',
-    reward: {
-      name: 'Circuit Board',
-      type: RewardType.RARE,
-      icon: '💾',
-      description: 'Vintage computer circuit board',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'Tech Conference',
-    event: 'Innovation Summit'
-  },
-  {
-    code: 'GARDEN456',
-    reward: {
-      name: 'Golden Flower',
-      type: RewardType.RARE,
-      icon: '🌻',
-      description: 'A rare golden sunflower',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'Botanical Garden',
-    event: 'Spring Festival'
+    id: 'haribo-goldbaren-100g',
+    brand: 'Haribo',
+    name: 'Haribo Goldbären 100g',
+    code: 'HARIBO-GOLDBAREN-100G',
+    rarity: RewardType.COMMON,
+    icon: '🐻',
+    description: 'Famous gummy bears in a classic pack',
+    reward: 'Golden Bear Badge',
+    rewardDescription: 'A shiny badge featuring the iconic golden bear',
+    image: '/images/products/haribo-goldbaren-100g.jpg',
+    expiryDate: '2024-12-31',
+    schemeDetails: 'Valid until December 31, 2024. One reward per code.'
   },
 
-  // Epic rewards
+  // Milka Products
   {
-    code: 'DRAGON2024',
-    reward: {
-      name: 'Dragon Scale',
-      type: RewardType.EPIC,
-      icon: '🐲',
-      description: 'A mystical dragon scale with ancient power',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'Fantasy Convention',
-    event: 'Dragon Quest Event',
-    maxUses: 50
-  },
-  {
-    code: 'SPACE999',
-    reward: {
-      name: 'Meteorite Fragment',
-      type: RewardType.EPIC,
-      icon: '☄️',
-      description: 'A piece of a real meteorite from space',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'Planetarium',
-    event: 'Cosmic Discovery Night'
-  },
-  {
-    code: 'TREASURE777',
-    reward: {
-      name: 'Pirate Compass',
-      type: RewardType.EPIC,
-      icon: '🧭',
-      description: 'An enchanted compass that points to treasure',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'Maritime Museum',
-    event: 'Pirate Exhibition'
+    id: 'milka-alpine-100g',
+    brand: 'Milka',
+    name: 'Milka Alpine Milk 100g',
+    code: 'MILKA-ALPINE-100G',
+    rarity: RewardType.RARE,
+    icon: '🍫',
+    description: 'Smooth Alpine milk chocolate in a standard bar',
+    reward: 'Alpine Chocolate Token',
+    rewardDescription: 'A special token with Alpine mountain design',
+    image: '/images/products/milka-alpine-100g.jpg',
+    expiryDate: '2024-12-31',
+    schemeDetails: 'Valid until December 31, 2024. One reward per code.'
   },
 
-  // Legendary rewards
+  // Kinder Products
   {
-    code: 'LEGEND001',
-    reward: {
-      name: 'Crown Jewel',
-      type: RewardType.LEGENDARY,
-      icon: '💎',
-      description: 'The most precious gem in the collection',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'Royal Palace Tour',
-    event: 'Crown Jewels Exhibition',
-    maxUses: 10,
-    expiresAt: new Date('2024-12-31')
-  },
-  {
-    code: 'PHOENIX2024',
-    reward: {
-      name: 'Phoenix Feather',
-      type: RewardType.LEGENDARY,
-      icon: '🔥',
-      description: 'A feather from the legendary phoenix',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'Mythical Creatures Expo',
-    event: 'Legend Quest',
-    maxUses: 25
+    id: 'kinder-schokolade-100g',
+    brand: 'Kinder',
+    name: 'Kinder Schokolade 100g',
+    code: 'KINDER-SCHOKOLADE-100G',
+    rarity: RewardType.RARE,
+    icon: '🍫',
+    description: 'Creamy milk chocolate with a smooth filling',
+    reward: 'Kinder Chocolate Medal',
+    rewardDescription: 'A golden medal with Kinder chocolate design',
+    image: '/images/products/kinder-schokolade-100g.jpg',
+    expiryDate: '2024-12-31',
+    schemeDetails: 'Valid until December 31, 2024. One reward per code.'
   },
 
-  // Special event rewards
+  // Ritter Sport Products
   {
-    code: 'HOLIDAY2024',
-    reward: {
-      name: 'Festive Star',
-      type: RewardType.SPECIAL,
-      icon: '⭐',
-      description: 'A special holiday commemorative star',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'Holiday Market',
-    event: 'Winter Festival',
-    maxUses: 200,
-    expiresAt: new Date('2024-12-25')
-  },
-  {
-    code: 'BIRTHDAY2024',
-    reward: {
-      name: 'Birthday Cake',
-      type: RewardType.SPECIAL,
-      icon: '🎂',
-      description: 'Celebrate another year of collecting!',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'Celebration Hall',
-    event: 'App Anniversary'
+    id: 'ritter-sport-alpine-100g',
+    brand: 'Ritter Sport',
+    name: 'Ritter Sport Alpine Milk 100g',
+    code: 'RITTER-ALPINE-100G',
+    rarity: RewardType.RARE,
+    icon: '🍫',
+    description: 'Premium Alpine milk chocolate in square format',
+    reward: 'Ritter Sport Trophy',
+    rewardDescription: 'A prestigious trophy with Ritter Sport branding',
+    image: '/images/products/ritter-sport-alpine-100g.jpg',
+    expiryDate: '2024-12-31',
+    schemeDetails: 'Valid until December 31, 2024. One reward per code.'
   },
 
-  // Demo/Test codes
+  // Pringles Products
   {
-    code: 'TEST123',
-    reward: {
-      name: 'Test Badge',
-      type: RewardType.COMMON,
-      icon: '🧪',
-      description: 'A badge for testing the scanning system',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'Development Lab',
-    event: 'System Testing'
+    id: 'pringles-original-110g',
+    brand: 'Pringles',
+    name: 'Pringles Original 110g',
+    code: 'PRINGLES-ORIGINAL-110G',
+    rarity: RewardType.COMMON,
+    icon: '🥔',
+    description: 'Original flavored potato crisps in iconic tube',
+    reward: 'Pringles Stack Coin',
+    rewardDescription: 'A coin featuring the iconic Pringles stack',
+    image: '/images/products/pringles-original-110g.jpg',
+    expiryDate: '2024-12-31',
+    schemeDetails: 'Valid until December 31, 2024. One reward per code.'
   },
+
+  // M&Ms Products
   {
-    code: 'DEMO456',
-    reward: {
-      name: 'Demo Trophy',
-      type: RewardType.RARE,
-      icon: '🏆',
-      description: 'You found the demo code!',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'Demo Area',
-    event: 'Product Demo'
+    id: 'mandms-chocolate-100g',
+    brand: 'M&Ms',
+    name: 'M&Ms Chocolate 100g',
+    code: 'MANDMS-CHOCOLATE-100G',
+    rarity: RewardType.RARE,
+    icon: '🍫',
+    description: 'Colorful chocolate candies in a standard pack',
+    reward: 'M&M Rainbow Badge',
+    rewardDescription: 'A colorful badge featuring M&M characters',
+    image: '/images/products/mandms-chocolate-100g.jpg',
+    expiryDate: '2024-12-31',
+    schemeDetails: 'Valid until December 31, 2024. One reward per code.'
   },
+
+  // Snickers Products
   {
-    code: 'SECRET999',
-    reward: {
-      name: 'Secret Medallion',
-      type: RewardType.EPIC,
-      icon: '🏅',
-      description: 'A secret reward for the curious explorers',
-      actionType: ActionType.CODE_SCAN
-    },
-    location: 'Hidden Location',
-    event: 'Easter Egg Hunt'
+    id: 'snickers-100g',
+    brand: 'Snickers',
+    name: 'Snickers 100g',
+    code: 'SNICKERS-100G',
+    rarity: RewardType.RARE,
+    icon: '🍫',
+    description: 'Satisfying chocolate bar with peanuts and caramel',
+    reward: 'Snickers Energy Token',
+    rewardDescription: 'A token representing the energy of Snickers',
+    image: '/images/products/snickers-100g.jpg',
+    expiryDate: '2024-12-31',
+    schemeDetails: 'Valid until December 31, 2024. One reward per code.'
+  },
+
+  // Twix Products
+  {
+    id: 'twix-100g',
+    brand: 'Twix',
+    name: 'Twix 100g',
+    code: 'TWIX-100G',
+    rarity: RewardType.RARE,
+    icon: '🍫',
+    description: 'Caramel and cookie covered in milk chocolate',
+    reward: 'Twix Duo Badge',
+    rewardDescription: 'A badge featuring the iconic Twix duo design',
+    image: '/images/products/twix-100g.jpg',
+    expiryDate: '2024-12-31',
+    schemeDetails: 'Valid until December 31, 2024. One reward per code.'
+  },
+
+  // Doritos Products
+  {
+    id: 'doritos-nacho-100g',
+    brand: 'Doritos',
+    name: 'Doritos Nacho Cheese 100g',
+    code: 'DORITOS-NACHO-100G',
+    rarity: RewardType.COMMON,
+    icon: '🧀',
+    description: 'Bold nacho cheese flavored tortilla chips',
+    reward: 'Doritos Nacho Token',
+    rewardDescription: 'A token featuring the bold nacho cheese flavor',
+    image: '/images/products/doritos-nacho-100g.jpg',
+    expiryDate: '2024-12-31',
+    schemeDetails: 'Valid until December 31, 2024. One reward per code.'
   }
 ];
+
+// Generate demo codes - one per product for testing
+const generateSnackCodes = (): CodeData[] => {
+  const codes: CodeData[] = [];
+
+  // Generate one demo code per product
+  for (const product of snackProducts) {
+    const demoCode = `${product.code}-DEMO`;
+
+    codes.push({
+      code: demoCode,
+      reward: {
+        name: `${product.name} Reward`,
+        type: product.rarity,
+        icon: product.icon,
+        description: `Collectible reward from ${product.name}`,
+        actionType: ActionType.CODE_SCAN
+      },
+      location: 'German Supermarket',
+      event: 'Snack Collection Campaign',
+      maxUses: 1
+    });
+  }
+
+  // Add some special/legendary codes for variety
+  const specialCodes = [
+    {
+      code: 'LAYS-GOLDEN-500G-DEMO',
+      reward: {
+        name: 'Golden Lays Trophy',
+        type: RewardType.LEGENDARY,
+        icon: '🏆',
+        description: 'Ultra rare golden Lays collectible',
+        actionType: ActionType.CODE_SCAN
+      },
+      location: 'German Supermarket',
+      event: 'Snack Collection Campaign',
+      maxUses: 1
+    },
+    {
+      code: 'HARIBO-DIAMOND-1000G-DEMO',
+      reward: {
+        name: 'Diamond Haribo Crown',
+        type: RewardType.LEGENDARY,
+        icon: '👑',
+        description: 'The rarest Haribo collectible ever',
+        actionType: ActionType.CODE_SCAN
+      },
+      location: 'German Supermarket',
+      event: 'Snack Collection Campaign',
+      maxUses: 1
+    },
+    {
+      code: 'MILKA-PLATINUM-500G-DEMO',
+      reward: {
+        name: 'Platinum Milka Bar',
+        type: RewardType.LEGENDARY,
+        icon: '💎',
+        description: 'Exclusive platinum Milka collectible',
+        actionType: ActionType.CODE_SCAN
+      },
+      location: 'German Supermarket',
+      event: 'Snack Collection Campaign',
+      maxUses: 1
+    }
+  ];
+
+  codes.push(...specialCodes);
+
+  return codes;
+};
+
+export const validCodes: CodeData[] = generateSnackCodes();
 
 export const getCodeData = (code: string): CodeData | undefined => {
   return validCodes.find(c => c.code.toLowerCase() === code.toLowerCase());
@@ -245,23 +243,23 @@ export const getCodeData = (code: string): CodeData | undefined => {
 export const isCodeValid = (code: string): boolean => {
   const codeData = getCodeData(code);
   if (!codeData) return false;
-  
+
   // Check if code is expired
   if (codeData.expiresAt && new Date() > codeData.expiresAt) {
     return false;
   }
-  
+
   return true;
 };
 
 export const getCodesByLocation = (location: string): CodeData[] => {
-  return validCodes.filter(c => 
+  return validCodes.filter(c =>
     c.location?.toLowerCase().includes(location.toLowerCase())
   );
 };
 
 export const getCodesByEvent = (event: string): CodeData[] => {
-  return validCodes.filter(c => 
+  return validCodes.filter(c =>
     c.event?.toLowerCase().includes(event.toLowerCase())
   );
 };
@@ -271,13 +269,35 @@ export const getCodesByRarity = (rarity: RewardType): CodeData[] => {
 };
 
 export const getActiveCodesCount = (): number => {
-  return validCodes.filter(c => 
+  return validCodes.filter(c =>
     !c.expiresAt || new Date() <= c.expiresAt
   ).length;
 };
 
 export const getExpiredCodesCount = (): number => {
-  return validCodes.filter(c => 
+  return validCodes.filter(c =>
     c.expiresAt && new Date() > c.expiresAt
   ).length;
+};
+
+// Helper function to get all available snack products for display
+export const getAvailableSnackProducts = () => {
+  return snackProducts;
+};
+
+// Helper function to get codes by brand
+export const getCodesByBrand = (brand: string): CodeData[] => {
+  return validCodes.filter(c =>
+    c.reward.name.toLowerCase().includes(brand.toLowerCase())
+  );
+};
+
+// Helper function to get product by ID
+export const getProductById = (id: string) => {
+  return snackProducts.find(product => product.id === id);
+};
+
+// Helper function to get all products
+export const getAllProducts = () => {
+  return snackProducts;
 };
