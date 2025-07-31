@@ -23,6 +23,7 @@ import { VideoProgressBar } from "@/components/ProgressBar";
 import { formatCooldownTime } from "@/lib/utils";
 import { playActionSound } from "@/lib/sounds";
 import RewardAnimation from "@/components/RewardAnimation";
+import { addVideoToHistory } from "@/components/VideoHistory";
 
 interface VideoWatcherProps {
   video: VideoData;
@@ -30,11 +31,11 @@ interface VideoWatcherProps {
   className?: string;
 }
 
-// Fallback video sources for better reliability
+// Local video fallback for reliability
 const FALLBACK_VIDEOS = [
-  "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-  "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
-  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+  "/videos/quick-tips.mp4",
+  "/videos/cooking-demo.mp4",
+  "/videos/nature-forest.mp4",
 ];
 
 export default function VideoWatcher({
@@ -99,7 +100,7 @@ export default function VideoWatcher({
         const isVideoPlaying = !videoElement.paused && !videoElement.ended;
         updateWatchTime(currentTime, isVideoPlaying);
 
-        // Debug logging for progress tracking
+        // Enhanced debug logging for progress tracking
         if (Math.floor(currentTime) % 5 === 0 && currentTime > 0) {
           // Log every 5 seconds
           console.log(
@@ -107,7 +108,7 @@ export default function VideoWatcher({
               1
             )}s, Progress: ${progress.watchTime.toFixed(
               1
-            )}s, Playing: ${isVideoPlaying}`
+            )}s, Playing: ${isVideoPlaying}, Eligible: ${isEligibleForReward()}`
           );
         }
       }
@@ -126,6 +127,18 @@ export default function VideoWatcher({
     const handleEnded = () => {
       setIsPlaying(false);
       endSession();
+
+      // Add to history even if not completed
+      if (progress.watchTime > 0) {
+        addVideoToHistory({
+          videoId: video.id,
+          watchedAt: new Date(),
+          watchTime: progress.watchTime,
+          completed: progress.completed,
+          rewardEarned: progress.completed ? video.reward.name : undefined,
+        });
+      }
+
       console.log("Video ended");
     };
 
@@ -202,6 +215,15 @@ export default function VideoWatcher({
         if (result.success) {
           markCompleted();
           setCooldown(ActionType.VIDEO_WATCH);
+
+          // Add to video history
+          addVideoToHistory({
+            videoId: video.id,
+            watchedAt: new Date(),
+            watchTime: progress.watchTime,
+            completed: true,
+            rewardEarned: result.reward?.name,
+          });
 
           // Play video completion sound
           playActionSound(ActionType.VIDEO_WATCH, true).catch(() => {});
@@ -290,6 +312,16 @@ export default function VideoWatcher({
   const handleSeek = (seekTime: number) => {
     const videoElement = videoRef.current;
     if (!videoElement) return;
+
+    // Detect seeking and reset progress if seeking backwards
+    const currentTime = videoElement.currentTime;
+    if (seekTime < currentTime) {
+      console.log(
+        `Seeking detected: ${currentTime.toFixed(1)}s → ${seekTime.toFixed(1)}s`
+      );
+      // Reset progress if seeking backwards (anti-cheat measure)
+      resetProgress();
+    }
 
     videoElement.currentTime = seekTime;
     setCurrentTime(seekTime);

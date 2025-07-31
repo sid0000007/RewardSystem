@@ -123,7 +123,8 @@ export default function Sidebar() {
           const isActive =
             pathname === item.href ||
             (item.href === "/dashboard" && pathname === "/") ||
-            (item.href === "/product" && pathname.startsWith("/product/"));
+            (item.href === "/product" && pathname.startsWith("/product/")) ||
+            (item.href === "/watch" && pathname.startsWith("/watch/"));
 
           return (
             <motion.div
