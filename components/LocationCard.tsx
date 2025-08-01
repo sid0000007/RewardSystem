@@ -15,7 +15,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { LocationData, Coordinates } from "@/types";
-import { formatDistance, getRewardRarity } from "@/lib/utils";
+import { formatDistance } from "@/lib/utils";
 import { getDistanceToLocation } from "@/data/locations";
 import { Badge } from "./ui/badge";
 import { getRarityColor, getStatusStyles } from "@/lib/getbgColour";
@@ -212,7 +212,7 @@ export default function EnhancedLocationCard({
             </div>
 
             <Badge
-              variant="secondary"
+              variant="outline"
               className={`${getRarityColor(
                 location.reward.type
               )} text-xs font-semibold rounded-sm w-18`}
@@ -267,11 +267,7 @@ export default function EnhancedLocationCard({
               ) : (
                 <>
                   <Clock className="w-4 h-4" />
-                  Get Closer (
-                  {formatDistance(
-                    Math.max(0, (distance || 0) - location.radius)
-                  )}{" "}
-                  to go)
+                  Get Closer
                 </>
               )}
             </motion.button>
