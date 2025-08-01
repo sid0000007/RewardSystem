@@ -4,6 +4,7 @@ import "./globals.css";
 import AppLayout from "@/components/AppLayout";
 import StoreInitializer from "@/components/StoreInitializer";
 import DailyLoginReward from "@/components/DailyLoginReward";
+import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
@@ -79,22 +80,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background text-foreground`}
       >
-        <div className="relative min-h-screen">
-          {/* Animated background with purple/pink particles */}
-          <div className="absolute inset-0 bg-gradient-to-br from-black via-purple-900/20 to-black">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNhODU1ZjciIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSI0Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30"></div>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="relative min-h-screen">
+            {/* Animated background with purple/pink particles */}
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-purple-50 to-gray-100 dark:from-black dark:via-purple-900/20 dark:to-black">
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNhODU1ZjciIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSI0Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-10 dark:opacity-30"></div>
+            </div>
+            <main className="relative z-10 min-h-screen">
+              <StoreInitializer />
+              <AppLayout>{children}</AppLayout>
+              <DailyLoginReward />
+            </main>
+            <Toaster />
           </div>
-          <main className="relative z-10 min-h-screen">
-            <StoreInitializer />
-            <AppLayout>{children}</AppLayout>
-            <DailyLoginReward />
-          </main>
-          <Toaster />
-        </div>
+        </ThemeProvider>
       </body>
     </html>
   );

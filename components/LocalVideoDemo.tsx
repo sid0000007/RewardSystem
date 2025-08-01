@@ -140,13 +140,7 @@ export default function LocalVideoDemo({
 
   return (
     <>
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Trophy className="w-5 h-5 text-yellow-500" />
-            Local Video Demo
-          </CardTitle>
-        </CardHeader>
+      <Card>       
         <CardContent className="space-y-4">
           <div>
             <h3 className="text-lg font-semibold mb-2">{title}</h3>
@@ -154,7 +148,7 @@ export default function LocalVideoDemo({
           </div>
 
           {/* Video Player */}
-          <div className="relative bg-black rounded-lg overflow-hidden">
+          <div className="relative rounded-md overflow-hidden">
             <video
               ref={videoRef}
               className="w-full h-auto"
@@ -167,13 +161,12 @@ export default function LocalVideoDemo({
             </video>
 
             {/* Video Controls Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+            <div className="absolute bottom-0 left-0 text-white right-0  p-4">
               <div className="flex items-center justify-between">
                 <Button
-                  onClick={togglePlay}
-                  variant="ghost"
+                  onClick={togglePlay}                  
                   size="sm"
-                  className=" hover:bg-white/20"
+                  className=" bg-white text-black hover:bg-white/80"
                 >
                   {isPlaying ? (
                     <Pause className="w-4 h-4" />

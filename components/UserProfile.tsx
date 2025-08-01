@@ -13,10 +13,12 @@ import {
   VolumeX,
   Wallet,
 } from "lucide-react";
+import { ThemeToggle } from "./theme-toggle";
 import { UserProfile as UserProfileType, RewardType } from "@/types";
 import { useRewards } from "@/hooks/useRewards";
 import { formatDate } from "@/lib/utils";
 import SoundControl from "./SoundControl";
+import { Button } from "./ui/button";
 
 interface UserProfileProps {
   className?: string;
@@ -109,22 +111,23 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
           </div>
 
           <div className="flex gap-3">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <ThemeToggle />
+            <Button
               onClick={() => setShowSettings(true)}
-              className="p-3 bg-muted rounded-xl border transition-all duration-200"
+              variant="outline"
+              size="lg"
+              className="p-3 rounded-xl border-2  transition-all duration-200"
             >
               <Settings className="w-5 h-5" />
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            </Button>
+            <Button
               onClick={() => setIsEditing(true)}
-              className="p-3 rounded-xl border-2 hover:bg-primary hover:text-primary transition-all duration-200"
+              variant="outline"
+              size="lg"
+              className="p-3 rounded-xl border-2  transition-all duration-200"
             >
               <Edit2 className="w-5 h-5" />
-            </motion.button>
+            </Button>
           </div>
         </div>
 
@@ -253,13 +256,13 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-black/90 backdrop-blur-xl rounded-2xl p-8 max-w-sm w-full border border-purple-500/20 shadow-2xl"
+              className="bg-card rounded-2xl p-8 max-w-sm w-full border"
             >
               <div className="flex items-center justify-between mb-8">
                 <h3 className="text-xl font-semibold ">Settings</h3>
                 <button
                   onClick={() => setShowSettings(false)}
-                  className="p-2   transition-colors"
+                  className="p-2  transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -267,7 +270,7 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
 
               <div className="space-y-6">
                 {/* Sounds */}
-                <div className="flex items-center justify-between p-4 bg-black/20 backdrop-blur-sm rounded-xl border border-purple-500/20">
+                <div className="flex items-center justify-between p-4 border rounded-xl">
                   <div className="flex items-center gap-3">
                     {userProfile.preferences.sounds ? (
                       <Volume2 className="w-5 h-5 " />

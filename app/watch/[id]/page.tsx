@@ -120,9 +120,8 @@ export default function VideoDetailPage() {
           {/* Video Info Card */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Play className="w-5 h-5" />
-                Video Details
+              <CardTitle className="flex items-center gap-2">                
+                Details
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -148,8 +147,7 @@ export default function VideoDetailPage() {
           {/* Reward Card */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Trophy className="w-5 h-5 text-yellow-500" />
+              <CardTitle className="flex items-center gap-2">                
                 Reward
               </CardTitle>
             </CardHeader>
@@ -165,8 +163,8 @@ export default function VideoDetailPage() {
               </div>
 
               <Badge
-                variant="secondary"
-                className={`${rarity.color} text-xs font-semibold px-2 py-1 rounded-full`}
+                variant="outline"
+                className={`${rarity.color} text-xs font-semibold px-2 py-1`}
               >
                 {rarity.label}
               </Badge>

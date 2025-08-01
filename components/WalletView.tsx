@@ -165,7 +165,7 @@ export default function WalletView() {
   const getRarityColor = (type: RewardType) => {
     switch (type) {
       case RewardType.COMMON:
-        return "bg-gray-500";
+        return "bg-gray-200";
       case RewardType.RARE:
         return "bg-blue-500";
       case RewardType.EPIC:
@@ -175,7 +175,7 @@ export default function WalletView() {
       case RewardType.SPECIAL:
         return "bg-pink-500";
       default:
-        return "bg-gray-500";
+        return "bg-gray-200";
     }
   };
 
