@@ -35,7 +35,7 @@ const SOUND_EFFECTS: Record<string, SoundConfig> = {
     volume: 0.5,
     preload: true
   },
-  
+
   // Action sounds
   'scan-success': {
     src: '/sounds/beep-scan.mp3',
@@ -47,17 +47,6 @@ const SOUND_EFFECTS: Record<string, SoundConfig> = {
     volume: 0.2,
     preload: true
   },
-  'video-complete': {
-    src: '/sounds/video-complete.mp3',
-    volume: 0.4,
-    preload: true
-  },
-  'checkin-success': {
-    src: '/sounds/location-ping.mp3',
-    volume: 0.4,
-    preload: true
-  },
-  
   // UI feedback sounds
   'button-click': {
     src: '/sounds/click-soft.mp3',
@@ -69,16 +58,6 @@ const SOUND_EFFECTS: Record<string, SoundConfig> = {
     volume: 0.1,
     preload: false
   },
-  'achievement-unlock': {
-    src: '/sounds/achievement-bell.mp3',
-    volume: 0.5,
-    preload: true
-  },
-  'streak-bonus': {
-    src: '/sounds/bonus-ding.mp3',
-    volume: 0.4,
-    preload: true
-  }
 };
 
 // Fallback sounds using Web Audio API for when audio files aren't available
@@ -88,19 +67,19 @@ const generateTone = (frequency: number, duration: number, volume: number = 0.1)
       const audioContext = new (window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext)();
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
-      
+
       oscillator.connect(gainNode);
       gainNode.connect(audioContext.destination);
-      
+
       oscillator.frequency.value = frequency;
       oscillator.type = 'sine';
-      
+
       gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
       gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-      
+
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + duration);
-      
+
       setTimeout(() => {
         resolve();
       }, duration * 1000);
@@ -140,10 +119,10 @@ class SoundManager {
   private initialize() {
     // Check if audio files are available, otherwise use Web Audio API
     this.checkAudioAvailability();
-    
+
     // Preload commonly used sounds
     this.preloadSounds();
-    
+
     // Listen for user preference changes
     this.setupPreferenceListener();
   }
@@ -154,16 +133,16 @@ class SoundManager {
       this.useWebAudio = true;
       return;
     }
-    
+
     try {
       const testAudio = new Audio();
       testAudio.src = SOUND_EFFECTS['reward-common'].src;
-      
+
       await new Promise((resolve, reject) => {
         testAudio.addEventListener('canplaythrough', resolve, { once: true });
         testAudio.addEventListener('error', reject, { once: true });
         testAudio.load();
-        
+
         // Timeout after 2 seconds
         setTimeout(() => reject(new Error('Timeout')), 2000);
       });
@@ -184,12 +163,12 @@ class SoundManager {
         audio.src = config.src;
         audio.volume = config.volume * this.masterVolume;
         audio.preload = 'auto';
-        
+
         // Handle loading errors gracefully
         audio.addEventListener('error', () => {
           console.warn(`Failed to preload sound: ${key}`);
         });
-        
+
         this.audioCache.set(key, audio);
       }
     });
@@ -198,14 +177,14 @@ class SoundManager {
   private setupPreferenceListener() {
     // Only run on client side
     if (typeof window === 'undefined') return;
-    
+
     // Listen for storage changes to update sound preferences
     window.addEventListener('storage', (e) => {
       if (e.key === 'mint-user-profile') {
         this.updateSoundPreferences();
       }
     });
-    
+
     // Initial preference check
     this.updateSoundPreferences();
   }
@@ -213,7 +192,7 @@ class SoundManager {
   private updateSoundPreferences() {
     // Only run on client side
     if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
-    
+
     try {
       const profileData = localStorage.getItem('mint-user-profile');
       if (profileData) {
@@ -231,7 +210,7 @@ class SoundManager {
 
   public setMasterVolume(volume: number) {
     this.masterVolume = Math.max(0, Math.min(1, volume));
-    
+
     // Update volume for cached audio elements
     this.audioCache.forEach((audio, key) => {
       const config = SOUND_EFFECTS[key];
@@ -266,12 +245,12 @@ class SoundManager {
     if (!config) return;
 
     let audio = this.audioCache.get(soundKey);
-    
+
     if (!audio) {
       audio = new Audio();
       audio.src = config.src;
       audio.volume = config.volume * this.masterVolume;
-      
+
       if (!config.preload) {
         this.audioCache.set(soundKey, audio);
       }
@@ -279,7 +258,7 @@ class SoundManager {
 
     // Reset audio to beginning if it's already playing
     audio.currentTime = 0;
-    
+
     return audio.play();
   }
 
@@ -288,8 +267,8 @@ class SoundManager {
     if (!fallback) return;
 
     return generateTone(
-      fallback.frequency, 
-      fallback.duration, 
+      fallback.frequency,
+      fallback.duration,
       fallback.volume * this.masterVolume
     );
   }
@@ -302,7 +281,7 @@ class SoundManager {
 
   public playActionSound(actionType: ActionType, success: boolean = true): Promise<void> {
     let soundKey: string;
-    
+
     switch (actionType) {
       case ActionType.CODE_SCAN:
         soundKey = success ? 'scan-success' : 'scan-error';
@@ -316,7 +295,7 @@ class SoundManager {
       default:
         return Promise.resolve();
     }
-    
+
     return this.play(soundKey);
   }
 
@@ -327,14 +306,14 @@ class SoundManager {
       'achievement': 'achievement-unlock',
       'streak-bonus': 'streak-bonus'
     };
-    
+
     return this.play(soundMap[type]);
   }
 
   // Method to test all sounds (useful for development)
   public async testAllSounds(): Promise<void> {
     console.log('Testing all sound effects...');
-    
+
     for (const soundKey of Object.keys(SOUND_EFFECTS)) {
       console.log(`Playing: ${soundKey}`);
       await this.play(soundKey);
