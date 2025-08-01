@@ -29,7 +29,7 @@ function CustomBadge({ type, variant = "default" }: CustomBadgeProps) {
 
   return (
     <div
-      className={`px-2 py-1 rounded-md text-xs text-center font-medium border ${getBadgeStyle(
+      className={`px-2 py-1 max-w-[70px] w-[70px] rounded-md text-xs text-center font-medium border ${getBadgeStyle(
         type
       )}`}
     >
