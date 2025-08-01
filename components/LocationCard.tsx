@@ -17,6 +17,8 @@ import {
 import { LocationData, Coordinates } from "@/types";
 import { formatDistance, getRewardRarity } from "@/lib/utils";
 import { getDistanceToLocation } from "@/data/locations";
+import { Badge } from "./ui/badge";
+import { getRarityColor, getStatusStyles } from "@/lib/getbgColour";
 
 interface EnhancedLocationCardProps {
   location: LocationData;
@@ -82,37 +84,8 @@ export default function EnhancedLocationCard({
     }
   };
 
-  // Status-based styling
-  const getStatusStyles = () => {
-    switch (cardStatus) {
-      case "checked-in":
-        return {
-          border: "border-success",
-          bg: "bg-success/10",
-          glow: "shadow-success/20",
-        };
-      case "available":
-        return {
-          border: "border-primary",
-          bg: "bg-primary/10",
-          glow: "shadow-primary/20",
-        };
-      case "nearby":
-        return {
-          border: "border-warning",
-          bg: "bg-warning/10",
-          glow: "shadow-warning/20",
-        };
-      default:
-        return {
-          border: "border-muted",
-          bg: "bg-background",
-          glow: "shadow-muted/20",
-        };
-    }
-  };
 
-  const statusStyles = getStatusStyles();
+  const statusStyles = getStatusStyles(cardStatus);
 
   return (
     <motion.div
@@ -147,45 +120,6 @@ export default function EnhancedLocationCard({
         </div>
       )}
 
-      {/* Status Indicators */}
-      <div className="absolute top-3 right-3 z-10 flex gap-2">
-        {isCheckedIn && (
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            className="bg-success text-background rounded-full p-1.5 shadow-lg"
-            title="Already checked in"
-          >
-            <CheckCircle className="w-4 h-4" />
-          </motion.div>
-        )}
-
-        {isWithinRange && !isCheckedIn && (
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            className="text-background rounded-full p-1.5 shadow-lg animate-pulse"
-            title="Within check-in range"
-          >
-            <Target className="w-4 h-4" />
-          </motion.div>
-        )}
-
-        {!isWithinRange &&
-          !isCheckedIn &&
-          distance !== null &&
-          distance <= location.radius * 2 && (
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              className="bg-warning text-background rounded-full p-1.5 shadow-lg"
-              title="Getting close"
-            >
-              <Navigation className="w-4 h-4" />
-            </motion.div>
-          )}
-      </div>
-
       {/* Rarity Border Glow */}
       <div
         className={`absolute inset-0 rounded-lg bg-gradient-to-r ${
@@ -212,8 +146,6 @@ export default function EnhancedLocationCard({
               {location.description}
             </p>
           </div>
-
-          <div className="text-3xl ml-3">{location.reward.icon}</div>
         </div>
 
         {/* Enhanced Location Info */}
@@ -280,32 +212,15 @@ export default function EnhancedLocationCard({
               </span>
             </div>
 
-            <span
-              className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${rarity.color} bg-opacity-10`}
+            <Badge
+              variant="secondary"
+              className={`${getRarityColor(
+                location.reward.type
+              )} text-xs font-semibold rounded-sm w-18`}
             >
-              <div
-                className={`w-2 h-2 rounded-full mr-1 ${
-                  location.reward.type === "legendary"
-                    ? "bg-yellow-500"
-                    : location.reward.type === "epic"
-                    ? "bg-purple-500"
-                    : location.reward.type === "rare"
-                    ? "bg-blue-500"
-                    : location.reward.type === "special"
-                    ? "bg-pink-500"
-                    : "bg-muted"
-                }`}
-              />
-              {rarity.label}
-            </span>
+              {location.reward.type}
+            </Badge>
           </div>
-        </div>
-
-        {/* Reward Description */}
-        <div className="bg-muted/50 rounded-lg p-3 mb-4">
-          <p className="text-sm text-muted-foreground">
-            {location.reward.description}
-          </p>
         </div>
 
         {/* Enhanced Action Buttons */}
@@ -408,7 +323,7 @@ export default function EnhancedLocationCard({
               </div>
 
               {/* Progress visualization */}
-              <div className="mt-2 h-1 bg-warning/20 rounded-full overflow-hidden">
+              <div className="h-1 bg-warning/20 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-warning transition-all duration-500"
                   style={{ width: `${proximityPercentage}%` }}

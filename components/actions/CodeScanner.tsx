@@ -39,6 +39,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getRarityColor } from "@/lib/getbgColour";
 
 interface ScanHistory {
   code: string;
@@ -281,23 +282,6 @@ export default function CodeScanner() {
   // Get unique brands for filter
   const brands = Array.from(new Set(snackProducts.map((p) => p.brand)));
 
-  const getRarityColor = (rarity: string) => {
-    switch (rarity) {
-      case "common":
-        return "text-gray-500";
-      case "rare":
-        return "text-blue-500";
-      case "epic":
-        return "text-purple-500";
-      case "legendary":
-        return "text-yellow-500";
-      case "special":
-        return "text-pink-500";
-      default:
-        return "text-gray-500";
-    }
-  };
-
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast.success("Code copied to clipboard!", {
@@ -312,9 +296,7 @@ export default function CodeScanner() {
       <Card className=" border  shadow-2xl">
         <CardContent className="space-y-6 max-w-xl lg:max-w-3xl mx-auto">
           <div className="text-center">
-            <p className="">
-              Enter code from your products to collect rewards
-            </p>
+            <p className="">Enter code from your products to collect rewards</p>
           </div>
 
           {/* Code Input */}
@@ -444,14 +426,11 @@ export default function CodeScanner() {
               >
                 <Card className="h-full hover:shadow-lg transition-all duration-100 overflow-hidden flex flex-col">
                   {/* Rarity Glow Effect */}
-                  <div
-                    className="absolute  rounded-lg"/>
+                  <div className="absolute  rounded-lg" />
 
                   <CardContent className="p-2 md:p-5 relative z-10 flex flex-col flex-1">
                     {/* Rarity Badge and Copy Button */}
-                    <div className="flex justify-end gap-2">
-                     
-                    </div>
+                    <div className="flex justify-end gap-2"></div>
                     {/* Product Header */}
                     <div className="flex items-start gap-3 mb-4">
                       <div className="text-3xl md:text-4xl filter drop-shadow-lg flex-shrink-0">
@@ -502,7 +481,6 @@ export default function CodeScanner() {
 
                       {/* View Details Button */}
                       <Button
-                        
                         size="sm"
                         onClick={(e) => {
                           e.stopPropagation();
@@ -522,9 +500,7 @@ export default function CodeScanner() {
           {filteredProducts.length === 0 && (
             <div className="text-center py-12">
               <Package className="w-16 h-16  mx-auto mb-4 opacity-50" />
-              <p className=" text-lg font-medium">
-                No snack products found
-              </p>
+              <p className=" text-lg font-medium">No snack products found</p>
               <p className=" text-sm mt-2">
                 Try adjusting your search or filter criteria
               </p>

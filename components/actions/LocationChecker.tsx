@@ -38,8 +38,13 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
-import { Select, SelectContent, SelectValue } from "@radix-ui/react-select";
-import { SelectItem, SelectTrigger } from "../ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 interface LocationCheckerProps {
   className?: string;
@@ -436,7 +441,6 @@ export default function LocationChecker({
           return null;
         })()}
       </div>
-     
 
       {/* Location List */}
       <div className="space-y-4">
@@ -447,58 +451,58 @@ export default function LocationChecker({
           {searchQuery && ` (${sortedLocations.length} results)`}
         </h3>
 
-         {/* Filters and Search */}
-      <Card>
-        <CardContent className="">
-          <div className="flex flex-col lg:flex-row gap-4">
-            {/* Search */}
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search locations..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-
-            {/* Filters */}
-            <div className="flex gap-2 flex-wrap">
-              <Select
-                value={filter}
-                onValueChange={(value) => setFilter(value as FilterType)}
-              >
-                <SelectTrigger className="">
-                  <SelectValue placeholder="All Locations" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Locations</SelectItem>
-                  <SelectItem value="available">
-                    Available to Check-in
-                  </SelectItem>
-                  <SelectItem value="checked-in">Already Checked-in</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Button
-                variant="outline"
-                onClick={refresh}
-                className="p-2"
-                title="Refresh location"
-              >
-                <RefreshCw
-                  className={`w-4 h-4 ${isGeoLoading ? "animate-spin" : ""}`}
+        {/* Filters and Search */}
+        <Card>
+          <CardContent className="">
+            <div className="flex flex-col lg:flex-row gap-4">
+              {/* Search */}
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search locations..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10"
                 />
-              </Button>
+              </div>
+
+              {/* Filters */}
+              <div className="flex gap-2 flex-wrap">
+                <Select
+                  value={filter}
+                  onValueChange={(value) => setFilter(value as FilterType)}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="All Locations" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Locations</SelectItem>
+                    <SelectItem value="available">
+                      Available to Check-in
+                    </SelectItem>
+                    <SelectItem value="checked-in">
+                      Already Checked-in
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Button
+                  variant="outline"
+                  onClick={refresh}
+                  className="p-2"
+                  title="Refresh location"
+                >
+                  <RefreshCw
+                    className={`w-4 h-4 ${isGeoLoading ? "animate-spin" : ""}`}
+                  />
+                </Button>
+              </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
         {sortedLocations.length === 0 ? (
-
-          
           <div className="text-center py-12 rounded-xl shadow-lg border">
             <MapPin className="w-12 h-12 mx-auto mb-4" />
             <p className="mb-2">No locations found</p>
@@ -523,7 +527,7 @@ export default function LocationChecker({
             )}
           </div>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-3">
             {sortedLocations.map((location) => (
               <LocationCard
                 key={location.id}
