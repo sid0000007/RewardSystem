@@ -189,15 +189,15 @@ export default function WalletView() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
+          <h1 className="text-xl lg:text-3xl font-bold flex items-center gap-2">
             My Wallet
           </h1>
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-2 flex-wrap">
-          <Button onClick={handleExport} variant="outline" size="sm">
-            <Download className="w-4 h-4 mr-2" />
+            <Button onClick={handleExport} variant="outline" size="sm">
+              <Download className="lg:w-4 lg:h-4 w-3 h-3   mr-2" />
             Export
           </Button>
 
@@ -211,7 +211,7 @@ export default function WalletView() {
             />
             <Button asChild variant="outline" size="sm">
               <label htmlFor="import-file" className="cursor-pointer">
-                <Upload className="w-4 h-4 mr-2" />
+                <Upload className="lg:w-4 lg:h-4 w-3 h-3     mr-2" />
                 Import
               </label>
             </Button>
@@ -223,18 +223,18 @@ export default function WalletView() {
             variant="destructive"
             size="sm"
           >
-            <Trash2 className="w-4 h-4 mr-2" />
+            <Trash2 className="lg:w-4 lg:h-4 w-2 h-2  mr-2" />
             Clear All
           </Button>
         </div>
       </div>
 
       {/* stats sections  */}
-      <div className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-6 gap-2">
+      <div className=" lg:block hidden grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-6 gap-2">
         <Card className="hover:shadow-md transition-shadow">
           <CardContent className="p-2">
             <div className="flex flex-col items-center text-center">
-              <span className="text-base mb-0.5">💰</span>
+              <span className="text-base lg:text-2xl mb-0.5">💰</span>
               <div className="text-sm font-bold">
                 {commonCount +
                   rareCount +
@@ -299,7 +299,7 @@ export default function WalletView() {
           <div className="flex flex-col lg:flex-row gap-4">
             {/* Search */}
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 lg:w-4 lg:h-4 w-3 h-3 text-muted-foreground" />
               <Input
                 type="text"
                 placeholder="Search rewards..."
@@ -312,14 +312,14 @@ export default function WalletView() {
             </div>
 
             {/* Filters */}
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex gap-2 flex-wrap text-sm lg:text-base">
               <Select
                 value={selectedType}
                 onValueChange={(value: string) =>
                   setSelectedType(value as RewardType | "all")
                 }
               >
-                <SelectTrigger className="w-[140px]">
+                <SelectTrigger className="lg:w-[140px] w-[100px] text-sm lg:text-base">
                   <SelectValue placeholder="All Types" />
                 </SelectTrigger>
                 <SelectContent>
@@ -340,7 +340,7 @@ export default function WalletView() {
                   setSelectedAction(value as ActionType | "all")
                 }
               >
-                <SelectTrigger className="w-[160px]">
+                <SelectTrigger className="lg:w-[140px] w-[100px] text-sm lg:text-base">
                   <SelectValue placeholder="All Actions" />
                 </SelectTrigger>
                 <SelectContent>
@@ -366,7 +366,7 @@ export default function WalletView() {
                   setSortBy(value as SortOption)
                 }
               >
-                <SelectTrigger className="w-[140px]">
+                <SelectTrigger className="lg:w-[140px] w-[100px] text-sm lg:text-base">
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>

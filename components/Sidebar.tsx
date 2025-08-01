@@ -129,7 +129,7 @@ export default function Sidebar() {
             (item.href === "/watch" && pathname.startsWith("/watch/"));
 
           return (
-            <motion.div
+            <div
               key={item.id}              
             >
               <Link
@@ -148,7 +148,7 @@ export default function Sidebar() {
                   </div>
                 )}
               </Link>
-            </motion.div>
+            </div>
           );
         })}
       </nav>

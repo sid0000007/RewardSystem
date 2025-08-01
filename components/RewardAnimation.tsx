@@ -153,7 +153,12 @@ export default function RewardAnimation({
   };
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none">
+    <div className="fixed inset-0 z-50 pointer-events-none ">
+      {/* Background Overlay */}
+      <AnimatePresence>
+        {showReward && <motion.div className="fixed inset-0 bg-black" />}
+      </AnimatePresence>
+
       {/* Particles */}
       {particles.map((particle) => (
         <motion.div
@@ -248,7 +253,7 @@ export default function RewardAnimation({
               />
 
               {/* Reward Card */}
-              <div className="relative rounded-2xl p-8 shadow-2xl border-4  min-w-[300px]">
+              <div className="relative rounded-2xl p-8 shadow-2xl border-4 min-w-[300px] bg-background">
                 {/* Rarity Icon */}
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <motion.div

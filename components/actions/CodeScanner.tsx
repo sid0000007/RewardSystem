@@ -302,7 +302,7 @@ export default function CodeScanner() {
         <Card className="border shadow-2xl">
           <CardContent className="space-y-6 max-w-xl lg:max-w-3xl mx-auto">
             <div className="text-center">
-              <p className="">
+              <p className="text-sm lg:text-base">
                 Enter code from your products to collect rewards
               </p>
             </div>
@@ -317,7 +317,7 @@ export default function CodeScanner() {
                   onKeyPress={handleKeyPress}
                   placeholder="Enter snack product code here..."
                   disabled={isScanning || cooldownStatus.isActive}
-                  className="text-center text-lg font-mono transition-all duration-200"
+                  className="text-center text-sm lg:text-lg font-mono transition-all duration-200"
                   maxLength={30}
                 />
                 {code && (
@@ -325,7 +325,7 @@ export default function CodeScanner() {
                     variant="ghost"
                     size="sm"
                     onClick={() => setCode("")}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm lg:text-base"
                   >
                     <X className="w-4 h-4" />
                   </Button>
@@ -336,7 +336,7 @@ export default function CodeScanner() {
               <Button
                 onClick={handleValidateCode}
                 disabled={isScanning || cooldownStatus.isActive || !code.trim()}
-                className="w-full font-semibold py-3"
+                className="w-full font-semibold py-3 text-sm lg:text-base"
                 size="lg"
               >
                 {isScanning ? (
@@ -393,7 +393,7 @@ export default function CodeScanner() {
                 {/* Search and Filter */}
                 <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-6">
                   <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 lg:w-4 lg:h-4 w-3 h-3 text-sm lg:text-base text-muted-foreground" />
                     <Input
                       type="text"
                       placeholder="Search products..."
@@ -421,7 +421,7 @@ export default function CodeScanner() {
                 </div>
 
                 {/* Products Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 md:gap-6 auto-rows-fr">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 md:gap-6 auto-rows-fr text-sm lg:text-base">
                   {filteredProducts.map((product) => (
                     <motion.div
                       key={product.code}
@@ -430,9 +430,9 @@ export default function CodeScanner() {
                       onClick={() => router.push(`/product/${product.id}`)}
                     >
                       <Card className="h-full hover:shadow-lg transition-all duration-100 overflow-hidden flex flex-col">
-                        <CardContent className="p-2 md:p-5 relative z-10 flex flex-col flex-1">
+                        <CardContent className="p-2 md:p-5 relative z-10 flex flex-col  flex-1">
                           {/* Product Header */}
-                          <div className="flex items-start gap-3 mb-4">
+                          <div className="flex flex-col lg:flex-row items-start gap-2 mb-4">
                             <div className="text-3xl md:text-4xl filter drop-shadow-lg flex-shrink-0">
                               <img
                                 src={product.image}
@@ -461,7 +461,7 @@ export default function CodeScanner() {
                                 e.stopPropagation();
                                 copyToClipboard(`${product.code}-DEMO`);
                               }}
-                              className="text-xs font-mono group/btn flex-shrink-0"
+                              className="text-xs lg:text-sm font-mono group/btn flex-shrink-0"
                             >
                               <Copy className="w-3 h-3 mr-1" />
                               <span className="hidden sm:inline truncate">

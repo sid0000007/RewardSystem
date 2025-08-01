@@ -1,4 +1,4 @@
-"use client";
+
 
 import WalletView from "@/components/WalletView";
 

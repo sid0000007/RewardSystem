@@ -120,7 +120,7 @@ export default function WatchPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold flex items-center gap-2">
+            <h1 className="text-xl lg:text-3xl font-bold flex items-center gap-2">
               Video Library
             </h1>
           </div>
@@ -132,25 +132,25 @@ export default function WatchPage() {
             <div className="flex flex-col lg:flex-row gap-4">
               {/* Search */}
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 lg:w-4 lg:h-4 w-3 h-3 text-sm lg:text-base  text-muted-foreground" />
                 <Input
                   type="text"
                   placeholder="Search videos..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 text-sm lg:text-base"
                 />
               </div>
 
               {/* Filters */}
-              <div className="flex gap-2 flex-wrap">
+              <div className="flex gap-2 flex-wrap text-sm lg:text-base">
                 <Select
                   value={categoryFilter}
                   onValueChange={(value) =>
                     setCategoryFilter(value as CategoryFilter)
                   }
                 >
-                  <SelectTrigger className="w-[160px]">
+                  <SelectTrigger className="lg:w-[160px] w-[100px] text-sm lg:text-base">
                     <SelectValue placeholder="All Categories" />
                   </SelectTrigger>
                   <SelectContent>
@@ -168,7 +168,7 @@ export default function WatchPage() {
                   value={sortBy}
                   onValueChange={(value) => setSortBy(value as SortOption)}
                 >
-                  <SelectTrigger className="w-[160px]">
+                  <SelectTrigger className="lg:w-[160px] w-[100px] text-sm lg:text-base">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent>

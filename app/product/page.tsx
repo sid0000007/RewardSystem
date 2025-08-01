@@ -9,7 +9,7 @@ export default function ScanPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">           
+          <h1 className="text-xl lg:text-3xl font-bold flex items-center gap-2">           
            Validate Product Codes
           </h1>
         </div>        

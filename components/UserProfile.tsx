@@ -103,7 +103,7 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
         <div className="flex flex-col lg:flex-row gap-4  items-start justify-between mb-8">
           <div className="flex items-center gap-6">
             <div className="relative">
-              <div className="w-20 h-20 bg-background rounded-2xl flex items-center justify-center text-4xl shadow-lg">
+              <div className="lg:w-20 lg:h-20 w-12 h-12 bg-background rounded-2xl flex items-center justify-center text-4xl shadow-lg">
                 {userProfile.avatar}
               </div>
               <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-black flex items-center justify-center">
@@ -114,7 +114,7 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
               <h2 className="text-xl lg:text-3xl font-bold  mb-2">
                 {userProfile.username}
               </h2>
-              <p className=" flex items-center gap-2">
+              <p className=" flex text-sm lg:text-base font-light items-center gap-2">
                 <Calendar className="w-4 h-4" />
                 Joined{" "}
                 <span suppressHydrationWarning>
@@ -148,15 +148,15 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
         {/* Stats Grid - Shadcn Style */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
           <div className="bg-muted rounded-xl p-4 border">
-            <div className="text-2xl font-bold mb-1">{totalRewards}</div>
+            <div className="text-xl lg:text-2xl font-bold mb-1">{totalRewards}</div>
             <div className="text-sm text-muted-foreground">Total Rewards</div>
           </div>
           <div className="bg-muted rounded-xl p-4 border">
-            <div className="text-2xl font-bold mb-1">{todayRewards}</div>
+            <div className="text-xl lg:text-2xl font-bold mb-1">{todayRewards}</div>
             <div className="text-sm text-muted-foreground">Today</div>
           </div>
           <div className="bg-muted rounded-xl p-4 border">
-            <div className="text-2xl font-bold mb-1">{getStreakDays()}</div>
+            <div className="text-xl lg:text-2xl font-bold mb-1">{getStreakDays()}</div>
             <div className="text-sm text-muted-foreground">Day Streak</div>
           </div>
         </div>
@@ -229,10 +229,7 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
       {/* Edit Profile Modal - Shadcn Style */}
       <AnimatePresence>
         {isEditing && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <motion.div            
             className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
             onClick={handleCancel}
           >
