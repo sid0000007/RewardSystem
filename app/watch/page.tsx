@@ -4,14 +4,10 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Video,
-  Play,
-  Clock,
-  Trophy,
   Search,
   Grid3X3,
   List,
   CheckCircle,
-  Film,
 } from "lucide-react";
 import {
   videoLibrary,
@@ -19,11 +15,10 @@ import {
   getVideoStats,
 } from "@/data/videos";
 import { useMultiVideoProgress } from "@/hooks/useVideoProgress";
-import { getRewardRarity } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+
 import {
   Select,
   SelectContent,

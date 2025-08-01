@@ -1,6 +1,5 @@
 import { VideoData, RewardType, ActionType } from '@/types';
 
-// Using local videos for better control and reliability
 export const videoLibrary: VideoData[] = [
   // Nature & Environment Videos
   {

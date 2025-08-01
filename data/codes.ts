@@ -1,6 +1,6 @@
 import { CodeData, RewardType, ActionType } from '@/types';
 
-// German Snack Brands and Products - Enhanced with detailed information
+
 const snackProducts = [
   // Lays Products
   {

@@ -6,9 +6,7 @@ import { ArrowLeft, Calendar, Gift, Info, Clock, Copy } from "lucide-react";
 import { getProductById } from "@/data/codes";
 import { Button } from "@/components/ui/button";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { getRarityColor } from "@/lib/getbgColour";
 import CustomBadge from "@/components/Custombadge";
 
 export default function ProductDetailPage() {
@@ -72,12 +70,12 @@ export default function ProductDetailPage() {
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Product Image */}
           <div className="flex-shrink-0">
-            <div className="w-48 h-48 lg:w-64 lg:h-64 bg-gradient-to-br  rounded-2xl border  flex items-center justify-center overflow-hidden relative">
+            <div className="w-48 h-48 lg:w-64 lg:h-64 bg-gradient-to-br   rounded-2xl border  flex items-center justify-center overflow-hidden relative">
               {/* Product image with proper sizing */}
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-full object-contain rounded-xl"
+                className="w-full h-full object-contain rounded-xl "
                 onError={(e) => {
                   // Hide image and show icon if image fails to load
                   e.currentTarget.style.display = "none";
@@ -189,7 +187,6 @@ export default function ProductDetailPage() {
           </div>
         </CardContent>
       </motion.div>
-     
     </div>
   );
 }

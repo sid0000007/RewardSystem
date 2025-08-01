@@ -1,27 +1,42 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Gift, QrCode, Video, MapPin, Play, Scan, Plus } from "lucide-react";
+import {
+  Gift,
+  QrCode,
+  Video,
+  MapPin,
+  Play,
+  Scan,
+  Plus,
+  BookOpen,
+} from "lucide-react";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function DashboardPage() {
   return (
-    <div className="max-w-7xl mx-auto p-4 space-y-8">
+    <div className="max-w-7xl mx-auto p-4 space-y-8 relative">
+      {/* Theme Toggle - Top Right */}
+      <div className="absolute top-4 right-4 z-10">
+        <ThemeToggle />
+      </div>
       {/* Welcome Section */}
       <div className="text-center py-12">
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="w-24 h-24 bg-gradient-to-br from-sky-500 to-sky-600 dark:from-sky-600 dark:to-sky-700 rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl"
+          className="w-24 h-24   flex items-center justify-center mx-auto mb-6 "
         >
-          <Gift className="w-12 h-12 text-white" />
+          <Gift className="w-12 h-12 " />
         </motion.div>
         <h2 className="text-4xl font-bold text-foreground mb-4">
           Welcome to Real Mint
         </h2>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Collect unique digital rewards by scanning codes, watching videos, and checking in at locations.
+          Collect unique digital rewards by scanning codes, watching videos, and
+          checking in at locations.
         </p>
       </div>
 
@@ -39,9 +54,15 @@ export default function DashboardPage() {
                 <Scan className="w-6 h-6 text-white" />
               </div>
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-white">Scan Codes</h3>
-            <p className="mb-4 text-white/90">Scan QR codes to unlock rewards instantly</p>
-            <div className="text-sm font-semibold text-white">✨ Available Now!</div>
+            <h3 className="text-xl font-semibold mb-2 text-white">
+              Scan Codes
+            </h3>
+            <p className="mb-4 text-white/90">
+              Scan QR codes to unlock rewards instantly
+            </p>
+            <div className="text-sm font-semibold text-white">
+              ✨ Available Now!
+            </div>
           </Link>
         </motion.div>
 
@@ -57,9 +78,15 @@ export default function DashboardPage() {
                 <Play className="w-6 h-6 text-white" />
               </div>
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-white">Watch Videos</h3>
-            <p className="mb-4 text-white/90">Watch videos for 15+ seconds to earn rewards</p>
-            <div className="text-sm font-semibold text-white">✨ Available Now!</div>
+            <h3 className="text-xl font-semibold mb-2 text-white">
+              Watch Videos
+            </h3>
+            <p className="mb-4 text-white/90">
+              Watch videos for 15+ seconds to earn rewards
+            </p>
+            <div className="text-sm font-semibold text-white">
+              ✨ Available Now!
+            </div>
           </Link>
         </motion.div>
 
@@ -76,12 +103,39 @@ export default function DashboardPage() {
               </div>
             </div>
             <h3 className="text-xl font-semibold mb-2 text-white">Check-in</h3>
-            <p className="mb-4 text-white/90">Visit locations and check in to collect rewards</p>
-            <div className="text-sm font-semibold text-white">✨ Available Now!</div>
+            <p className="mb-4 text-white/90">
+              Visit locations and check in to collect rewards
+            </p>
+            <div className="text-sm font-semibold text-white">
+              ✨ Available Now!
+            </div>
           </Link>
         </motion.div>
-      </div>
+
+        {/* Documentation */}
+        <motion.div
+          whileHover={{ scale: 1.02 }}
+          className="bg-gradient-to-br from-indigo-500 to-blue-600 dark:from-indigo-600 dark:to-blue-700 rounded-2xl p-6 cursor-pointer shadow-xl border border-blue-500/20"
+        >
+          <Link href="/docs" className="block">
+            <div className="flex items-center justify-between mb-4">
+              <BookOpen className="w-8 h-8 text-white" />
+              <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                <BookOpen className="w-6 h-6 text-white" />
+              </div>
+            </div>
+            <h3 className="text-xl font-semibold mb-2 text-white">
+              Documentation
+            </h3>
+            <p className="mb-4 text-white/90">
+              Learn how to use all features and get help
+            </p>
+            <div className="text-sm font-semibold text-white">
+              📚 Help & Guides
+            </div>
+          </Link>
+        </motion.div>
+      </div>     
     </div>
   );
 }
-
