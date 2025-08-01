@@ -209,12 +209,43 @@ export const useRewards = create<RewardsStore>()(
         userProfile: clearedProfile
       });
 
-      // Save to localStorage immediately
+      // Clear all related localStorage data
       try {
         localStorage.setItem('mint-rewards', JSON.stringify([]));
         localStorage.setItem('mint-user-profile', JSON.stringify(clearedProfile));
+
+        // Clear all video progress data (keys like video-progress-videoId)
+        const keysToRemove: string[] = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key?.startsWith('video-progress-')) {
+            keysToRemove.push(key);
+          }
+        }
+        keysToRemove.forEach(key => localStorage.removeItem(key));
+
+        // Clear video watch history
+        localStorage.removeItem('video-watch-history');
+
+        // Clear scan history
+        localStorage.removeItem('scan-history');
+
+        // Clear all session storage video data
+        const sessionKeysToRemove: string[] = [];
+        for (let i = 0; i < sessionStorage.length; i++) {
+          const key = sessionStorage.key(i);
+          if (key?.startsWith('video-sessions-')) {
+            sessionKeysToRemove.push(key);
+          }
+        }
+        sessionKeysToRemove.forEach(key => sessionStorage.removeItem(key));
+
+        // Clear any other related data
+        localStorage.removeItem('mint-last-login-date');
+
+        console.log('All wallet data, video progress, and scan history cleared successfully');
       } catch (storageError) {
-        console.error('Failed to save to localStorage:', storageError);
+        console.error('Failed to clear localStorage:', storageError);
       }
     },
 
