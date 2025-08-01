@@ -2,19 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Scan,
-  Check,
-  X,
-  Clock,
-  AlertCircle,
-  History,
-  Search,
-  Package,
-  Copy,
-  Grid3X3,
-  List,
-} from "lucide-react";
+import { Scan, X, Clock, Search, Package, Copy } from "lucide-react";
 import { useRewards } from "@/hooks/useRewards";
 import { ActionType, Reward } from "@/types";
 import {
@@ -28,8 +16,7 @@ import RewardAnimation from "../RewardAnimation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -37,7 +24,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getRarityColor } from "@/lib/getbgColour";
 import { useRouter } from "next/navigation";
 import CustomBadge from "../Custombadge";
 import CodeScanHistory from "../CodeScanHistory";
@@ -109,12 +95,13 @@ export default function CodeScanner() {
   }, []);
 
   // Save scan history to localStorage
-  const saveScanHistory = (newEntry: ScanHistory) => {
-    const updated = [newEntry, ...scanHistory].slice(0, 10); // Keep last 10
-    setScanHistory(updated);
-    localStorage.setItem("scan-history", JSON.stringify(updated));
-
-    // Also add to the new history system
+  const saveScanHistory = (newEntry: {
+    code: string;
+    timestamp: Date;
+    success: boolean;
+    rewardName?: string;
+  }) => {
+    // Add to the new history system only
     addScanToHistory({
       code: newEntry.code,
       timestamp: newEntry.timestamp,
@@ -277,10 +264,6 @@ export default function CodeScanner() {
     }
   };
 
-  const clearResult = () => {
-    setResult(null);
-  };
-
   // Filter products based on search and brand selection
   const filteredProducts = snackProducts.filter((product) => {
     const matchesSearch =
@@ -303,17 +286,8 @@ export default function CodeScanner() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4">
-      <div className="space-y-6 p-4">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h1 className="text-3xl font-bold flex items-center gap-2">
-              Code Scanner
-            </h1>
-          </div>
-        </div>
-
+    <div className="max-w-7xl mx-auto ">
+      <div className="space-y-6 ">
         {/* Scanner Interface */}
         <Card className="border shadow-2xl">
           <CardContent className="space-y-6 max-w-xl lg:max-w-3xl mx-auto">

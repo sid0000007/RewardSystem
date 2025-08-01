@@ -322,12 +322,7 @@ export default function WatchPage() {
                           </p>
 
                           <div className="flex items-center justify-between">
-                            <CustomBadge type={video.reward.type} />
-
-                            <div className="flex items-center text-xs ">
-                              <Clock className="w-3 h-3 mr-1" />
-                              {Math.round(progress.watchTime)}s watched
-                            </div>
+                            <CustomBadge type={video.reward.type} />                           
                           </div>
                         </div>
                       </motion.div>

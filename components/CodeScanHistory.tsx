@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Clock, Scan, Calendar, Check, X } from "lucide-react";
+import { Scan, Calendar } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 
 interface ScanHistoryEntry {
   code: string;
@@ -71,8 +70,6 @@ export default function CodeScanHistory() {
     };
   };
 
-  
-
   if (history.length === 0) {
     return (
       <Card>
@@ -109,7 +106,7 @@ export default function CodeScanHistory() {
           <CardTitle className="flex items-center gap-2">
             <Scan className="w-5 h-5" />
             Scan History
-          </CardTitle>          
+          </CardTitle>
         </div>
         <div className="flex flex-col gap-4 text-xs text-muted-foreground mt-2">
           <div className="flex items-center gap-1">
@@ -136,8 +133,6 @@ export default function CodeScanHistory() {
               transition={{ delay: index * 0.05 }}
               className="group flex items-center gap-3 p-4 bg-muted/50 rounded-lg border hover:bg-muted transition-all duration-200"
             >
-              
-
               {/* Scan Info */}
               <div className="flex-1 min-w-0">
                 <h4 className="font-semibold truncate text-sm font-mono">
@@ -147,7 +142,7 @@ export default function CodeScanHistory() {
                   <div className="flex items-center gap-1">
                     <Calendar className="w-3 h-3" />
                     <span>{formatDate(entry.timestamp)}</span>
-                  </div>                 
+                  </div>
                 </div>
               </div>
             </motion.div>
