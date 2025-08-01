@@ -1,12 +1,10 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { AnimatePresence } from "framer-motion";
 import { MapPin, AlertTriangle, RefreshCw, Clock, Search } from "lucide-react";
 import {
   LocationData,
   ActionType,
-  Reward,
   Coordinates,
   RewardType,
 } from "@/types";
@@ -15,7 +13,6 @@ import { useRewards } from "@/hooks/useRewards";
 import { isWithinCheckInRadius } from "@/data/locations";
 import { playActionSound } from "@/lib/sounds";
 import LocationCard from "@/components/LocationCard";
-import RewardAnimation from "@/components/RewardAnimation";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
@@ -134,9 +131,7 @@ const generateFakeLocations = (userCoords: Coordinates): LocationData[] => {
 
 export default function LocationChecker({
   className = "",
-}: LocationCheckerProps) {
-  const [showRewardAnimation, setShowRewardAnimation] = useState(false);
-  const [recentReward, setRecentReward] = useState<Reward | null>(null);
+}: LocationCheckerProps) { 
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<FilterType>("all");
   const [checkedInLocations, setCheckedInLocations] = useState<Set<string>>(
@@ -289,21 +284,35 @@ export default function LocationChecker({
           // Play check-in success sound
           playActionSound(ActionType.LOCATION_CHECKIN, true).catch(() => {});
 
-          // Show reward animation
-          setRecentReward(result.reward);
-          setShowRewardAnimation(true);
-
-          // Auto-hide animation after 3 seconds
-          setTimeout(() => {
-            setShowRewardAnimation(false);
-            setRecentReward(null);
-          }, 3000);
+          // Show success toast
+          toast.success("📍 Check-in Successful!", {
+            description: (
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-2xl">{result.reward.icon}</span>
+                <div>
+                  <div className="font-semibold">{result.reward.name}</div>
+                  <div className="text-xs opacity-80">
+                    {result.reward.description}
+                  </div>
+                </div>
+              </div>
+            ),
+            duration: 5000,
+          });
+         
         } else {
-          alert(result.message || "Failed to check in");
+          toast.error("❌ Check-in Failed", {
+            description:
+              result.message || "Failed to check in at this location",
+            duration: 4000,
+          });
         }
       } catch (error) {
         console.error("Check-in error:", error);
-        alert("An error occurred during check-in");
+        toast.error("❌ Check-in Error", {
+          description: "An error occurred during check-in. Please try again.",
+          duration: 4000,
+        });
       } finally {
         setIsCheckingIn(null);
       }
@@ -533,20 +542,7 @@ export default function LocationChecker({
             ))}
           </div>
         )}
-      </div>
-
-      {/* Reward Animation */}
-      <AnimatePresence>
-        {showRewardAnimation && recentReward && (
-          <RewardAnimation
-            reward={recentReward}
-            onComplete={() => {
-              setShowRewardAnimation(false);
-              setRecentReward(null);
-            }}
-          />
-        )}
-      </AnimatePresence>
+      </div>      
     </div>
   );
 }

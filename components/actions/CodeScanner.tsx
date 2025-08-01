@@ -12,7 +12,7 @@ import {
 } from "@/data/codes";
 import { formatCooldownTime } from "@/lib/utils";
 import { playActionSound } from "@/lib/sounds";
-import RewardAnimation from "../RewardAnimation";
+
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,7 +47,7 @@ export default function CodeScanner() {
     message: string;
     reward?: Reward;
   } | null>(null);
-  const [showAnimation, setShowAnimation] = useState(false);
+
   const [scanHistory, setScanHistory] = useState<ScanHistory[]>([]);
   const [cooldownTimer, setCooldownTimer] = useState(0);
   const [selectedBrand, setSelectedBrand] = useState<string>("all");
@@ -148,10 +148,16 @@ export default function CodeScanner() {
         // Play error sound
         playActionSound(ActionType.CODE_SCAN, false).catch(() => {});
 
-        // Show error toast
-        toast.error("Invalid snack code", {
-          description:
-            "Please check the code from your snack package and try again",
+        // Show enhanced error toast
+        toast.error("❌ Invalid Code", {
+          description: (
+            <div className="mt-1">
+              <div className="font-medium">Code not recognized</div>
+              <div className="text-xs opacity-80">
+                Please check the code from your snack package and try again
+              </div>
+            </div>
+          ),
           duration: 4000,
         });
 
@@ -213,10 +219,20 @@ export default function CodeScanner() {
         // Play success sound
         playActionSound(ActionType.CODE_SCAN, true).catch(() => {});
 
-        // Show success toast
-        toast.success("Snack code scanned successfully!", {
-          description: `You earned: ${codeData.reward.name}`,
-          duration: 4000,
+        // Show enhanced success toast with reward details
+        toast.success("🎉 Reward Earned!", {
+          description: (
+            <div className="flex items-center gap-2 mt-1">
+              <span className="text-2xl">{codeData.reward.icon}</span>
+              <div>
+                <div className="font-semibold">{codeData.reward.name}</div>
+                <div className="text-xs opacity-80">
+                  {codeData.reward.description}
+                </div>
+              </div>
+            </div>
+          ),
+          duration: 5000,
         });
 
         // Save to history
@@ -233,12 +249,6 @@ export default function CodeScanner() {
           message: `Congratulations! You earned: ${codeData.reward.name}`,
           reward: addResult.reward,
         });
-
-        // Show animation after toast
-        setTimeout(() => {
-          setShowAnimation(true);
-          setTimeout(() => setShowAnimation(false), 3000);
-        }, 1000);
 
         // Clear code input
         setCode("");
@@ -509,16 +519,6 @@ export default function CodeScanner() {
           </div>
         </div>
       </div>
-
-      {/* Reward Animation */}
-      <AnimatePresence>
-        {showAnimation && result?.reward && (
-          <RewardAnimation
-            reward={result.reward!}
-            onComplete={() => setShowAnimation(false)}
-          />
-        )}
-      </AnimatePresence>
     </div>
   );
 }

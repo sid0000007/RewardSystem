@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Clock, Eye } from "lucide-react";
+import { toast } from "sonner";
 import { getVideoById } from "@/data/videos";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -66,6 +67,22 @@ export default function VideoDetailPage() {
         watchTime: video.minWatchTime,
         completed: true,
         rewardEarned: video.reward.name,
+      });
+
+      // Show success toast
+      toast.success("🎬 Video Completed!", {
+        description: (
+          <div className="flex items-center gap-2 mt-1">
+            <span className="text-2xl">{video.reward.icon}</span>
+            <div>
+              <div className="font-semibold">{video.reward.name}</div>
+              <div className="text-xs opacity-80">
+                {video.reward.description}
+              </div>
+            </div>
+          </div>
+        ),
+        duration: 5000,
       });
 
       console.log("🎉 Reward earned:", video.reward.name);

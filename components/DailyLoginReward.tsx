@@ -6,6 +6,7 @@ import { Sun, Sparkles, Gift, Calendar } from "lucide-react";
 import { Reward, RewardType, ActionType } from "@/types";
 import { useRewards } from "@/hooks/useRewards";
 import RewardAnimation from "./RewardAnimation";
+import { toast } from "sonner";
 
 export default function DailyLoginReward() {
   const { checkDailyLogin, addReward } = useRewards();
@@ -22,7 +23,7 @@ export default function DailyLoginReward() {
       setShowWelcome(true);
 
       // After welcome animation, show reward
-      setTimeout(() => {
+      setTimeout(async () => {
         setShowWelcome(false);
 
         // Create daily reward
@@ -53,6 +54,13 @@ export default function DailyLoginReward() {
           metadata: reward.metadata,
         });
       }, 3000); // Show welcome for 3 seconds
+
+      toast.success("Welcome Back!", {
+        description: "Here's your daily reward for visiting.",
+        duration: 3000,
+      });
+
+      setShowReward(false);
     }
   }, [checkDailyLogin, addReward]);
 
@@ -89,7 +97,7 @@ export default function DailyLoginReward() {
               transition={{ delay: 0.3 }}
               className="text-2xl font-bold mb-2"
             >
-              Welcome Back!
+              Welcome!
             </motion.h2>
 
             <motion.p
@@ -98,7 +106,7 @@ export default function DailyLoginReward() {
               transition={{ delay: 0.4 }}
               className="text-muted-foreground mb-6"
             >
-              Great to see you again! Here&apos;s your daily reward for
+              Great to see you Here&apos;s your daily reward for
               visiting.
             </motion.p>
 
