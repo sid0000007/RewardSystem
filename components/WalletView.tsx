@@ -38,6 +38,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getRarityColor } from "@/lib/getbgColour";
 
 type SortOption = "newest" | "oldest" | "rarity" | "name";
 
@@ -161,23 +162,7 @@ export default function WalletView() {
     return date.toLocaleDateString();
   };
 
-  const getRarityColor = (type: RewardType) => {
-    switch (type) {
-      case RewardType.COMMON:
-        return "bg-gray-200";
-      case RewardType.RARE:
-        return "bg-blue-500";
-      case RewardType.EPIC:
-        return "bg-purple-500";
-      case RewardType.LEGENDARY:
-        return "bg-yellow-500";
-      case RewardType.SPECIAL:
-        return "bg-pink-500";
-      default:
-        return "bg-gray-200";
-    }
-  };
-
+  
   const getActionIcon = (actionType: ActionType) => {
     switch (actionType) {
       case ActionType.CODE_SCAN:
