@@ -9,7 +9,8 @@ export enum RewardType {
 export enum ActionType {
   CODE_SCAN = 'code_scan',
   VIDEO_WATCH = 'video_watch',
-  LOCATION_CHECKIN = 'location_checkin'
+  LOCATION_CHECKIN = 'location_checkin',
+  DAILY_LOGIN = 'daily_login'
 }
 
 export interface Coordinates {
@@ -71,6 +72,7 @@ export interface CooldownState {
   [ActionType.CODE_SCAN]: Date | null;
   [ActionType.VIDEO_WATCH]: Date | null;
   [ActionType.LOCATION_CHECKIN]: Date | null;
+  [ActionType.DAILY_LOGIN]: Date | null;
 }
 
 export interface VideoProgress {

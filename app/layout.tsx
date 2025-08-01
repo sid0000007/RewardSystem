@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AppLayout from "@/components/AppLayout";
 import StoreInitializer from "@/components/StoreInitializer";
+import DailyLoginReward from "@/components/DailyLoginReward";
 import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
@@ -90,6 +91,7 @@ export default function RootLayout({
           <main className="relative z-10 min-h-screen">
             <StoreInitializer />
             <AppLayout>{children}</AppLayout>
+            <DailyLoginReward />
           </main>
           <Toaster />
         </div>

@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { playUISound } from "@/lib/sounds";
 import { useSidebar } from "./AppLayout";
+import { Button } from "./ui/button";
 
 interface SidebarItem {
   id: string;
@@ -43,7 +44,7 @@ const sidebarItems: SidebarItem[] = [
   },
   {
     id: "productCode",
-    label: "Product Codes",
+    label: "Codes",
     icon: QrCode,
     href: "/product",
     description: "Scan QR Codes",
@@ -89,16 +90,17 @@ export default function Sidebar() {
       className="fixed left-0 top-0 z-50 h-screen bg-sidebar/95 backdrop-blur-xl border-r border-sidebar-border shadow-2xl flex flex-col"
     >
       {/* Sidebar Toggle Button - Positioned over border */}
-      <button
+      <Button
         onClick={() => setSidebarExpanded(!sidebarExpanded)}
-        className="absolute -right-4 top-8 z-20 w-8 h-8 bg-background/90 backdrop-blur-xl border border-sidebar-border rounded-lg flex items-center justify-center text-sidebar-foreground transition-colors shadow-lg"
+        variant="secondary"
+        className="absolute -right-4 top-8 z-20 w-8 h-8  border border-sidebar-border rounded-lg flex items-center justify-center"
       >
         {sidebarExpanded ? (
           <ChevronLeft className="w-4 h-4" />
         ) : (
           <ChevronRight className="w-4 h-4" />
         )}
-      </button>
+      </Button>
 
       {/* Sidebar Header */}
       <div className="flex items-center justify-between p-4 border-b border-sidebar-border">
@@ -135,9 +137,9 @@ export default function Sidebar() {
               <Link
                 href={item.href}
                 onClick={handleTabClick}
-                className={`w-full flex items-center gap-3 p-2 rounded-lg transition-all duration-200 ${
+                className={`w-full flex items-center gap-3 p-2 rounded-lg  ${
                   isActive
-                    ? "bg-primary text-primary-foreground shadow-lg"
+                    ? "bg-primary text-primary-foreground"
                     : "text-sidebar-foreground "
                 }`}
               >

@@ -400,7 +400,7 @@ export default function WatchPage() {
                           <div className="flex items-center justify-between">
                             <Badge
                               variant="secondary"
-                              className={`${rarity.color} text-xs font-semibold px-2 py-1 rounded-full`}
+                              className={`${rarity.color} text-xs font-semibold px-2 py-1 `}
                             >
                               {rarity.label}
                             </Badge>

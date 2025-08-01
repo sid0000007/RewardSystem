@@ -187,6 +187,8 @@ export default function WalletView() {
         return "📺";
       case ActionType.LOCATION_CHECKIN:
         return "📍";
+      case ActionType.DAILY_LOGIN:
+        return "🌅";
       default:
         return "🎯";
     }
@@ -205,10 +207,10 @@ export default function WalletView() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">           
+          <h1 className="text-3xl font-bold flex items-center gap-2">
             My Wallet
           </h1>
-        </div>        
+        </div>
 
         {/* Actions */}
         <div className="flex items-center gap-2 flex-wrap">
@@ -244,8 +246,6 @@ export default function WalletView() {
           </Button>
         </div>
       </div>
-
-   
 
       {/* Filters and Search */}
       <Card>
@@ -307,6 +307,9 @@ export default function WalletView() {
                   </SelectItem>
                   <SelectItem value={ActionType.LOCATION_CHECKIN}>
                     Location Check-in
+                  </SelectItem>
+                  <SelectItem value={ActionType.DAILY_LOGIN}>
+                    Daily Login
                   </SelectItem>
                 </SelectContent>
               </Select>
@@ -444,15 +447,19 @@ export default function WalletView() {
         )}
       </AnimatePresence>
 
-         {/* Stats Cards */}
-         <Card className="max-w-sm">
+      {/* Stats Cards */}
+      <Card className="max-w-sm">
         <CardContent className="p-4">
           <div className="flex flex-col gap-2">
             {/* Total Balance */}
             <div className="text-center mb-2">
               <div className="text-sm text-muted-foreground">Total Balance</div>
               <div className="text-2xl font-bold">
-                {commonCount + rareCount + epicCount + legendaryCount + specialCount}
+                {commonCount +
+                  rareCount +
+                  epicCount +
+                  legendaryCount +
+                  specialCount}
               </div>
             </div>
 
@@ -465,17 +472,22 @@ export default function WalletView() {
                   color: "bg-gray-500",
                   icon: "🪙",
                 },
-                { label: "Rare", count: rareCount, color: "bg-blue-500", icon: "💎" },
+                {
+                  label: "Rare",
+                  count: rareCount,
+                  color: "bg-blue-500",
+                  icon: "💎",
+                },
                 {
                   label: "Epic",
-                  count: epicCount, 
+                  count: epicCount,
                   color: "bg-purple-500",
                   icon: "🏆",
                 },
                 {
                   label: "Legendary",
                   count: legendaryCount,
-                  color: "bg-yellow-500", 
+                  color: "bg-yellow-500",
                   icon: "👑",
                 },
                 {
@@ -485,7 +497,10 @@ export default function WalletView() {
                   icon: "✨",
                 },
               ].map((token) => (
-                <div key={token.label} className="flex items-center justify-between py-1">
+                <div
+                  key={token.label}
+                  className="flex items-center justify-between py-1"
+                >
                   <div className="flex items-center gap-2">
                     <span className="text-lg">{token.icon}</span>
                     <span className="text-sm">{token.label}</span>

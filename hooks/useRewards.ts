@@ -40,6 +40,7 @@ interface RewardsActions {
   getRewardsByAction: (actionType: ActionType) => Reward[];
   getTotalRewards: () => number;
   getRewardsToday: () => Reward[];
+  checkDailyLogin: () => { isNewDay: boolean; lastLoginDate: string | null };
   exportData: () => string;
   importData: (data: string) => ActionResult;
   clearError: () => void;
@@ -61,7 +62,7 @@ const createDefaultUserProfile = (): UserProfile => ({
     [RewardType.LEGENDARY]: 0,
     [RewardType.SPECIAL]: 0
   },
-  preferences: {   
+  preferences: {
     sounds: true
   }
 });
@@ -72,7 +73,8 @@ const initialState: RewardsState = {
   cooldowns: {
     [ActionType.CODE_SCAN]: null,
     [ActionType.VIDEO_WATCH]: null,
-    [ActionType.LOCATION_CHECKIN]: null
+    [ActionType.LOCATION_CHECKIN]: null,
+    [ActionType.DAILY_LOGIN]: null
   },
   videoProgress: {},
   isLoading: false,
@@ -234,7 +236,7 @@ export const useRewards = create<RewardsStore>()(
           [RewardType.SPECIAL]: updatedProfile.rewardsByType?.[RewardType.SPECIAL] || 0
         },
         preferences: {
-          ...updatedProfile.preferences,          
+          ...updatedProfile.preferences,
           sounds: updatedProfile.preferences?.sounds !== false
         }
       };
@@ -395,6 +397,19 @@ export const useRewards = create<RewardsStore>()(
 
     clearError: () => {
       set({ error: null });
+    },
+
+    checkDailyLogin: () => {
+      const today = new Date().toDateString();
+      const lastLoginDate = localStorage.getItem('mint-last-login-date');
+
+      if (lastLoginDate !== today) {
+        // New day - update last login date
+        localStorage.setItem('mint-last-login-date', today);
+        return { isNewDay: true, lastLoginDate };
+      }
+
+      return { isNewDay: false, lastLoginDate };
     },
 
     initializeStore: () => {
