@@ -8,8 +8,8 @@ export default function ScanPage() {
     <div className="space-y-6 p-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-xl lg:text-3xl font-bold flex items-center gap-2">           
+        <div className="">
+          <h1 className="text-xl lg:text-2xl font-bold flex items-center gap-2">           
            Validate Product Codes
           </h1>
         </div>        

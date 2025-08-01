@@ -111,10 +111,10 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
               </div>
             </div>
             <div>
-              <h2 className="text-xl lg:text-3xl font-bold  mb-2">
+              <h2 className="text-lg lg:text-xl font-bold  mb-2">
                 {userProfile.username}
               </h2>
-              <p className=" flex text-sm lg:text-base font-light items-center gap-2">
+              <p className=" flex text-xs lg:text-sm font-light items-center gap-2">
                 <Calendar className="w-4 h-4" />
                 Joined{" "}
                 <span suppressHydrationWarning>
@@ -297,19 +297,20 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
               </div>
 
               <div className="flex gap-4 mt-8">
-                <button
+                <Button
                   onClick={handleCancel}
-                  className="flex-1 px-6 py-3  border  rounded-xl  transition-all duration-200"
+                  className="flex-1 "
+                  variant="outline"
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                   onClick={handleSave}
-                  className="flex-1 px-6 py-3  rounded-xl  transition-all duration-200 flex items-center justify-center gap-2"
+                  className="flex-1 items-center justify-center "
                 >
                   <Save className="w-4 h-4" />
                   Save
-                </button>
+                </Button>
               </div>
             </motion.div>
           </motion.div>

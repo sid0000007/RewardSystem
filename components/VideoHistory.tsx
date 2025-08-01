@@ -81,7 +81,7 @@ export default function VideoHistory() {
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className="flex text-sm lg:text-md items-center gap-2">
             <Clock className="w-5 h-5" />
             Watch History
           </CardTitle>
@@ -91,14 +91,14 @@ export default function VideoHistory() {
             <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
               <Play className="w-8 h-8 text-muted-foreground" />
             </div>
-            <h3 className="text-lg font-semibold mb-2">
+            <h3 className="text-sm lg:text-md font-semibold mb-2">
               No videos watched yet
             </h3>
-            <p className="text-muted-foreground text-sm">
+            <p className="text-muted-foreground text-xs lg:text-sm">
               Start watching videos to see your history here
             </p>
             <div className="mt-4 text-xs text-muted-foreground">
-              Your watch history will appear here once you complete videos
+             ( Your watch history will appear here once you complete videos )
             </div>
           </div>
         </CardContent>

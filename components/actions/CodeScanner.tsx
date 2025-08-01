@@ -317,7 +317,7 @@ export default function CodeScanner() {
                   onKeyPress={handleKeyPress}
                   placeholder="Enter snack product code here..."
                   disabled={isScanning || cooldownStatus.isActive}
-                  className="text-center text-sm lg:text-lg font-mono transition-all duration-200"
+                  className="text-center text-sm lg:text-md font-mono transition-all duration-200"
                   maxLength={30}
                 />
                 {code && (
@@ -325,7 +325,7 @@ export default function CodeScanner() {
                     variant="ghost"
                     size="sm"
                     onClick={() => setCode("")}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm lg:text-base"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sm lg:text-md"
                   >
                     <X className="w-4 h-4" />
                   </Button>
@@ -430,7 +430,7 @@ export default function CodeScanner() {
                       onClick={() => router.push(`/product/${product.id}`)}
                     >
                       <Card className="h-full hover:shadow-lg transition-all duration-100 overflow-hidden flex flex-col">
-                        <CardContent className="p-2 md:p-5 relative z-10 flex flex-col  flex-1">
+                        <CardContent className="p-2 px-4 md:p-5 relative z-10 flex flex-col  flex-1">
                           {/* Product Header */}
                           <div className="flex flex-col lg:flex-row items-start gap-2 mb-4">
                             <div className="text-3xl md:text-4xl filter drop-shadow-lg flex-shrink-0">
@@ -441,7 +441,7 @@ export default function CodeScanner() {
                               />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h3 className="font-semibold text-sm md:text-base mb-1 leading-tight break-words overflow-hidden">
+                              <h3 className="font-semibold text-sm md:text-md mb-1 leading-tight break-words overflow-hidden">
                                 {product.name}
                               </h3>
                               <p className="text-xs md:text-sm text-muted-foreground font-medium truncate">
@@ -461,7 +461,7 @@ export default function CodeScanner() {
                                 e.stopPropagation();
                                 copyToClipboard(`${product.code}-DEMO`);
                               }}
-                              className="text-xs lg:text-sm font-mono group/btn flex-shrink-0"
+                              className="text-xs lg:text-xs font-mono group/btn flex-shrink-0"
                             >
                               <Copy className="w-3 h-3 mr-1" />
                               <span className="hidden sm:inline truncate">

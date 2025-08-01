@@ -28,11 +28,11 @@ export default function ProductDetailPage() {
     return (
       <div className="p-4 mx-auto max-w-4xl">
         <div className="text-center py-12">
-          <h1 className="text-2xl font-bold  mb-4">Product Not Found</h1>
-          <p className=" mb-6">
+          <h1 className="text-xl md:text-2xl font-bold mb-4">Product Not Found</h1>
+          <p className="text-sm md:text-base mb-6">
             The product you&apos;re looking for doesn&apos;t exist.
           </p>
-          <Button onClick={() => router.back()} className="bg-gradient-to-r ">
+          <Button onClick={() => router.back()} className="bg-gradient-to-r text-sm">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Go Back
           </Button>
@@ -44,7 +44,7 @@ export default function ProductDetailPage() {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
-      month: "long",
+      month: "long", 
       day: "numeric",
     });
   };
@@ -55,7 +55,7 @@ export default function ProductDetailPage() {
       <Button
         onClick={() => router.push("/product")}
         variant="ghost"
-        className=" hover: mb-4"
+        className="hover: mb-4 text-sm"
       >
         <ArrowLeft className="w-4 h-4 mr-2" />
         Back to Products
@@ -65,23 +65,21 @@ export default function ProductDetailPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="rounded-2xl p-6 border"
+        className="rounded-2xl p-4 md:p-6 border"
       >
-        <div className="flex flex-col lg:flex-row gap-6">
+        <div className="flex flex-col lg:flex-row gap-4 md:gap-6">
           {/* Product Image */}
           <div className="flex-shrink-0">
-            <div className="w-48 h-48 lg:w-64 lg:h-64 bg-gradient-to-br   rounded-2xl border  flex items-center justify-center overflow-hidden relative">
+            <div className="w-36 h-36 md:w-48 md:h-48 lg:w-64 lg:h-64 bg-gradient-to-br rounded-2xl border flex items-center justify-center overflow-hidden relative">
               {/* Product image with proper sizing */}
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-full object-contain rounded-xl "
+                className="w-full h-full object-contain rounded-xl"
                 onError={(e) => {
-                  // Hide image and show icon if image fails to load
                   e.currentTarget.style.display = "none";
                 }}
                 onLoad={(e) => {
-                  // Hide icon when image loads successfully
                   const iconElement = e.currentTarget
                     .previousElementSibling as HTMLElement;
                   if (iconElement) {
@@ -93,21 +91,21 @@ export default function ProductDetailPage() {
           </div>
 
           {/* Product Info */}
-          <div className="flex-1 space-y-4">
+          <div className="flex-1 space-y-3 md:space-y-4">
             <div>
               <div className="flex items-center gap-3 mb-2"></div>
-              <h1 className="text-3xl lg:text-4xl font-bold  mb-2">
+              <h1 className="text-sm md:text-lg lg:text-xl font-bold mb-2">
                 {product.name}
               </h1>
-              <p className=" text-lg">{product.description}</p>
+              <p className="text-xs md:text-sm lg:text-md font-light">{product.description}</p>
             </div>
 
             {/* Product Code */}
-            <div className=" rounded-xl p-4 border ">
+            <div className="rounded-xl p-3 md:p-4 border">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-medium  mb-1">Product Code</h3>
-                  <p className="text-lg font-mono font-semibold ">
+                  <h3 className="text-xs lg:text-sm font-medium mb-1">Product Code</h3>
+                  <p className="text-base lg:text-sm font-mono font-semibold">
                     {product.code}
                   </p>
                 </div>
@@ -115,9 +113,9 @@ export default function ProductDetailPage() {
                   onClick={() => copyToClipboard(`${product.code}-DEMO`)}
                   variant="ghost"
                   size="sm"
-                  className=" hover:"
+                  className="hover: text-xs md:text-sm"
                 >
-                  <Copy className="w-4 h-4 mr-2" />
+                  <Copy className="w-3 h-3 md:w-4 md:h-4 mr-2" />
                   Copy
                 </Button>
               </div>
@@ -131,23 +129,23 @@ export default function ProductDetailPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="  rounded-2xl p-6 border "
+        className="rounded-2xl p-4 md:p-6 border"
       >
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 ">
-            <Gift className="w-6 h-6 " />
+          <CardTitle className="flex items-center gap-2 text-sm lg:text-md">
+            <Gift className="w-5 h-5 md:w-6 md:h-6" />
             Reward Information
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className=" rounded-xl p-4 border ">
-              <h3 className="text-lg font-semibold  mb-2">{product.reward}</h3>
-              <p className="">{product.rewardDescription}</p>
+        <CardContent className="space-y-3 md:space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+            <div className="rounded-xl p-3 md:p-4 border">
+              <h3 className="text-sm lg:text-md font-semibold mb-2">{product.reward}</h3>
+              <p className="text-xs lg:text-sm">{product.rewardDescription}</p>
             </div>
-            <div className=" rounded-xl p-4 border ">
+            <div className="rounded-xl p-3 md:p-4 border">
               <div className="flex items-center gap-2 mb-2">
-                <h3 className="text-lg font-semibold ">Rarity</h3>
+                <h3 className="text-sm lg:text-md font-semibold">Rarity</h3>
               </div>
               <CustomBadge type={product.rarity} />
             </div>
@@ -160,29 +158,29 @@ export default function ProductDetailPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className=" rounded-2xl p-6 border "
+        className="rounded-2xl p-4 md:p-6 border"
       >
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 ">
-            <Info className="w-6 h-6 " />
+          <CardTitle className="flex items-center gap-2 text-sm lg:text-md">
+            <Info className="w-5 h-5 md:w-6 md:h-6" />
             Scheme Details
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className=" rounded-xl p-4 border ">
+        <CardContent className="space-y-3 md:space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+            <div className="rounded-xl p-3 md:p-4 border">
               <div className="flex items-center gap-2 mb-2">
-                <Calendar className="w-5 h-5 " />
-                <h3 className="text-lg font-semibold ">Expiry Date</h3>
+                <Calendar className="w-4 h-4 md:w-5 md:h-5" />
+                  <h3 className="text-sm lg:text-md font-semibold">Expiry Date</h3>
               </div>
-              <p className="">{formatDate(product.expiryDate)}</p>
+              <p className="text-xs lg:text-sm">{formatDate(product.expiryDate)}</p>
             </div>
-            <div className=" rounded-xl p-4 border ">
+            <div className="rounded-xl p-3 md:p-4 border">
               <div className="flex items-center gap-2 mb-2">
-                <Clock className="w-5 h-5 " />
-                <h3 className="text-lg font-semibold ">Validity</h3>
+                <Clock className="w-4 h-4 md:w-5 md:h-5" />
+                <h3 className="text-sm lg:text-md font-semibold">Validity</h3>
               </div>
-              <p className="">{product.schemeDetails}</p>
+              <p className="text-xs lg:text-sm">{product.schemeDetails}</p>
             </div>
           </div>
         </CardContent>

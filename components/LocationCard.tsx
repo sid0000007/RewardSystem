@@ -139,10 +139,10 @@ export default function EnhancedLocationCard({
         {/* Location Header */}
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
-            <h3 className="text-lg font-semibold mb-1 group-hover:text-primary transition-colors">
+            <h3 className="text-sm lg:text-md font-semibold mb-1 group-hover:text-primary transition-colors">
               {location.name}
             </h3>
-            <p className="text-sm text-muted-foreground line-clamp-2">
+            <p className="text-xs lg:text-sm text-muted-foreground line-clamp-2">
               {location.description}
             </p>
           </div>
@@ -207,7 +207,7 @@ export default function EnhancedLocationCard({
           <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
             <div className="flex items-center gap-2">
               <Gift className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium">
+              <span className="text-xs lg:text-sm font-medium">
                 {location.reward.name}
               </span>
             </div>
@@ -231,7 +231,7 @@ export default function EnhancedLocationCard({
               onClick={handleCheckIn}
               disabled={!isWithinRange || isCheckedIn || isCheckingIn}
               className={`
-                flex-1 py-3 px-4 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2
+                flex-1  px-3 py-1 rounded-lg font-semibold text-sm transition-all duration-200 flex items-center justify-center gap-2
                 ${
                   isCheckingIn
                     ? "bg-primary/80 text-primary-foreground cursor-not-allowed"
@@ -271,7 +271,7 @@ export default function EnhancedLocationCard({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleGetDirections}
-            className="px-4 py-3 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 transition-colors flex items-center gap-2 border"
+            className="px-3 py-1 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 transition-colors flex items-center gap-2 border"
             title="Get directions"
           >
             <ExternalLink className="w-4 h-4" />

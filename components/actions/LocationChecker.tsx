@@ -388,7 +388,7 @@ export default function LocationChecker({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div>
-              <h2 className="text-xl lg:text-3xl font-bold">Location Check-in</h2>
+              <h2 className="text-xl lg:text-2xl font-bold">Location Check-in</h2>
             </div>
           </div>
         </div>       

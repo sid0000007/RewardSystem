@@ -85,7 +85,7 @@ export default function Sidebar() {
       initial={false}
       animate={{
         width: sidebarExpanded ? "240px" : "70px",
-      }}     
+      }}
       transition={{ duration: 0.1, ease: "easeInOut" }}
       className="fixed left-0 top-0 z-50 h-screen bg-sidebar/95 backdrop-blur-xl border-r border-sidebar-border shadow-2xl flex flex-col"
     >
@@ -93,7 +93,7 @@ export default function Sidebar() {
       <Button
         onClick={() => setSidebarExpanded(!sidebarExpanded)}
         variant="secondary"
-        className="absolute -right-4 top-8 z-20 w-8 h-8  border border-sidebar-border rounded-lg flex items-center justify-center"
+        className="lg:flex hidden absolute -right-4 top-8 z-20 w-8 h-8  border border-sidebar-border rounded-lg items-center justify-center"
       >
         {sidebarExpanded ? (
           <ChevronLeft className="w-4 h-4" />
@@ -129,9 +129,7 @@ export default function Sidebar() {
             (item.href === "/watch" && pathname.startsWith("/watch/"));
 
           return (
-            <div
-              key={item.id}              
-            >
+            <div key={item.id}>
               <Link
                 href={item.href}
                 onClick={handleTabClick}

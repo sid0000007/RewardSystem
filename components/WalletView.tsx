@@ -189,7 +189,7 @@ export default function WalletView() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-xl lg:text-3xl font-bold flex items-center gap-2">
+          <h1 className="text-xl lg:text-2xl font-bold flex items-center gap-2">
             My Wallet
           </h1>
         </div>
@@ -230,7 +230,7 @@ export default function WalletView() {
       </div>
 
       {/* stats sections  */}
-      <div className=" lg:block hidden grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-6 gap-2">
+      <div className="  hidden lg:grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-6 gap-2">
         <Card className="hover:shadow-md transition-shadow">
           <CardContent className="p-2">
             <div className="flex flex-col items-center text-center">

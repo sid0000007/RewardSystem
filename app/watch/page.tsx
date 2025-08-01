@@ -120,7 +120,7 @@ export default function WatchPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-xl lg:text-3xl font-bold flex items-center gap-2">
+            <h1 className="text-xl lg:text-2xl font-bold flex items-center gap-2">
               Video Library
             </h1>
           </div>
@@ -184,8 +184,8 @@ export default function WatchPage() {
         </Card>
 
         {/* Video History */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <div className="lg:col-span-3">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="col-span-2 lg:col-span-3">
             {/* Video Grid */}
             <AnimatePresence mode="wait">
               {filteredVideos.length === 0 ? (
@@ -253,7 +253,7 @@ export default function WatchPage() {
                         {/* Content */}
                         <div className="p-4">
                           <div className="flex items-start justify-between mb-2">
-                            <h3 className="font-semibold line-clamp-2">
+                            <h3 className="font-semibold line-clamp-2 text-sm lg:text-md">
                               {video.title}
                             </h3>
                             <div className="flex items-center justify-between">
@@ -277,7 +277,7 @@ export default function WatchPage() {
           </div>
 
           {/* Video History Sidebar */}
-          <div className="lg:col-span-1 space-y-4">
+          <div className=" lg:col-span-1 space-y-4">
             <VideoHistory />
             {/* Stats Overview */}
             <div className=" gap-4">

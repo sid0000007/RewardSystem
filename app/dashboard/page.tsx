@@ -26,10 +26,10 @@ export default function DashboardPage() {
         <motion.div className="w-24 h-24   flex items-center justify-center mx-auto mb-6 ">
           <Gift className="w-12 h-12 " />
         </motion.div>
-        <h2 className="text-xl  lg:text-4xl font-bold text-foreground mb-4">
+        <h2 className="text-xl  lg:text-2xl font-bold text-foreground mb-4">
           Welcome to Real Mint
         </h2>
-        <p className="text-sm lg:text-xl text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-sm lg:text-lg text-muted-foreground max-w-2xl mx-auto">
           Collect unique digital rewards by scanning codes, watching videos, and
           checking in at locations.
         </p>
@@ -42,14 +42,14 @@ export default function DashboardPage() {
           <Link href="/product" className="block">
             <div className="flex items-center justify-between mb-4">
               <QrCode className="lg:w-8 lg:h-8 w-6 h-6 text-white" />
-              <div className="lg:w-12 lg:h-12 w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center">
-                <Scan className="lg:w-6 lg:h-6 w-4 h-4 text-white" />
+              <div className="lg:w-10 lg:h-10 w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center">
+                <Scan className="lg:w-4 lg:h-4 w-2 h-2 text-white" />
               </div>
             </div>
-            <h3 className="text-md lg:text-xl font-semibold mb-2 text-white">
+            <h3 className="text-md lg:text-lg font-semibold mb-2 text-white">
               Scan Codes
             </h3>
-            <p className="text-sm lg:text-base mb-4 text-white/90">
+            <p className="text-sm lg:text-md mb-4 text-white/90">
               Scan QR codes to unlock rewards instantly
             </p>
             <div className="text-xs lg:text-sm font-semibold text-white">
@@ -59,18 +59,18 @@ export default function DashboardPage() {
         </motion.div>
 
         {/* Watch Videos */}
-        <motion.div className="bg-gradient-to-br hover:scale-105 transition-all duration-100 from-fuchsia-500 to-purple-600 dark:from-fuchsia-600 dark:to-indigo-700 rounded-2xl p-6 cursor-pointer shadow-xl border border-purple-500/20">
+        <motion.div className="bg-gradient-to-br hover:scale-105 transition-all duration-100 from-fuchsia-500 to-purple-600 dark:from-fuchsia-600 dark:to-indigo-700 rounded-2xl p-4 cursor-pointer shadow-xl border border-purple-500/20">
           <Link href="/watch" className="block">
             <div className="flex items-center justify-between mb-4">
               <Video className="lg:w-8 lg:h-8 w-6 h-6 text-white" />
-              <div className="lg:w-12 lg:h-12 w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center">
-                <Play className="lg:w-6 lg:h-6 w-4 h-4 text-white" />
+              <div className="lg:w-10 lg:h-10 w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center">
+                <Play className="lg:w-4 lg:h-4 w-2 h-2 text-white" />
               </div>
             </div>
-            <h3 className="text-md lg:text-xl font-semibold mb-2 text-white">
+            <h3 className="text-md lg:text-lg font-semibold mb-2 text-white">
               Watch Videos
             </h3>
-            <p className="text-sm lg:text-base mb-4 text-white/90">
+            <p className="text-sm lg:text-md mb-4 text-white/90">
               Watch videos for 15+ seconds to earn rewards
             </p>
             <div className="text-xs lg:text-sm font-semibold text-white">
@@ -80,18 +80,18 @@ export default function DashboardPage() {
         </motion.div>
 
         {/* Check-in */}
-        <motion.div className="bg-gradient-to-br hover:scale-105 transition-all duration-100 from-emerald-500 to-teal-600 dark:from-emerald-600 dark:to-teal-700 rounded-2xl p-6 cursor-pointer shadow-xl border border-emerald-500/20">
+        <motion.div className="bg-gradient-to-br hover:scale-105 transition-all duration-100 from-emerald-500 to-teal-600 dark:from-emerald-600 dark:to-teal-700 rounded-2xl p-4 cursor-pointer shadow-xl border border-emerald-500/20">
           <Link href="/checkin" className="block">
             <div className="flex items-center justify-between mb-4">
               <MapPin className="lg:w-8 lg:h-8 w-6 h-6 text-white" />
-              <div className="lg:w-12 lg:h-12 w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center">
-                <Plus className="lg:w-6 lg:h-6 w-4 h-4 text-white" />
+              <div className="lg:w-10 lg:h-10 w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center">
+                <Plus className="lg:w-4 lg:h-4 w-2 h-2 text-white" />
               </div>
             </div>
-            <h3 className="text-md lg:text-xl font-semibold mb-2 text-white">
+            <h3 className="text-md lg:text-lg font-semibold mb-2 text-white">
               Check-in
             </h3>
-            <p className="text-sm lg:text-base mb-4 text-white/90">
+            <p className="text-sm lg:text-md mb-4 text-white/90">
               Visit locations and check in to collect rewards
             </p>
             <div className="text-xs lg:text-sm font-semibold text-white">
@@ -101,18 +101,18 @@ export default function DashboardPage() {
         </motion.div>
 
         {/* Documentation */}
-        <motion.div className="bg-gradient-to-br hover:scale-105 transition-all duration-100 from-indigo-500 to-blue-600 dark:from-indigo-600 dark:to-blue-700 rounded-2xl p-6 cursor-pointer shadow-xl border border-blue-500/20">
+        <motion.div className="bg-gradient-to-br hover:scale-105 transition-all duration-100 from-indigo-500 to-blue-600 dark:from-indigo-600 dark:to-blue-700 rounded-2xl p-4 cursor-pointer shadow-xl border border-blue-500/20">
           <Link href="/docs" className="block">
             <div className="flex items-center justify-between mb-4">
               <BookOpen className="lg:w-8 lg:h-8 w-6 h-6 text-white" />
-              <div className="lg:w-12 lg:h-12 w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center">
-                <BookOpen className="lg:w-6 lg:h-6 w-4 h-4 text-white" />
+              <div className="lg:w-10 lg:h-10 w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center">
+                <BookOpen className="lg:w-4 lg:h-4 w-2 h-2 text-white" />
               </div>
             </div>
-            <h3 className="text-md lg:text-xl font-semibold mb-2 text-white">
+              <h3 className="text-md lg:text-lg font-semibold mb-2 text-white">
               Documentation
             </h3>
-            <p className="text-sm lg:text-base mb-4 text-white/90">
+            <p className="text-sm lg:text-md mb-4 text-white/90">
               Learn how to use all features and get help
             </p>
             <div className="text-xs lg:text-sm font-semibold text-white">

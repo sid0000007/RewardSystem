@@ -233,7 +233,7 @@ export default function VideoDetailPage() {
               </div>
               <div className="flex items-start gap-2">
                 <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />
-                <span>You can pause and resume without losing progress</span>
+                <span>You can pause and resume without losing   ess</span>
               </div>
               <div className="flex items-start gap-2">
                 <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0" />

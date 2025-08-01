@@ -116,11 +116,7 @@ export default function CodeScanHistory() {
           <div className="flex items-center gap-1">
             <span className="w-2 h-2 bg-green-500 rounded-full"></span>
             <span>{stats.successfulScans} successful</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-            <span>{stats.uniqueProducts} products</span>
-          </div>
+          </div>          
         </div>
       </CardHeader>
       <CardContent>

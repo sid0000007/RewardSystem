@@ -39,7 +39,6 @@ export default function LocalVideoDemo({
   const [isEligible, setIsEligible] = useState(false);
   const [hasEarned, setHasEarned] = useState(false);
   const [lastVideoTime, setLastVideoTime] = useState(0);
-  
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -101,7 +100,7 @@ export default function LocalVideoDemo({
   const handleReward = () => {
     if (isEligible && !hasEarned) {
       setHasEarned(true);
-     
+
       // Call the reward earned callback
       onRewardEarned?.();
       console.log("🎉 Reward earned!");
@@ -125,8 +124,10 @@ export default function LocalVideoDemo({
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  const progressPercentage =
-    totalDuration && totalDuration > 0 ? (watchTime / minWatchTime) * 100 : 0;
+  const progressPercentage = Math.min(
+    totalDuration && totalDuration > 0 ? (watchTime / minWatchTime) * 100 : 0,
+    100
+  );
 
   // Create reward object for animation
   const reward: Reward = {
@@ -190,10 +191,7 @@ export default function LocalVideoDemo({
                 {formatTime(watchTime)} / {formatTime(minWatchTime)}
               </span>
             </div>
-            <Progress
-              value={Math.min(progressPercentage, 100)}
-              className="h-2"
-            />
+            <Progress value={progressPercentage} className="h-2" />
             <div className="flex items-center justify-between text-xs text-muted-foreground">
               <span>Progress: {progressPercentage.toFixed(1)}%</span>
               <span>
@@ -236,7 +234,6 @@ export default function LocalVideoDemo({
           </div>
         </CardContent>
       </Card>
-
     </>
   );
 }
