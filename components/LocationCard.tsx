@@ -19,6 +19,7 @@ import { formatDistance } from "@/lib/utils";
 import { getDistanceToLocation } from "@/data/locations";
 import { Badge } from "./ui/badge";
 import { getRarityColor, getStatusStyles } from "@/lib/getbgColour";
+import CustomBadge from "./Custombadge";
 
 interface EnhancedLocationCardProps {
   location: LocationData;
@@ -211,14 +212,7 @@ export default function EnhancedLocationCard({
               </span>
             </div>
 
-            <Badge
-              variant="outline"
-              className={`${getRarityColor(
-                location.reward.type
-              )} text-xs font-semibold rounded-sm w-18`}
-            >
-              {location.reward.type}
-            </Badge>
+            <CustomBadge type={location.reward.type} />
           </div>
         </div>
 

@@ -13,6 +13,7 @@ import { getRewardRarity } from "@/lib/utils";
 import LocalVideoDemo from "@/components/LocalVideoDemo";
 import { useRewards } from "@/hooks/useRewards";
 import { addVideoToHistory } from "@/components/VideoHistory";
+import CustomBadge from "@/components/Custombadge";
 
 export default function VideoDetailPage() {
   const params = useParams();
@@ -158,12 +159,7 @@ export default function VideoDetailPage() {
                 </div>
               </div>
 
-              <Badge
-                variant="outline"
-                className={`${rarity.color} text-xs font-semibold px-2 py-1`}
-              >
-                {rarity.label}
-              </Badge>
+              <CustomBadge type={video.reward.type} />
             </CardContent>
           </Card>
 

@@ -12,6 +12,8 @@ import {
   Search,
   Package,
   Copy,
+  Grid3X3,
+  List,
 } from "lucide-react";
 import { useRewards } from "@/hooks/useRewards";
 import { ActionType, Reward } from "@/types";
@@ -37,6 +39,9 @@ import {
 } from "@/components/ui/select";
 import { getRarityColor } from "@/lib/getbgColour";
 import { useRouter } from "next/navigation";
+import CustomBadge from "../Custombadge";
+import CodeScanHistory from "../CodeScanHistory";
+import { addScanToHistory } from "../CodeScanHistory";
 
 interface ScanHistory {
   code: string;
@@ -108,6 +113,15 @@ export default function CodeScanner() {
     const updated = [newEntry, ...scanHistory].slice(0, 10); // Keep last 10
     setScanHistory(updated);
     localStorage.setItem("scan-history", JSON.stringify(updated));
+
+    // Also add to the new history system
+    addScanToHistory({
+      code: newEntry.code,
+      timestamp: newEntry.timestamp,
+      success: newEntry.success,
+      rewardName: newEntry.rewardName,
+      productName: newEntry.rewardName?.split(" ")[0], // Extract product name from reward
+    });
   };
 
   const handleValidateCode = async () => {
@@ -289,315 +303,238 @@ export default function CodeScanner() {
   };
 
   return (
-    <div className="p-4 mx-auto space-y-6">
-      {/* Scanner Interface */}
-      <Card className=" border  shadow-2xl">
-        <CardContent className="space-y-6 max-w-xl lg:max-w-3xl mx-auto">
-          <div className="text-center">
-            <p className="">Enter code from your products to collect rewards</p>
+    <div className="max-w-7xl mx-auto p-4">
+      <div className="space-y-6 p-4">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h1 className="text-3xl font-bold flex items-center gap-2">
+              Code Scanner
+            </h1>
           </div>
+        </div>
 
-          {/* Code Input */}
-          <div className="space-y-4">
-            <div className="relative">
-              <Input
-                type="text"
-                value={code}
-                onChange={(e) => setCode(e.target.value.toUpperCase())}
-                onKeyPress={handleKeyPress}
-                placeholder="Enter snack product code here..."
-                disabled={isScanning || cooldownStatus.isActive}
-                className="text-center text-lg font-mono   transition-all duration-200"
-                maxLength={30}
-              />
-              {code && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setCode("")}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                >
-                  <X className="w-4 h-4" />
-                </Button>
-              )}
-            </div>
-
-            {/* Scan Button */}
-            <Button
-              onClick={handleValidateCode}
-              disabled={isScanning || cooldownStatus.isActive || !code.trim()}
-              className="w-full font-semibold py-3 "
-              size="lg"
-            >
-              {isScanning ? (
-                <>
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{
-                      duration: 1,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                  >
-                    <Scan className="w-5 h-5 mr-2" />
-                  </motion.div>
-                  Scanning...
-                </>
-              ) : cooldownStatus.isActive ? (
-                <>
-                  <Clock className="w-5 h-5 mr-2" />
-                  Cooldown: {formatCooldownTime(cooldownTimer)}
-                </>
-              ) : (
-                <>
-                  <Scan className="w-5 h-5 mr-2" />
-                  Validate Code
-                </>
-              )}
-            </Button>
-          </div>
-
-          {/* Cooldown Info */}
-          {cooldownStatus.isActive && (
-            <div className="p-4rounded-xl border">
-              <div className="flex items-center gap-3 text-sm ">
-                <Clock className="w-4 h-4 " />
-                <span>
-                  Please wait{" "}
-                  <span className="font-semibold ">
-                    {formatCooldownTime(cooldownTimer)}
-                  </span>{" "}
-                  before scanning another snack code
-                </span>
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Available Snack Products */}
-      <Card className=" border shadow-2xl">
-        <CardContent>
-          {/* Search and Filter */}
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-6">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                type="text"
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            <Select value={selectedBrand} onValueChange={setSelectedBrand}>
-              <SelectTrigger className="w-full sm:w-[200px]">
-                <SelectValue placeholder="All Brands" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Brands</SelectItem>
-                {brands.map((brand) => (
-                  <SelectItem key={brand} value={brand}>
-                    {brand}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Products Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-5 gap-4 md:gap-6 auto-rows-fr">
-            {filteredProducts.map((product) => (
-              <motion.div
-                key={product.code}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                whileHover={{
-                  scale: 1.02,
-                  y: -4,
-                  transition: { duration: 0.2 },
-                }}
-                whileTap={{ scale: 0.98 }}
-                className="group cursor-pointer"
-                onClick={() => router.push(`/product/${product.id}`)}
-              >
-                <Card className="h-full hover:shadow-lg transition-all duration-100 overflow-hidden flex flex-col">
-                  {/* Rarity Glow Effect */}
-                  <div className="absolute  rounded-lg" />
-
-                  <CardContent className="p-2 md:p-5 relative z-10 flex flex-col flex-1">
-                    {/* Rarity Badge and Copy Button */}
-                    <div className="flex justify-end gap-2"></div>
-                    {/* Product Header */}
-                    <div className="flex items-start gap-3 mb-4">
-                      <div className="text-3xl md:text-4xl filter drop-shadow-lg flex-shrink-0">
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-12 h-12 object-contain rounded-xl"
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-sm md:text-base mb-1 leading-tight break-words overflow-hidden">
-                          {product.name}
-                        </h3>
-                        <p className="text-xs md:text-sm text-muted-foreground font-medium truncate">
-                          {product.brand}
-                        </p>
-                      </div>
-                      <Badge
-                        variant="secondary"
-                        className={`${getRarityColor(
-                          product.rarity
-                        )} text-xs font-semibold rounded-sm w-18`}
-                      >
-                        {product.rarity}
-                      </Badge>
-                    </div>
-
-                    {/* Product Details */}
-                    <div className="space-y-3 flex-1 flex flex-col">
-                      {/* Copy Code Button */}
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          copyToClipboard(`${product.code}-DEMO`);
-                        }}
-                        className="text-xs font-mono group/btn flex-shrink-0"
-                      >
-                        <Copy className="w-3 h-3 mr-1" />
-                        <span className="hidden sm:inline truncate">
-                          {product.code}-DEMO
-                        </span>
-                        <span className="sm:hidden truncate">
-                          {product.code.split("-")[0]}
-                        </span>
-                      </Button>
-
-                      {/* View Details Button */}
-                      <Button
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          router.push(`/product/${product.id}`);
-                        }}
-                        className="text-xs "
-                      >
-                        View Details
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-
-          {filteredProducts.length === 0 && (
-            <div className="text-center py-12">
-              <Package className="w-16 h-16  mx-auto mb-4 opacity-50" />
-              <p className=" text-lg font-medium">No snack products found</p>
-              <p className=" text-sm mt-2">
-                Try adjusting your search or filter criteria
+        {/* Scanner Interface */}
+        <Card className="border shadow-2xl">
+          <CardContent className="space-y-6 max-w-xl lg:max-w-3xl mx-auto">
+            <div className="text-center">
+              <p className="">
+                Enter code from your products to collect rewards
               </p>
             </div>
-          )}
-        </CardContent>
-      </Card>
 
-      {/* Result Display */}
-      <AnimatePresence>
-        {result && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: -20 }}
-            className={`p-4 rounded-lg border ${
-              result.success
-                ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800"
-                : "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800"
-            }`}
-          >
-            <div className="flex items-start gap-3">
-              <div
-                className={`p-1 rounded-full ${
-                  result.success ? "bg-green-500" : "bg-red-500"
-                }`}
-              >
-                {result.success ? (
-                  <Check className="w-4 h-4 " />
-                ) : (
-                  <AlertCircle className="w-4 h-4 " />
+            {/* Code Input */}
+            <div className="space-y-4">
+              <div className="relative">
+                <Input
+                  type="text"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value.toUpperCase())}
+                  onKeyPress={handleKeyPress}
+                  placeholder="Enter snack product code here..."
+                  disabled={isScanning || cooldownStatus.isActive}
+                  className="text-center text-lg font-mono transition-all duration-200"
+                  maxLength={30}
+                />
+                {code && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setCode("")}
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
                 )}
               </div>
-              <div className="flex-1">
-                <p
-                  className={`font-medium ${
-                    result.success
-                      ? "text-green-800 dark:text-green-200"
-                      : "text-red-800 dark:text-red-200"
-                  }`}
-                >
-                  {result.message}
-                </p>
-              </div>
+
+              {/* Scan Button */}
               <Button
-                variant="ghost"
-                size="sm"
-                onClick={clearResult}
-                className="text-muted-foreground hover:text-foreground"
+                onClick={handleValidateCode}
+                disabled={isScanning || cooldownStatus.isActive || !code.trim()}
+                className="w-full font-semibold py-3"
+                size="lg"
               >
-                <X className="w-4 h-4" />
+                {isScanning ? (
+                  <>
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{
+                        duration: 1,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
+                    >
+                      <Scan className="w-5 h-5 mr-2" />
+                    </motion.div>
+                    Scanning...
+                  </>
+                ) : cooldownStatus.isActive ? (
+                  <>
+                    <Clock className="w-5 h-5 mr-2" />
+                  </>
+                ) : (
+                  <>
+                    <Scan className="w-5 h-5 mr-2" />
+                    Validate Code
+                  </>
+                )}
               </Button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
-      {/* Scan History */}
-      {scanHistory.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <History className="w-5 h-5" />
-              Recent Scans
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              {scanHistory.slice(0, 5).map((scan, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between p-3 bg-muted rounded-lg"
-                >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`w-2 h-2 rounded-full ${
-                        scan.success ? "bg-green-500" : "bg-red-500"
-                      }`}
-                    />
-                    <div>
-                      <div className="font-mono text-sm font-medium">
-                        {scan.code}
-                      </div>
-                      {scan.rewardName && (
-                        <div className="text-xs text-muted-foreground">
-                          {scan.rewardName}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    {scan.timestamp.toLocaleTimeString()}
-                  </div>
+            {/* Cooldown Info */}
+            {cooldownStatus.isActive && (
+              <div className="p-4 rounded-xl border">
+                <div className="flex items-center gap-3 text-sm">
+                  <Clock className="w-4 h-4" />
+                  <span>
+                    Please wait{" "}
+                    <span className="font-semibold">
+                      {formatCooldownTime(cooldownTimer)}
+                    </span>{" "}
+                    before scanning another snack code
+                  </span>
                 </div>
-              ))}
-            </div>
+              </div>
+            )}
           </CardContent>
         </Card>
-      )}
+
+        {/* Products and History Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-2">
+          <div className="lg:col-span-3">
+            {/* Available Snack Products */}
+            <Card className="border shadow-2xl">
+              <CardContent>
+                {/* Search and Filter */}
+                <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-6">
+                  <div className="flex-1 relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <Input
+                      type="text"
+                      placeholder="Search products..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                  <Select
+                    value={selectedBrand}
+                    onValueChange={setSelectedBrand}
+                  >
+                    <SelectTrigger className="w-full sm:w-[200px]">
+                      <SelectValue placeholder="All Brands" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Brands</SelectItem>
+                      {brands.map((brand) => (
+                        <SelectItem key={brand} value={brand}>
+                          {brand}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Products Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-4 gap-4 md:gap-6 auto-rows-fr">
+                  {filteredProducts.map((product) => (
+                    <motion.div
+                      key={product.code}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3 }}
+                      whileHover={{
+                        scale: 1.02,
+                        y: -4,
+                        transition: { duration: 0.2 },
+                      }}
+                      whileTap={{ scale: 0.98 }}
+                      className="group cursor-pointer"
+                      onClick={() => router.push(`/product/${product.id}`)}
+                    >
+                      <Card className="h-full hover:shadow-lg transition-all duration-100 overflow-hidden flex flex-col">
+                        <CardContent className="p-2 md:p-5 relative z-10 flex flex-col flex-1">
+                          {/* Product Header */}
+                          <div className="flex items-start gap-3 mb-4">
+                            <div className="text-3xl md:text-4xl filter drop-shadow-lg flex-shrink-0">
+                              <img
+                                src={product.image}
+                                alt={product.name}
+                                className="w-12 h-12 object-contain rounded-xl"
+                              />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-semibold text-sm md:text-base mb-1 leading-tight break-words overflow-hidden">
+                                {product.name}
+                              </h3>
+                              <p className="text-xs md:text-sm text-muted-foreground font-medium truncate">
+                                {product.brand}
+                              </p>
+                            </div>
+                            <CustomBadge type={product.rarity} />
+                          </div>
+
+                          {/* Product Details */}
+                          <div className="space-y-3 flex-1 flex flex-col">
+                            {/* Copy Code Button */}
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                copyToClipboard(`${product.code}-DEMO`);
+                              }}
+                              className="text-xs font-mono group/btn flex-shrink-0"
+                            >
+                              <Copy className="w-3 h-3 mr-1" />
+                              <span className="hidden sm:inline truncate">
+                                {product.code}-DEMO
+                              </span>
+                              <span className="sm:hidden truncate">
+                                {product.code.split("-")[0]}
+                              </span>
+                            </Button>
+
+                            {/* View Details Button */}
+                            <Button
+                              size="sm"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                router.push(`/product/${product.id}`);
+                              }}
+                              className="text-xs"
+                            >
+                              View Details
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {filteredProducts.length === 0 && (
+                  <div className="text-center py-12">
+                    <Package className="w-16 h-16 mx-auto mb-4 opacity-50" />
+                    <p className="text-lg font-medium">
+                      No snack products found
+                    </p>
+                    <p className="text-sm mt-2">
+                      Try adjusting your search or filter criteria
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Scan History Sidebar */}
+          <div className="lg:col-span-1">
+            <CodeScanHistory />
+          </div>
+        </div>
+      </div>
 
       {/* Reward Animation */}
       <AnimatePresence>

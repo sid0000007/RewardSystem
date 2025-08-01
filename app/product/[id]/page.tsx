@@ -9,6 +9,7 @@ import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { getRarityColor } from "@/lib/getbgColour";
+import CustomBadge from "@/components/Custombadge";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -150,9 +151,7 @@ export default function ProductDetailPage() {
               <div className="flex items-center gap-2 mb-2">
                 <h3 className="text-lg font-semibold ">Rarity</h3>
               </div>
-              <Badge className={`${getRarityColor(product.rarity)} text-sm`}>
-                {product.rarity}
-              </Badge>
+              <CustomBadge type={product.rarity} />
             </div>
           </div>
         </CardContent>
@@ -190,30 +189,7 @@ export default function ProductDetailPage() {
           </div>
         </CardContent>
       </motion.div>
-
-      {/* Action Buttons */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="flex flex-col sm:flex-row gap-4"
-      >
-        <Button
-          onClick={() => copyToClipboard(`${product.code}-DEMO`)}
-          className="flex-1  font-semibold py-3"
-        >
-          <Copy className="w-5 h-5 mr-2" />
-          Copy Product Code
-        </Button>
-        <Button
-          onClick={() => router.push("/product")}
-          variant="outline"
-          className="flex-1  hover: font-semibold py-3"
-        >
-          <Gift className="w-5 h-5 mr-2" />
-          Scan Code Now
-        </Button>
-      </motion.div>
+     
     </div>
   );
 }

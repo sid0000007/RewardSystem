@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/select";
 import VideoHistory from "@/components/VideoHistory";
 import { useRouter } from "next/navigation";
+import CustomBadge from "@/components/Custombadge";
 
 type CategoryFilter =
   | "all"
@@ -135,75 +136,6 @@ export default function WatchPage() {
               Video Library
             </h1>
           </div>
-        </div>
-
-        {/* Stats Overview */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <Card className="text-center">
-              <CardContent className="p-4">
-                <Film className="w-8 h-8 text-purple-500 mx-auto mb-2" />
-                <div className="text-2xl font-bold">{videoStats.total}</div>
-                <div className="text-sm text-muted-foreground">
-                  Total Videos
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <Card className="text-center">
-              <CardContent className="p-4">
-                <CheckCircle className="w-8 h-8 text-green-500 mx-auto mb-2" />
-                <div className="text-2xl font-bold">
-                  {completedVideos.length}
-                </div>
-                <div className="text-sm text-muted-foreground">Completed</div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <Card className="text-center">
-              <CardContent className="p-4">
-                <Clock className="w-8 h-8 text-blue-500 mx-auto mb-2" />
-                <div className="text-2xl font-bold">
-                  {formatTotalWatchTime(totalWatchTime)}
-                </div>
-                <div className="text-sm text-muted-foreground">Watch Time</div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <Card className="text-center">
-              <CardContent className="p-4">
-                <Trophy className="w-8 h-8 text-yellow-500 mx-auto mb-2" />
-                <div className="text-2xl font-bold">
-                  {completedVideos.length}
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  Rewards Earned
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
         </div>
 
         {/* Filters and Search */}
@@ -318,7 +250,6 @@ export default function WatchPage() {
                   {filteredVideos.map((video, index) => {
                     const progress = getVideoProgress(video.id);
                     const progressPercentage = getProgressPercentage(video.id);
-                    const rarity = getRewardRarity(video.reward.type);
 
                     return (
                       <motion.div
@@ -350,12 +281,9 @@ export default function WatchPage() {
                             alt={video.title}
                             className="w-full h-full object-cover"
                           />
-                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
-                            <Play className="w-12 h-12 " />
-                          </div>
 
                           {/* Duration Badge */}
-                          <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/75  text-xs rounded">
+                          <div className="absolute bottom-2 right-2 bg-background/20 text-white px-2 py-1 text-xs rounded">
                             {formatDuration(video.duration)}
                           </div>
 
@@ -387,9 +315,6 @@ export default function WatchPage() {
                             <h3 className="font-semibold line-clamp-2">
                               {video.title}
                             </h3>
-                            <div className="text-2xl ml-2">
-                              {video.reward.icon}
-                            </div>
                           </div>
 
                           <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
@@ -397,12 +322,7 @@ export default function WatchPage() {
                           </p>
 
                           <div className="flex items-center justify-between">
-                            <Badge
-                              variant="secondary"
-                              className={`${rarity.color} text-xs font-semibold px-2 py-1 `}
-                            >
-                              {rarity.label}
-                            </Badge>
+                            <CustomBadge type={video.reward.type} />
 
                             <div className="flex items-center text-xs ">
                               <Clock className="w-3 h-3 mr-1" />
@@ -419,8 +339,17 @@ export default function WatchPage() {
           </div>
 
           {/* Video History Sidebar */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 space-y-4">
             <VideoHistory />
+            {/* Stats Overview */}
+            <div className=" gap-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >                
+              </motion.div>
+            </div>
           </div>
         </div>
       </div>

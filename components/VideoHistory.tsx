@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Clock, Play, Calendar } from "lucide-react";
+import { Clock, Play, Calendar, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { getVideoById } from "@/data/videos";
@@ -117,7 +117,7 @@ export default function VideoHistory() {
             Watch History
           </CardTitle>
         </div>
-        <div className="flex flex-col gap-4 text-xs text-muted-foreground mt-2">
+        <div className="flex flex-col gap-1 text-xs text-muted-foreground mt-2">
           <div className="flex items-center gap-1">
             <span className="w-2 h-2 bg-primary rounded-full"></span>
             <span>{stats.totalVideos} videos</span>
@@ -158,11 +158,15 @@ export default function VideoHistory() {
                   <h4 className="font-semibold truncate text-sm">
                     {video.title}
                   </h4>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
-                    <Calendar className="w-3 h-3" />
-                    <span>{formatDate(entry.watchedAt)}</span>
-                    <span className="text-muted-foreground">•</span>
+                  <div className="flex flex-col item-start text-xs text-muted-foreground mt-1">
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      <span>{formatDate(entry.watchedAt)}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                    <Check className="w-3 h-3" />
                     <span>{formatDuration(entry.watchTime)} watched</span>
+                    </div>
                   </div>
                 </div>
               </motion.div>

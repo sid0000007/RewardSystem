@@ -39,6 +39,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getRarityColor } from "@/lib/getbgColour";
+import CustomBadge from "./Custombadge";
 
 type SortOption = "newest" | "oldest" | "rarity" | "name";
 
@@ -379,12 +380,7 @@ export default function WalletView() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge
-                          variant="secondary"
-                          className={getRarityColor(reward.type)}
-                        >
-                          {reward.type}
-                        </Badge>
+                        <CustomBadge type={reward.type} />
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
