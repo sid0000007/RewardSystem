@@ -1,25 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  MapPin,
-  Navigation,
-  AlertTriangle,
-  RefreshCw,
-  CheckCircle,
-  Clock,
-  Info,
-  Search,
-  Filter,
-  Zap,
-  Target,
-  Shuffle,
-  ChevronDown,
-  Loader2,
-  ExternalLink,
-  SquareArrowOutUpRight,
-} from "lucide-react";
+import { AnimatePresence } from "framer-motion";
+import { MapPin, AlertTriangle, RefreshCw, Clock, Search } from "lucide-react";
 import {
   LocationData,
   ActionType,
@@ -29,13 +12,12 @@ import {
 } from "@/types";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { useRewards } from "@/hooks/useRewards";
-import { isWithinCheckInRadius, getLocationsByType } from "@/data/locations";
+import { isWithinCheckInRadius } from "@/data/locations";
 import { playActionSound } from "@/lib/sounds";
 import LocationCard from "@/components/LocationCard";
 import RewardAnimation from "@/components/RewardAnimation";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
-import Link from "next/link";
 import { Card, CardContent } from "../ui/card";
 import { Input } from "../ui/input";
 import {
@@ -167,7 +149,7 @@ export default function LocationChecker({
 
   const {
     coordinates: realCoordinates,
-    accuracy,
+    // accuracy,
     error: geoError,
     isLoading: isGeoLoading,
     permission,

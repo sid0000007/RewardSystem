@@ -339,7 +339,7 @@ export const useRewards = create<RewardsStore>()(
         }, null, 2);
       } catch (error) {
         const errorMessage = 'Failed to export data';
-        set({ error: errorMessage });
+        set({ error: errorMessage + error });
         return '';
       }
     },
@@ -353,7 +353,7 @@ export const useRewards = create<RewardsStore>()(
         }
 
         // Ensure all rewards have proper IDs and dates
-        const normalizedRewards = parsed.rewards.map((reward: any) => ({
+        const normalizedRewards = parsed.rewards.map((reward: Reward) => ({
           ...reward,
           id: reward.id || crypto.randomUUID(),
           earnedAt: reward.earnedAt instanceof Date
@@ -428,7 +428,7 @@ export const useRewards = create<RewardsStore>()(
           try {
             const parsedRewards = JSON.parse(storedRewards);
             if (Array.isArray(parsedRewards)) {
-              rewards = parsedRewards.map((reward: any) => ({
+              rewards = parsedRewards.map((reward: Reward) => ({
                 ...reward,
                 id: reward.id || crypto.randomUUID(),
                 earnedAt: reward.earnedAt instanceof Date

@@ -98,7 +98,8 @@ export default function DailyLoginReward() {
               transition={{ delay: 0.4 }}
               className="text-muted-foreground mb-6"
             >
-              Great to see you again! Here's your daily reward for visiting.
+              Great to see you again! Here&apos;s your daily reward for
+              visiting.
             </motion.p>
 
             {/* Sparkles Animation */}

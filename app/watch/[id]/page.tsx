@@ -3,13 +3,13 @@
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, Play, Clock, Trophy, Calendar, Eye } from "lucide-react";
+import { ArrowLeft, Clock, Eye } from "lucide-react";
 import { getVideoById } from "@/data/videos";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getRewardRarity } from "@/lib/utils";
-import { RewardType } from "@/types";
+
 import LocalVideoDemo from "@/components/LocalVideoDemo";
 import { useRewards } from "@/hooks/useRewards";
 import { addVideoToHistory } from "@/components/VideoHistory";
@@ -120,9 +120,7 @@ export default function VideoDetailPage() {
           {/* Video Info Card */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">                
-                Details
-              </CardTitle>
+              <CardTitle className="flex items-center gap-2">Details</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
@@ -147,9 +145,7 @@ export default function VideoDetailPage() {
           {/* Reward Card */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">                
-                Reward
-              </CardTitle>
+              <CardTitle className="flex items-center gap-2">Reward</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center gap-3">

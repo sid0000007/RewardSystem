@@ -1,23 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  Wallet,
-  TrendingUp,
-  Gift,
-  Star,
-  Zap,
-  QrCode,
-  Video,
-  MapPin,
-  Play,
-  Scan,
-  Plus,
-} from "lucide-react";
-import { useRewards } from "@/hooks/useRewards";
-import { generateRandomReward } from "@/lib/utils";
-import { playUISound } from "@/lib/sounds";
-import { ActionType } from "@/types";
+import { Gift, QrCode, Video, MapPin, Play, Scan, Plus } from "lucide-react";
+
 import Link from "next/link";
 
 export default function DashboardPage() {
@@ -54,7 +39,9 @@ export default function DashboardPage() {
                 <Scan className="w-6 h-6" />
               </div>
             </div>
-            <h3 className="text-xl text-blue-100 font-semibold mb-2">Scan Codes</h3>
+            <h3 className="text-xl text-blue-100 font-semibold mb-2">
+              Scan Codes
+            </h3>
             <p className="text-blue-100 mb-4">
               Scan QR codes to unlock rewards instantly
             </p>
@@ -75,7 +62,9 @@ export default function DashboardPage() {
                 <Play className="w-6 h-6" />
               </div>
             </div>
-            <h3 className="text-xl text-blue-100 font-semibold mb-2">Watch Videos</h3>
+            <h3 className="text-xl text-blue-100 font-semibold mb-2">
+              Watch Videos
+            </h3>
             <p className="text-blue-100 mb-4">
               Watch videos for 15+ seconds to earn rewards
             </p>
@@ -96,7 +85,9 @@ export default function DashboardPage() {
                 <Plus className="w-6 h-6" />
               </div>
             </div>
-            <h3 className="text-xl text-blue-100 font-semibold mb-2">Check-in</h3>
+            <h3 className="text-xl text-blue-100 font-semibold mb-2">
+              Check-in
+            </h3>
             <p className="text-blue-100 mb-4">
               Visit locations and check in to collect rewards
             </p>

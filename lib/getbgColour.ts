@@ -2,7 +2,7 @@
 export const getRarityColor = (rarity: string) => {
     switch (rarity) {
         case "common":
-            return "text-gray-500";
+            return "text-gray-200";
         case "rare":
             return "text-blue-500";
         case "epic":
@@ -12,7 +12,7 @@ export const getRarityColor = (rarity: string) => {
         case "special":
             return "text-pink-500";
         default:
-            return "text-gray-500";
+            return "text-gray-200";
     }
 };
 

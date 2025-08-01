@@ -3,18 +3,14 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  QrCode,
   Scan,
   Check,
   X,
   Clock,
   AlertCircle,
-  Gift,
   History,
   Search,
-  Filter,
   Package,
-  Store,
   Copy,
 } from "lucide-react";
 import { useRewards } from "@/hooks/useRewards";
@@ -40,6 +36,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getRarityColor } from "@/lib/getbgColour";
+import { useRouter } from "next/navigation";
 
 interface ScanHistory {
   code: string;
@@ -49,6 +46,7 @@ interface ScanHistory {
 }
 
 export default function CodeScanner() {
+  const router = useRouter();
   const { addReward, setCooldown, checkCooldown } = useRewards();
 
   const [code, setCode] = useState("");
@@ -422,7 +420,7 @@ export default function CodeScanner() {
                 }}
                 whileTap={{ scale: 0.98 }}
                 className="group cursor-pointer"
-                onClick={() => window.open(`/product/${product.id}`, "_blank")}
+                onClick={() => router.push(`/product/${product.id}`)}
               >
                 <Card className="h-full hover:shadow-lg transition-all duration-100 overflow-hidden flex flex-col">
                   {/* Rarity Glow Effect */}
@@ -484,7 +482,7 @@ export default function CodeScanner() {
                         size="sm"
                         onClick={(e) => {
                           e.stopPropagation();
-                          window.open(`/product/${product.id}`, "_blank");
+                          router.push(`/product/${product.id}`);
                         }}
                         className="text-xs "
                       >

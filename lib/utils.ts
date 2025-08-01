@@ -96,7 +96,8 @@ export const formatDuration = (seconds: number): string => {
 const COOLDOWN_DURATIONS = {
   [ActionType.CODE_SCAN]: 1, // 1 minute
   [ActionType.VIDEO_WATCH]: 1, // 1 minute  
-  [ActionType.LOCATION_CHECKIN]: 1 // 1 minute
+  [ActionType.LOCATION_CHECKIN]: 1, // 1 minute
+  [ActionType.DAILY_LOGIN]: 1440 // 24 hours (1440 minutes)
 };
 
 export const getCooldownDuration = (actionType: ActionType): number => {

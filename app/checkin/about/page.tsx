@@ -4,10 +4,6 @@ import { motion } from "framer-motion";
 import {
   MapPin,
   Navigation,
-  Gift,
-  Zap,
-  CheckCircle,
-  Target,
   Globe,
   Smartphone,
   Award,

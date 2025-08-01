@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Play, Pause, RotateCcw, Clock, Trophy } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Play, Pause, RotateCcw, Clock } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "./ui/progress";
 import RewardAnimation from "./RewardAnimation";
@@ -140,7 +140,7 @@ export default function LocalVideoDemo({
 
   return (
     <>
-      <Card>       
+      <Card>
         <CardContent className="space-y-4">
           <div>
             <h3 className="text-lg font-semibold mb-2">{title}</h3>
@@ -164,7 +164,7 @@ export default function LocalVideoDemo({
             <div className="absolute bottom-0 left-0 text-white right-0  p-4">
               <div className="flex items-center justify-between">
                 <Button
-                  onClick={togglePlay}                  
+                  onClick={togglePlay}
                   size="sm"
                   className=" bg-white text-black hover:bg-white/80"
                 >

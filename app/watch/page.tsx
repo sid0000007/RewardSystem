@@ -22,7 +22,7 @@ import { useMultiVideoProgress } from "@/hooks/useVideoProgress";
 import { getRewardRarity } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Select,
@@ -31,8 +31,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Link from "next/link";
 import VideoHistory from "@/components/VideoHistory";
+import { useRouter } from "next/navigation";
 
 type CategoryFilter =
   | "all"
@@ -46,6 +46,7 @@ type ViewMode = "grid" | "list";
 type SortOption = "title" | "duration" | "rarity" | "progress";
 
 export default function WatchPage() {
+  const router = useRouter();
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>("all");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [sortBy, setSortBy] = useState<SortOption>("title");
@@ -327,9 +328,7 @@ export default function WatchPage() {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: index * 0.05 }}
                         whileHover={{ scale: 1.02, y: -5 }}
-                        onClick={() =>
-                          window.open(`/watch/${video.id}`, "_blank")
-                        }
+                        onClick={() => router.push(`/watch/${video.id}`)}
                         className={`
                       bg-card border rounded-lg overflow-hidden cursor-pointer transition-all duration-200 hover:shadow-lg
                       ${

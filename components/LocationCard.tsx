@@ -43,7 +43,6 @@ export default function EnhancedLocationCard({
   showCheckInButton = true,
   isCheckingIn = false,
 }: EnhancedLocationCardProps) {
-  const rarity = getRewardRarity(location.reward.type);
 
   const distance = userCoordinates
     ? getDistanceToLocation(userCoordinates, location.coordinates)

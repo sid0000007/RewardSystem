@@ -1,0 +1,9 @@
+// .vscode/settings.json
+{
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+      "source.fixAll.eslint": true
+    },
+    "editor.formatOnSave": true
+  }
+  

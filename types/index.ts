@@ -39,6 +39,8 @@ export interface Reward {
     coordinates?: Coordinates;
     checkedInAt?: string;
     videoDuration?: number;
+    dailyLogin?: boolean;
+    loginDate?: string;
   };
 }
 

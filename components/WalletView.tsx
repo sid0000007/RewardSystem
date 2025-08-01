@@ -7,7 +7,6 @@ import {
   Search,
   Download,
   Upload,
-  Coins,
   Sparkles,
   MoreHorizontal,
   Clock,

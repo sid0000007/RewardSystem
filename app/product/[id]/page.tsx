@@ -2,20 +2,13 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import {
-  ArrowLeft,
-  Calendar,
-  Gift,
-  Info,
-  Clock,
-  Copy,
-  Star,
-} from "lucide-react";
+import { ArrowLeft, Calendar, Gift, Info, Clock, Copy } from "lucide-react";
 import { getProductById } from "@/data/codes";
 import { Button } from "@/components/ui/button";
 import { CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { getRarityColor } from "@/lib/getbgColour";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -24,43 +17,6 @@ export default function ProductDetailPage() {
 
   const product = getProductById(productId);
 
-  if (!product) {
-    return (
-      <div className="p-4 mx-auto max-w-4xl">
-        <div className="text-center py-12">
-          <h1 className="text-2xl font-bold  mb-4">
-            Product Not Found
-          </h1>
-          <p className=" mb-6">
-            The product you&apos;re looking for doesn&apos;t exist.
-          </p>
-          <Button
-            onClick={() => router.back()}
-            className="bg-gradient-to-r "
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Go Back
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  const getRarityColor = (rarity: string) => {
-    switch (rarity) {
-      case "legendary":
-        return "bg-gradient-to-r from-yellow-400 to-orange-500 ";
-      case "epic":
-        return "bg-gradient-to-r from-purple-400 to-pink-500 ";
-      case "rare":
-        return "bg-gradient-to-r from-blue-400 to-cyan-500 ";
-      case "special":
-        return "bg-gradient-to-r from-pink-400 to-rose-500 ";
-      default:
-        return "bg-gray-500 ";
-    }
-  };
-
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast.success("Code copied to clipboard!", {
@@ -68,6 +24,23 @@ export default function ProductDetailPage() {
       duration: 2000,
     });
   };
+
+  if (!product) {
+    return (
+      <div className="p-4 mx-auto max-w-4xl">
+        <div className="text-center py-12">
+          <h1 className="text-2xl font-bold  mb-4">Product Not Found</h1>
+          <p className=" mb-6">
+            The product you&apos;re looking for doesn&apos;t exist.
+          </p>
+          <Button onClick={() => router.back()} className="bg-gradient-to-r ">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Go Back
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -93,12 +66,12 @@ export default function ProductDetailPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 border border-purple-500/20 shadow-2xl"
+        className="rounded-2xl p-6 border"
       >
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Product Image */}
           <div className="flex-shrink-0">
-            <div className="w-48 h-48 lg:w-64 lg:h-64 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl border border-purple-500/30 flex items-center justify-center overflow-hidden relative">              
+            <div className="w-48 h-48 lg:w-64 lg:h-64 bg-gradient-to-br  rounded-2xl border  flex items-center justify-center overflow-hidden relative">
               {/* Product image with proper sizing */}
               <img
                 src={product.image}
@@ -123,12 +96,7 @@ export default function ProductDetailPage() {
           {/* Product Info */}
           <div className="flex-1 space-y-4">
             <div>
-              <div className="flex items-center gap-3 mb-2">
-                <Badge className={getRarityColor(product.rarity)}>
-                  {product.rarity}
-                </Badge>
-                <span className="text-sm ">{product.brand}</span>
-              </div>
+              <div className="flex items-center gap-3 mb-2"></div>
               <h1 className="text-3xl lg:text-4xl font-bold  mb-2">
                 {product.name}
               </h1>
@@ -136,12 +104,10 @@ export default function ProductDetailPage() {
             </div>
 
             {/* Product Code */}
-            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20">
+            <div className=" rounded-xl p-4 border ">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-medium  mb-1">
-                    Product Code
-                  </h3>
+                  <h3 className="text-sm font-medium  mb-1">Product Code</h3>
                   <p className="text-lg font-mono font-semibold ">
                     {product.code}
                   </p>
@@ -166,7 +132,7 @@ export default function ProductDetailPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 border border-purple-500/20 shadow-2xl"
+        className="  rounded-2xl p-6 border "
       >
         <CardHeader>
           <CardTitle className="flex items-center gap-2 ">
@@ -176,15 +142,12 @@ export default function ProductDetailPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20">
-              <h3 className="text-lg font-semibold  mb-2">
-                {product.reward}
-              </h3>
+            <div className=" rounded-xl p-4 border ">
+              <h3 className="text-lg font-semibold  mb-2">{product.reward}</h3>
               <p className="">{product.rewardDescription}</p>
             </div>
-            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20">
+            <div className=" rounded-xl p-4 border ">
               <div className="flex items-center gap-2 mb-2">
-                <Star className="w-5 h-5 text-yellow-400" />
                 <h3 className="text-lg font-semibold ">Rarity</h3>
               </div>
               <Badge className={`${getRarityColor(product.rarity)} text-sm`}>
@@ -200,7 +163,7 @@ export default function ProductDetailPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="bg-black/40 backdrop-blur-xl rounded-2xl p-6 border border-purple-500/20 shadow-2xl"
+        className=" rounded-2xl p-6 border "
       >
         <CardHeader>
           <CardTitle className="flex items-center gap-2 ">
@@ -210,18 +173,14 @@ export default function ProductDetailPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20">
+            <div className=" rounded-xl p-4 border ">
               <div className="flex items-center gap-2 mb-2">
                 <Calendar className="w-5 h-5 " />
-                <h3 className="text-lg font-semibold ">
-                  Expiry Date
-                </h3>
+                <h3 className="text-lg font-semibold ">Expiry Date</h3>
               </div>
-              <p className="">
-                {formatDate(product.expiryDate)}
-              </p>
+              <p className="">{formatDate(product.expiryDate)}</p>
             </div>
-            <div className="bg-black/30 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20">
+            <div className=" rounded-xl p-4 border ">
               <div className="flex items-center gap-2 mb-2">
                 <Clock className="w-5 h-5 " />
                 <h3 className="text-lg font-semibold ">Validity</h3>
@@ -241,7 +200,7 @@ export default function ProductDetailPage() {
       >
         <Button
           onClick={() => copyToClipboard(`${product.code}-DEMO`)}
-          className="flex-1 bg-gradient-to-r   font-semibold py-3"
+          className="flex-1  font-semibold py-3"
         >
           <Copy className="w-5 h-5 mr-2" />
           Copy Product Code

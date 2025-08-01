@@ -8,13 +8,11 @@ import {
   X,
   Settings,
   Calendar,
-  Bell,
   Volume2,
   VolumeX,
-  Wallet,
 } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
-import { UserProfile as UserProfileType, RewardType } from "@/types";
+import { UserProfile as UserProfileType } from "@/types";
 import { useRewards } from "@/hooks/useRewards";
 import { formatDate } from "@/lib/utils";
 import SoundControl from "./SoundControl";
