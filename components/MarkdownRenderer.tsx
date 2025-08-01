@@ -184,7 +184,7 @@ export default function MarkdownRenderer({
                   );
                 },
                 // Enhanced code block styling
-                code: ({ node, className, children, ...props }: any) => {
+                code: ({ node, className, children, ...props }) => {
                   const match = /language-(\w+)/.exec(className || "");
                   const isInline = !match;
                   return !isInline ? (
