@@ -169,11 +169,10 @@ npm start
 - **Statistics** - Track total rewards and achievements
 - **Preferences** - Sound, theme, and notification settings
 
-### 📊 About (`/checkin/about`)
+### 📊 Documentation (`/docs`)
 
 - **Project Information** - Learn about RealMint
-- **How It Works** - Explanation of reward mechanics
-- **Contact Information** - Support and feedback
+- **How It Works** - Explanation of reward mechanics-
 
 ## 🎮 How It Works
 
