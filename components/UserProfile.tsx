@@ -12,11 +12,12 @@ import {
   VolumeX,
 } from "lucide-react";
 import { ThemeToggle } from "./theme-toggle";
-import { UserProfile as UserProfileType } from "@/types";
+import { RewardType, UserProfile as UserProfileType } from "@/types";
 import { useRewards } from "@/hooks/useRewards";
 import { formatDate } from "@/lib/utils";
 import SoundControl from "./SoundControl";
 import { Button } from "./ui/button";
+import { Card, CardContent } from "./ui/card";
 
 interface UserProfileProps {
   className?: string;
@@ -50,14 +51,18 @@ const avatarOptions = [
 ];
 
 export default function UserProfile({ className = "" }: UserProfileProps) {
-  const { userProfile, updateUserProfile, getTotalRewards, getRewardsToday } =
-    useRewards();
+  const {
+    userProfile,
+    updateUserProfile,
+    getTotalRewards,
+    getRewardsToday,
+    getRewardsByType,   
+  } = useRewards();
   const [isEditing, setIsEditing] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [editedProfile, setEditedProfile] =
     useState<UserProfileType>(userProfile);
 
-  const totalRewards = getTotalRewards();
   const todayRewards = getRewardsToday().length;
 
   const handleSave = () => {
@@ -78,6 +83,14 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
     // Simple implementation - could be enhanced with actual streak tracking
     return Math.floor(totalRewards / 3) + 1;
   };
+  const {} = useRewards();
+  // Stats
+  const totalRewards = getTotalRewards();
+  const commonCount = getRewardsByType(RewardType.COMMON).length;
+  const rareCount = getRewardsByType(RewardType.RARE).length;
+  const epicCount = getRewardsByType(RewardType.EPIC).length;
+  const legendaryCount = getRewardsByType(RewardType.LEGENDARY).length;
+  const specialCount = getRewardsByType(RewardType.SPECIAL).length;
 
   return (
     <div className={`space-y-6 ${className}`}>
@@ -87,7 +100,7 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
         animate={{ opacity: 1, y: 0 }}
         className="bg-card rounded-2xl p-8 border"
       >
-        <div className="flex items-start justify-between mb-8">
+        <div className="flex flex-col lg:flex-row gap-4  items-start justify-between mb-8">
           <div className="flex items-center gap-6">
             <div className="relative">
               <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center text-4xl shadow-lg">
@@ -98,7 +111,7 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
               </div>
             </div>
             <div>
-              <h2 className="text-3xl font-bold  mb-2">
+              <h2 className="text-xl lg:text-3xl font-bold  mb-2">
                 {userProfile.username}
               </h2>
               <p className=" flex items-center gap-2">
@@ -145,6 +158,70 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
           </div>
         </div>
       </motion.div>
+
+      <div className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-6 gap-2">
+        <Card className="hover:shadow-md transition-shadow">
+          <CardContent className="p-2">
+            <div className="flex flex-col items-center text-center">
+              <span className="text-base mb-0.5">💰</span>
+              <div className="text-sm font-bold">
+                {commonCount +
+                  rareCount +
+                  epicCount +
+                  legendaryCount +
+                  specialCount}
+              </div>
+              <div className="text-xs text-muted-foreground">Total</div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Individual Token Cards */}
+        {[
+          {
+            label: "Common",
+            count: commonCount,
+            color: "bg-gray-500",
+            icon: "🪙",
+          },
+          {
+            label: "Rare",
+            count: rareCount,
+            color: "bg-blue-500",
+            icon: "💎",
+          },
+          {
+            label: "Epic",
+            count: epicCount,
+            color: "bg-purple-500",
+            icon: "🏆",
+          },
+          {
+            label: "Legendary",
+            count: legendaryCount,
+            color: "bg-yellow-500",
+            icon: "👑",
+          },
+          {
+            label: "Special",
+            count: specialCount,
+            color: "bg-pink-500",
+            icon: "✨",
+          },
+        ].map((token) => (
+          <Card key={token.label} className="hover:shadow-md transition-shadow">
+            <CardContent className="p-2">
+              <div className="flex flex-col items-center text-center">
+                <span className="text-base mb-0.5">{token.icon}</span>
+                <div className="text-sm font-bold">{token.count}</div>
+                <div className="text-xs text-muted-foreground">
+                  {token.label}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
 
       {/* Edit Profile Modal - Shadcn Style */}
       <AnimatePresence>

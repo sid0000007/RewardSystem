@@ -36,9 +36,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getRarityColor } from "@/lib/getbgColour";
 import CustomBadge from "./Custombadge";
 
 type SortOption = "newest" | "oldest" | "rarity" | "name";
@@ -163,7 +161,6 @@ export default function WalletView() {
     return date.toLocaleDateString();
   };
 
-  
   const getActionIcon = (actionType: ActionType) => {
     switch (actionType) {
       case ActionType.CODE_SCAN:
@@ -232,6 +229,70 @@ export default function WalletView() {
         </div>
       </div>
 
+      {/* stats sections  */}
+      <div className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-6 gap-2">
+        <Card className="hover:shadow-md transition-shadow">
+          <CardContent className="p-2">
+            <div className="flex flex-col items-center text-center">
+              <span className="text-base mb-0.5">💰</span>
+              <div className="text-sm font-bold">
+                {commonCount +
+                  rareCount +
+                  epicCount +
+                  legendaryCount +
+                  specialCount}
+              </div>
+              <div className="text-xs text-muted-foreground">Total</div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Individual Token Cards */}
+        {[
+          {
+            label: "Common",
+            count: commonCount,
+            color: "bg-gray-500",
+            icon: "🪙",
+          },
+          {
+            label: "Rare",
+            count: rareCount,
+            color: "bg-blue-500",
+            icon: "💎",
+          },
+          {
+            label: "Epic",
+            count: epicCount,
+            color: "bg-purple-500",
+            icon: "🏆",
+          },
+          {
+            label: "Legendary",
+            count: legendaryCount,
+            color: "bg-yellow-500",
+            icon: "👑",
+          },
+          {
+            label: "Special",
+            count: specialCount,
+            color: "bg-pink-500",
+            icon: "✨",
+          },
+        ].map((token) => (
+          <Card key={token.label} className="hover:shadow-md transition-shadow">
+            <CardContent className="p-2">
+              <div className="flex flex-col items-center text-center">
+                <span className="text-base mb-0.5">{token.icon}</span>
+                <div className="text-sm font-bold">{token.count}</div>
+                <div className="text-xs text-muted-foreground">
+                  {token.label}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
       {/* Filters and Search */}
       <Card>
         <CardContent className="">
@@ -426,75 +487,6 @@ export default function WalletView() {
           </Card>
         )}
       </AnimatePresence>
-
-      {/* Stats Cards */}
-      <Card className="max-w-sm">
-        <CardContent className="p-4">
-          <div className="flex flex-col gap-2">
-            {/* Total Balance */}
-            <div className="text-center mb-2">
-              <div className="text-sm text-muted-foreground">Total Balance</div>
-              <div className="text-2xl font-bold">
-                {commonCount +
-                  rareCount +
-                  epicCount +
-                  legendaryCount +
-                  specialCount}
-              </div>
-            </div>
-
-            {/* Token List */}
-            <div className="space-y-2">
-              {[
-                {
-                  label: "Common",
-                  count: commonCount,
-                  color: "bg-gray-500",
-                  icon: "🪙",
-                },
-                {
-                  label: "Rare",
-                  count: rareCount,
-                  color: "bg-blue-500",
-                  icon: "💎",
-                },
-                {
-                  label: "Epic",
-                  count: epicCount,
-                  color: "bg-purple-500",
-                  icon: "🏆",
-                },
-                {
-                  label: "Legendary",
-                  count: legendaryCount,
-                  color: "bg-yellow-500",
-                  icon: "👑",
-                },
-                {
-                  label: "Special",
-                  count: specialCount,
-                  color: "bg-pink-500",
-                  icon: "✨",
-                },
-              ].map((token) => (
-                <div
-                  key={token.label}
-                  className="flex items-center justify-between py-1"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">{token.icon}</span>
-                    <span className="text-sm">{token.label}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium">{token.count}</span>
-                    <div className={`w-2 h-2 rounded-full ${token.color}`} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Clear Confirmation Modal */}
       <AnimatePresence>
