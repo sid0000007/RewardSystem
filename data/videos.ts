@@ -8,7 +8,7 @@ export const videoLibrary: VideoData[] = [
     title: 'Peaceful Forest Sounds',
     description: 'Relax with the soothing sounds of a peaceful forest',
     url: '/videos/nature-forest.mp4',
-    thumbnail: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=300&h=200&fit=crop',
+    thumbnail: '/images/thumbnails/nature-forest.png',
     duration: 29,
     minWatchTime: 15,
     reward: {
@@ -26,7 +26,7 @@ export const videoLibrary: VideoData[] = [
     title: 'Amazing Science Experiments',
     description: 'Learn through fun and engaging science demonstrations',
     url: '/videos/science-demo.mp4',
-    thumbnail: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=300&h=200&fit=crop',
+    thumbnail: '/images/thumbnails/science-demo.png',
     duration: 45,
     minWatchTime: 15,
     reward: {
@@ -45,7 +45,7 @@ export const videoLibrary: VideoData[] = [
     title: 'Virtual Art Gallery Tour',
     description: 'Explore famous artworks from around the world',
     url: '/videos/art-gallery.mp4',
-    thumbnail: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=300&h=200&fit=crop',
+    thumbnail: '/images/thumbnails/art-gallery.png',
     duration: 18,
     minWatchTime: 15,
     reward: {
@@ -63,7 +63,7 @@ export const videoLibrary: VideoData[] = [
     title: 'Future of Technology',
     description: 'Explore cutting-edge technology and innovations',
     url: '/videos/tech-future.mp4',
-    thumbnail: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=300&h=200&fit=crop',
+    thumbnail: '/images/thumbnails/tech-future.png',
     duration: 45,
     minWatchTime: 15,
     reward: {
@@ -82,7 +82,7 @@ export const videoLibrary: VideoData[] = [
     title: 'Daily Life Hacks',
     description: 'Quick tips to make your daily life easier',
     url: '/videos/quick-tips.mp4',
-    thumbnail: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=300&h=200&fit=crop',
+    thumbnail: '/images/thumbnails/quick-tips.png',
     duration: 59,
     minWatchTime: 15,
     reward: {

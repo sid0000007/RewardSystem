@@ -8,6 +8,7 @@ import { Progress } from "./ui/progress";
 import { Reward, RewardType, ActionType } from "@/types";
 interface LocalVideoDemoProps {
   videoUrl: string;
+  thumbnailUrl: string;
   title: string;
   description: string;
   minWatchTime?: number;
@@ -23,6 +24,7 @@ interface LocalVideoDemoProps {
 
 export default function LocalVideoDemo({
   videoUrl,
+  thumbnailUrl,
   title,
   description,
   minWatchTime = 15,
@@ -151,7 +153,7 @@ export default function LocalVideoDemo({
             <video
               ref={videoRef}
               className="w-full h-auto"
-              poster="/images/video-poster.jpg"
+              poster={thumbnailUrl}
               preload="metadata"
               playsInline
             >

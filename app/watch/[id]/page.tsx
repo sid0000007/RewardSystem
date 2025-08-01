@@ -116,6 +116,7 @@ export default function VideoDetailPage() {
           <LocalVideoDemo
             videoUrl={video.url}
             title={video.title}
+            thumbnailUrl={video.thumbnail}
             description={video.description}
             minWatchTime={video.minWatchTime}
             onRewardEarned={handleRewardEarned}
