@@ -22,7 +22,6 @@ import { useVideoProgress } from "@/hooks/useVideoProgress";
 import { VideoProgressBar } from "@/components/ProgressBar";
 import { formatCooldownTime } from "@/lib/utils";
 import { playActionSound } from "@/lib/sounds";
-import RewardAnimation from "@/components/RewardAnimation";
 import { addVideoToHistory } from "@/components/VideoHistory";
 
 interface VideoWatcherProps {
@@ -52,7 +51,6 @@ export default function VideoWatcher({
   const [duration, setDuration] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showRewardAnimation, setShowRewardAnimation] = useState(false);
   const [earnedReward, setEarnedReward] = useState<Reward | null>(null);
   const [currentVideoUrl, setCurrentVideoUrl] = useState(video.url);
   const [fallbackIndex, setFallbackIndex] = useState(0);
@@ -229,8 +227,6 @@ export default function VideoWatcher({
           playActionSound(ActionType.VIDEO_WATCH, true).catch(() => {});
 
           setEarnedReward(result.reward || null);
-          setShowRewardAnimation(true);
-          setTimeout(() => setShowRewardAnimation(false), 3000);
           onRewardEarned?.();
         }
       }
@@ -567,16 +563,6 @@ export default function VideoWatcher({
           )}
         </div>
       </div>
-
-      {/* Reward Animation */}
-      <AnimatePresence>
-        {showRewardAnimation && earnedReward && (
-          <RewardAnimation
-            reward={earnedReward}
-            onComplete={() => setShowRewardAnimation(false)}
-          />
-        )}
-      </AnimatePresence>
     </div>
   );
 }

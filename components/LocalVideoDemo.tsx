@@ -5,7 +5,6 @@ import { Play, Pause, RotateCcw, Clock } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "./ui/progress";
-import RewardAnimation from "./RewardAnimation";
 import { Reward, RewardType, ActionType } from "@/types";
 interface LocalVideoDemoProps {
   videoUrl: string;
@@ -38,7 +37,7 @@ export default function LocalVideoDemo({
   const [isEligible, setIsEligible] = useState(false);
   const [hasEarned, setHasEarned] = useState(false);
   const [lastVideoTime, setLastVideoTime] = useState(0);
-  const [showRewardAnimation, setShowRewardAnimation] = useState(false);
+  
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -100,7 +99,7 @@ export default function LocalVideoDemo({
   const handleReward = () => {
     if (isEligible && !hasEarned) {
       setHasEarned(true);
-      setShowRewardAnimation(true);
+     
       // Call the reward earned callback
       onRewardEarned?.();
       console.log("🎉 Reward earned!");
@@ -236,15 +235,6 @@ export default function LocalVideoDemo({
         </CardContent>
       </Card>
 
-      {/* Reward Animation */}
-      {showRewardAnimation && (
-        <RewardAnimation
-          reward={reward}
-          onComplete={() => {
-            setShowRewardAnimation(false);
-          }}
-        />
-      )}
     </>
   );
 }
