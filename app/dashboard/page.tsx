@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Gift, QrCode, Video, MapPin, Play, Scan, Plus } from "lucide-react";
-
 import Link from "next/link";
 
 export default function DashboardPage() {
@@ -14,89 +13,75 @@ export default function DashboardPage() {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="w-24 h-24 bg-gradient-to-br  rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl"
+          className="w-24 h-24 bg-gradient-to-br from-sky-500 to-sky-600 dark:from-sky-600 dark:to-sky-700 rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl"
         >
-          <Gift className="w-12 h-12 " />
+          <Gift className="w-12 h-12 text-white" />
         </motion.div>
         <h2 className="text-4xl font-bold text-foreground mb-4">
           Welcome to Real Mint
         </h2>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-          Collect unique digital rewards by scanning codes, watching videos, and
-          checking in at locations.
+          Collect unique digital rewards by scanning codes, watching videos, and checking in at locations.
         </p>
       </div>
+
       {/* Action Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Scan Codes */}
         <motion.div
           whileHover={{ scale: 1.02 }}
-          className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-6  cursor-pointer shadow-2xl border border-blue-500/20"
+          className="bg-gradient-to-br from-sky-500 to-sky-600 dark:from-sky-600 dark:to-sky-700 rounded-2xl p-6 cursor-pointer shadow-xl border border-sky-500/20"
         >
           <Link href="/product" className="block">
-            <div className="flex items-center justify-between  mb-4">
-              <QrCode className="w-8 h-8" />
-              <div className="w-12 h-12 /20 rounded-xl flex items-center justify-center">
-                <Scan className="w-6 h-6" />
+            <div className="flex items-center justify-between mb-4">
+              <QrCode className="w-8 h-8 text-white" />
+              <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                <Scan className="w-6 h-6 text-white" />
               </div>
             </div>
-            <h3 className="text-xl  font-semibold mb-2">
-              Scan Codes
-            </h3>
-            <p className=" mb-4">
-              Scan QR codes to unlock rewards instantly
-            </p>
-            <div className="text-sm  font-semibold">
-              ✨ Available Now!
-            </div>
+            <h3 className="text-xl font-semibold mb-2 text-white">Scan Codes</h3>
+            <p className="mb-4 text-white/90">Scan QR codes to unlock rewards instantly</p>
+            <div className="text-sm font-semibold text-white">✨ Available Now!</div>
           </Link>
         </motion.div>
 
+        {/* Watch Videos */}
         <motion.div
           whileHover={{ scale: 1.02 }}
-          className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-6  cursor-pointer shadow-2xl border border-purple-500/20"
+          className="bg-gradient-to-br from-fuchsia-500 to-purple-600 dark:from-fuchsia-600 dark:to-indigo-700 rounded-2xl p-6 cursor-pointer shadow-xl border border-purple-500/20"
         >
           <Link href="/watch" className="block">
-            <div className="flex items-center  justify-between mb-4">
-              <Video className="w-8 h-8" />
-              <div className="w-12 h-12 /20 rounded-xl flex items-center justify-center">
-                <Play className="w-6 h-6" />
+            <div className="flex items-center justify-between mb-4">
+              <Video className="w-8 h-8 text-white" />
+              <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                <Play className="w-6 h-6 text-white" />
               </div>
             </div>
-            <h3 className="text-xl  font-semibold mb-2">
-              Watch Videos
-            </h3>
-            <p className=" mb-4">
-              Watch videos for 15+ seconds to earn rewards
-            </p>
-            <div className="text-sm  font-semibold">
-              ✨ Available Now!
-            </div>
+            <h3 className="text-xl font-semibold mb-2 text-white">Watch Videos</h3>
+            <p className="mb-4 text-white/90">Watch videos for 15+ seconds to earn rewards</p>
+            <div className="text-sm font-semibold text-white">✨ Available Now!</div>
           </Link>
         </motion.div>
 
+        {/* Check-in */}
         <motion.div
           whileHover={{ scale: 1.02 }}
-          className="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-6  cursor-pointer shadow-2xl border border-green-500/20"
+          className="bg-gradient-to-br from-emerald-500 to-teal-600 dark:from-emerald-600 dark:to-teal-700 rounded-2xl p-6 cursor-pointer shadow-xl border border-emerald-500/20"
         >
           <Link href="/checkin" className="block">
-            <div className="flex items-center  justify-between mb-4">
-              <MapPin className="w-8 h-8" />
-              <div className="w-12 h-12  rounded-xl flex items-center justify-center">
-                <Plus className="w-6 h-6" />
+            <div className="flex items-center justify-between mb-4">
+              <MapPin className="w-8 h-8 text-white" />
+              <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                <Plus className="w-6 h-6 text-white" />
               </div>
             </div>
-            <h3 className="text-xl  font-semibold mb-2">
-              Check-in
-            </h3>
-            <p className=" mb-4">
-              Visit locations and check in to collect rewards
-            </p>
-            <div className="text-sm  font-semibold">
-              ✨ Available Now!
-            </div>
+            <h3 className="text-xl font-semibold mb-2 text-white">Check-in</h3>
+            <p className="mb-4 text-white/90">Visit locations and check in to collect rewards</p>
+            <div className="text-sm font-semibold text-white">✨ Available Now!</div>
           </Link>
         </motion.div>
       </div>
     </div>
   );
 }
+
