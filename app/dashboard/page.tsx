@@ -23,12 +23,7 @@ export default function DashboardPage() {
       </div>
       {/* Welcome Section */}
       <div className="text-center py-12">
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.2 }}
-          className="w-24 h-24   flex items-center justify-center mx-auto mb-6 "
-        >
+        <motion.div className="w-24 h-24   flex items-center justify-center mx-auto mb-6 ">
           <Gift className="w-12 h-12 " />
         </motion.div>
         <h2 className="text-4xl font-bold text-foreground mb-4">
@@ -43,10 +38,7 @@ export default function DashboardPage() {
       {/* Action Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Scan Codes */}
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          className="bg-gradient-to-br from-sky-500 to-sky-600 dark:from-sky-600 dark:to-sky-700 rounded-2xl p-6 cursor-pointer shadow-xl border border-sky-500/20"
-        >
+        <motion.div className="bg-gradient-to-br hover:scale-105 transition-all duration-100 from-sky-500 to-sky-600 dark:from-sky-600 dark:to-sky-700 rounded-2xl p-6 cursor-pointer shadow-xl border border-sky-500/20">
           <Link href="/product" className="block">
             <div className="flex items-center justify-between mb-4">
               <QrCode className="w-8 h-8 text-white" />
@@ -67,10 +59,7 @@ export default function DashboardPage() {
         </motion.div>
 
         {/* Watch Videos */}
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          className="bg-gradient-to-br from-fuchsia-500 to-purple-600 dark:from-fuchsia-600 dark:to-indigo-700 rounded-2xl p-6 cursor-pointer shadow-xl border border-purple-500/20"
-        >
+        <motion.div className="bg-gradient-to-br hover:scale-105 transition-all duration-100 from-fuchsia-500 to-purple-600 dark:from-fuchsia-600 dark:to-indigo-700 rounded-2xl p-6 cursor-pointer shadow-xl border border-purple-500/20">
           <Link href="/watch" className="block">
             <div className="flex items-center justify-between mb-4">
               <Video className="w-8 h-8 text-white" />
@@ -91,10 +80,7 @@ export default function DashboardPage() {
         </motion.div>
 
         {/* Check-in */}
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          className="bg-gradient-to-br from-emerald-500 to-teal-600 dark:from-emerald-600 dark:to-teal-700 rounded-2xl p-6 cursor-pointer shadow-xl border border-emerald-500/20"
-        >
+        <motion.div className="bg-gradient-to-br hover:scale-105 transition-all duration-100 from-emerald-500 to-teal-600 dark:from-emerald-600 dark:to-teal-700 rounded-2xl p-6 cursor-pointer shadow-xl border border-emerald-500/20">
           <Link href="/checkin" className="block">
             <div className="flex items-center justify-between mb-4">
               <MapPin className="w-8 h-8 text-white" />
@@ -113,10 +99,7 @@ export default function DashboardPage() {
         </motion.div>
 
         {/* Documentation */}
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          className="bg-gradient-to-br from-indigo-500 to-blue-600 dark:from-indigo-600 dark:to-blue-700 rounded-2xl p-6 cursor-pointer shadow-xl border border-blue-500/20"
-        >
+        <motion.div className="bg-gradient-to-br hover:scale-105 transition-all duration-100 from-indigo-500 to-blue-600 dark:from-indigo-600 dark:to-blue-700 rounded-2xl p-6 cursor-pointer shadow-xl border border-blue-500/20">
           <Link href="/docs" className="block">
             <div className="flex items-center justify-between mb-4">
               <BookOpen className="w-8 h-8 text-white" />
@@ -135,7 +118,7 @@ export default function DashboardPage() {
             </div>
           </Link>
         </motion.div>
-      </div>     
+      </div>
     </div>
   );
 }

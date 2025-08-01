@@ -5,8 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Video,
   Search,
-  Grid3X3,
-  List,
   CheckCircle,
 } from "lucide-react";
 import {
@@ -38,22 +36,17 @@ type CategoryFilter =
   | "tech"
   | "quick"
   | "special";
-type ViewMode = "grid" | "list";
 type SortOption = "title" | "duration" | "rarity" | "progress";
 
 export default function WatchPage() {
   const router = useRouter();
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>("all");
-  const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [sortBy, setSortBy] = useState<SortOption>("title");
   const [searchQuery, setSearchQuery] = useState("");
 
   const { getVideoProgress, getCompletedVideos, getTotalWatchTime } =
     useMultiVideoProgress();
 
-  const videoStats = getVideoStats();
-  const completedVideos = getCompletedVideos();
-  const totalWatchTime = getTotalWatchTime();
 
   // Filter and sort videos
   const filteredVideos = useMemo(() => {
@@ -185,25 +178,6 @@ export default function WatchPage() {
                     <SelectItem value="progress">Sort by Progress</SelectItem>
                   </SelectContent>
                 </Select>
-
-                <div className="flex border rounded-lg overflow-hidden">
-                  <Button
-                    variant={viewMode === "grid" ? "default" : "ghost"}
-                    size="sm"
-                    onClick={() => setViewMode("grid")}
-                    className="rounded-none"
-                  >
-                    <Grid3X3 className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant={viewMode === "list" ? "default" : "ghost"}
-                    size="sm"
-                    onClick={() => setViewMode("list")}
-                    className="rounded-none"
-                  >
-                    <List className="w-4 h-4" />
-                  </Button>
-                </div>
               </div>
             </div>
           </CardContent>
@@ -212,14 +186,11 @@ export default function WatchPage() {
         {/* Video History */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <div className="lg:col-span-3">
-            {/* Video Grid/List */}
+            {/* Video Grid */}
             <AnimatePresence mode="wait">
               {filteredVideos.length === 0 ? (
                 <motion.div
-                  key="empty"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
+                  key="empty"                  
                   className="text-center py-16"
                 >
                   <Video className="w-16 h-16  mx-auto mb-4" />
@@ -232,15 +203,8 @@ export default function WatchPage() {
                 </motion.div>
               ) : (
                 <motion.div
-                  key="videos"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className={
-                    viewMode === "grid"
-                      ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                      : "space-y-4"
-                  }
+                  key="videos"                 
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                 >
                   {filteredVideos.map((video, index) => {
                     const progress = getVideoProgress(video.id);
@@ -249,27 +213,12 @@ export default function WatchPage() {
                     return (
                       <motion.div
                         key={video.id}
-                        layout
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: index * 0.05 }}
-                        whileHover={{ scale: 1.02, y: -5 }}
+                        
                         onClick={() => router.push(`/watch/${video.id}`)}
-                        className={`
-                      bg-card border rounded-lg overflow-hidden cursor-pointer transition-all duration-200 hover:shadow-lg
-                      ${
-                        viewMode === "list" ? "flex items-center p-4 gap-4" : ""
-                      }
-                    `}
+                        className="bg-card border rounded-lg overflow-hidden cursor-pointer transition-all duration-200 hover:shadow-lg"
                       >
                         {/* Thumbnail */}
-                        <div
-                          className={`relative ${
-                            viewMode === "list"
-                              ? "w-32 h-20 flex-shrink-0"
-                              : "aspect-video"
-                          }`}
-                        >
+                        <div className="relative aspect-video">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={video.thumbnail}
@@ -299,26 +248,25 @@ export default function WatchPage() {
                             </div>
                           )}
                         </div>
+                        
 
                         {/* Content */}
-                        <div
-                          className={`p-4 ${
-                            viewMode === "list" ? "flex-1" : ""
-                          }`}
-                        >
+                        <div className="p-4">
                           <div className="flex items-start justify-between mb-2">
                             <h3 className="font-semibold line-clamp-2">
                               {video.title}
                             </h3>
+                            <div className="flex items-center justify-between">
+                            <CustomBadge type={video.reward.type} />                           
                           </div>
+                          </div>
+                          
 
                           <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
                             {video.description}
                           </p>
 
-                          <div className="flex items-center justify-between">
-                            <CustomBadge type={video.reward.type} />                           
-                          </div>
+                         
                         </div>
                       </motion.div>
                     );
@@ -333,10 +281,7 @@ export default function WatchPage() {
             <VideoHistory />
             {/* Stats Overview */}
             <div className=" gap-4">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
+              <motion.div                
               ></motion.div>
             </div>
           </div>

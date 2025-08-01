@@ -140,10 +140,7 @@ export default function VideoHistory() {
 
             return (
               <motion.div
-                key={`${entry.videoId}-${entry.watchedAt.getTime()}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
+                key={`${entry.videoId}-${entry.watchedAt.getTime()}`}                
                 className="group flex items-center gap-3 p-4 bg-muted/50 rounded-lg border hover:bg-muted transition-all duration-200"
               >
                 {/* Video Icon */}

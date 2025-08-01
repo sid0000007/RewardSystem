@@ -127,10 +127,7 @@ export default function CodeScanHistory() {
         <div className="space-y-1 max-h-56 overflow-y-auto custom-scrollbar">
           {history.map((entry, index) => (
             <motion.div
-              key={`${entry.code}-${entry.timestamp.getTime()}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.05 }}
+              key={`${entry.code}-${entry.timestamp.getTime()}`}              
               className="group flex items-center gap-3 p-4 bg-muted/50 rounded-lg border hover:bg-muted transition-all duration-200"
             >
               {/* Scan Info */}

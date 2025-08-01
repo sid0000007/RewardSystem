@@ -56,7 +56,7 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
     updateUserProfile,
     getTotalRewards,
     getRewardsToday,
-    getRewardsByType,   
+    getRewardsByType,
   } = useRewards();
   const [isEditing, setIsEditing] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -103,7 +103,7 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
         <div className="flex flex-col lg:flex-row gap-4  items-start justify-between mb-8">
           <div className="flex items-center gap-6">
             <div className="relative">
-              <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center text-4xl shadow-lg">
+              <div className="w-20 h-20 bg-background rounded-2xl flex items-center justify-center text-4xl shadow-lg">
                 {userProfile.avatar}
               </div>
               <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full border-2 border-black flex items-center justify-center">
@@ -116,7 +116,10 @@ export default function UserProfile({ className = "" }: UserProfileProps) {
               </h2>
               <p className=" flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                Joined {formatDate(userProfile.createdAt)}
+                Joined{" "}
+                <span suppressHydrationWarning>
+                  {formatDate(userProfile.createdAt)}
+                </span>
               </p>
             </div>
           </div>

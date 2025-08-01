@@ -84,9 +84,9 @@ export default function Sidebar() {
     <motion.aside
       initial={false}
       animate={{
-        width: sidebarExpanded ? "280px" : "80px",
-      }}
-      transition={{ duration: 0.3, ease: "easeInOut" }}
+        width: sidebarExpanded ? "240px" : "70px",
+      }}     
+      transition={{ duration: 0.1, ease: "easeInOut" }}
       className="fixed left-0 top-0 z-50 h-screen bg-sidebar/95 backdrop-blur-xl border-r border-sidebar-border shadow-2xl flex flex-col"
     >
       {/* Sidebar Toggle Button - Positioned over border */}
@@ -130,16 +130,14 @@ export default function Sidebar() {
 
           return (
             <motion.div
-              key={item.id}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              key={item.id}              
             >
               <Link
                 href={item.href}
                 onClick={handleTabClick}
                 className={`w-full flex items-center gap-3 p-2 rounded-lg  ${
                   isActive
-                    ? "bg-primary text-primary-foreground"
+                    ? "bg-foreground text-primary-foreground"
                     : "text-sidebar-foreground "
                 }`}
               >
