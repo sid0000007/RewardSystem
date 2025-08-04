@@ -2,11 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Video,
-  Search,
-  CheckCircle,
-} from "lucide-react";
+import { Video, Search, CheckCircle } from "lucide-react";
 import {
   videoLibrary,
   getVideosByCategory,
@@ -46,7 +42,6 @@ export default function WatchPage() {
 
   const { getVideoProgress, getCompletedVideos, getTotalWatchTime } =
     useMultiVideoProgress();
-
 
   // Filter and sort videos
   const filteredVideos = useMemo(() => {
@@ -184,15 +179,12 @@ export default function WatchPage() {
         </Card>
 
         {/* Video History */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="col-span-2 lg:col-span-3">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 w-full">
+          <div className="lg:col-span-3">
             {/* Video Grid */}
             <AnimatePresence mode="wait">
               {filteredVideos.length === 0 ? (
-                <motion.div
-                  key="empty"                  
-                  className="text-center py-16"
-                >
+                <motion.div key="empty" className="text-center py-16">
                   <Video className="w-16 h-16  mx-auto mb-4" />
                   <h3 className="text-xl font-semibold  mb-2">
                     No videos found
@@ -203,7 +195,7 @@ export default function WatchPage() {
                 </motion.div>
               ) : (
                 <motion.div
-                  key="videos"                 
+                  key="videos"
                   className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                 >
                   {filteredVideos.map((video, index) => {
@@ -213,7 +205,6 @@ export default function WatchPage() {
                     return (
                       <motion.div
                         key={video.id}
-                        
                         onClick={() => router.push(`/watch/${video.id}`)}
                         className="bg-card border rounded-lg overflow-hidden cursor-pointer transition-all duration-200 hover:shadow-lg"
                       >
@@ -248,7 +239,6 @@ export default function WatchPage() {
                             </div>
                           )}
                         </div>
-                        
 
                         {/* Content */}
                         <div className="p-4">
@@ -257,16 +247,13 @@ export default function WatchPage() {
                               {video.title}
                             </h3>
                             <div className="flex items-center justify-between">
-                            <CustomBadge type={video.reward.type} />                           
+                              <CustomBadge type={video.reward.type} />
+                            </div>
                           </div>
-                          </div>
-                          
 
                           <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
                             {video.description}
                           </p>
-
-                         
                         </div>
                       </motion.div>
                     );
@@ -277,13 +264,8 @@ export default function WatchPage() {
           </div>
 
           {/* Video History Sidebar */}
-          <div className=" lg:col-span-1 space-y-4">
+          <div className="lg:col-span-1 w-full">
             <VideoHistory />
-            {/* Stats Overview */}
-            <div className=" gap-4">
-              <motion.div                
-              ></motion.div>
-            </div>
           </div>
         </div>
       </div>

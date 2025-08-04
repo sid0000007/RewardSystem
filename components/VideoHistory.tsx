@@ -94,11 +94,11 @@ export default function VideoHistory() {
             <h3 className="text-sm lg:text-md font-semibold mb-2">
               No videos watched yet
             </h3>
-            <p className="text-muted-foreground text-xs lg:text-sm">
+            <p className="text-muted-foreground text-xs lg:text-sm text-center">
               Start watching videos to see your history here
             </p>
-            <div className="mt-4 text-xs text-muted-foreground">
-             ( Your watch history will appear here once you complete videos )
+            <div className="mt-4 text-xs text-muted-foreground text-center">
+              ( Your watch history will appear here once you complete videos )
             </div>
           </div>
         </CardContent>
@@ -109,7 +109,7 @@ export default function VideoHistory() {
   const stats = getStats();
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
@@ -140,7 +140,7 @@ export default function VideoHistory() {
 
             return (
               <motion.div
-                key={`${entry.videoId}-${entry.watchedAt.getTime()}`}                
+                key={`${entry.videoId}-${entry.watchedAt.getTime()}`}
                 className="group flex items-center gap-3 p-4 bg-muted/50 rounded-lg border hover:bg-muted transition-all duration-200"
               >
                 {/* Video Icon */}
@@ -161,8 +161,8 @@ export default function VideoHistory() {
                       <span>{formatDate(entry.watchedAt)}</span>
                     </div>
                     <div className="flex items-center gap-1">
-                    <Check className="w-3 h-3" />
-                    <span>{formatDuration(entry.watchTime)} watched</span>
+                      <Check className="w-3 h-3" />
+                      <span>{formatDuration(entry.watchTime)} watched</span>
                     </div>
                   </div>
                 </div>
