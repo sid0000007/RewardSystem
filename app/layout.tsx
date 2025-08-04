@@ -41,9 +41,9 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: "/apple.png",
+    shortcut: "/apple.png",
+    apple: "/apple.png",
   },
   openGraph: {
     type: "website",
@@ -53,6 +53,14 @@ export const metadata: Metadata = {
     description:
       "A gamified reward collection app. Scan codes, watch videos, check in at locations, and collect unique digital rewards!",
     siteName: "Real Mint",
+    images: [
+      {
+        url: "/reward.png", // Make sure to add an OG image
+        width: 1200,
+        height: 630,
+        alt: "Real Mint App Preview",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
