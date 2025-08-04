@@ -2,12 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { MapPin, AlertTriangle, RefreshCw, Clock, Search } from "lucide-react";
-import {
-  LocationData,
-  ActionType,
-  Coordinates,
-  RewardType,
-} from "@/types";
+import { LocationData, ActionType, Coordinates, RewardType } from "@/types";
 import { useGeolocation } from "@/hooks/useGeolocation";
 import { useRewards } from "@/hooks/useRewards";
 import { isWithinCheckInRadius } from "@/data/locations";
@@ -131,7 +126,7 @@ const generateFakeLocations = (userCoords: Coordinates): LocationData[] => {
 
 export default function LocationChecker({
   className = "",
-}: LocationCheckerProps) { 
+}: LocationCheckerProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<FilterType>("all");
   const [checkedInLocations, setCheckedInLocations] = useState<Set<string>>(
@@ -171,26 +166,32 @@ export default function LocationChecker({
     }
   }, [realCoordinates]);
 
+  // Track if we're manually requesting permission to avoid duplicate toasts
+  const [isManuallyRequesting, setIsManuallyRequesting] = useState(false);
+
   // Show toast when location access is needed
   useEffect(() => {
-    if (permission === "denied") {
-      toast.error("Location access denied", {
-        description:
-          "Please enable location permissions to use check-in feature",
-        duration: 5000,
-      });
-    } else if (geoError) {
-      toast.error("Location error", {
-        description: geoError,
-        duration: 5000,
-      });
-    } else if (permission === "granted" && realCoordinates) {
-      toast.success("Location enabled", {
-        description: "You can now check in at nearby locations",
-        duration: 3000,
-      });
+    // Only show toasts if we're not manually requesting permission
+    if (!isManuallyRequesting) {
+      if (permission === "denied") {
+        toast.error("Location access denied", {
+          description:
+            "Please enable location permissions to use check-in feature",
+          duration: 5000,
+        });
+      } else if (geoError) {
+        toast.error("Location error", {
+          description: geoError,
+          duration: 5000,
+        });
+      } else if (permission === "granted" && realCoordinates) {
+        toast.success("Location enabled", {
+          description: "You can now check in at nearby locations",
+          duration: 3000,
+        });
+      }
     }
-  }, [permission, geoError, realCoordinates]);
+  }, [permission, geoError, realCoordinates, isManuallyRequesting]);
 
   // Get all available locations
   const allLocations = useMemo(() => [...fakeLocations], [fakeLocations]);
@@ -299,7 +300,6 @@ export default function LocationChecker({
             ),
             duration: 5000,
           });
-         
         } else {
           toast.error("❌ Check-in Failed", {
             description:
@@ -388,10 +388,12 @@ export default function LocationChecker({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div>
-              <h2 className="text-xl lg:text-2xl font-bold">Location Check-in</h2>
+              <h2 className="text-xl lg:text-2xl font-bold">
+                Location Check-in
+              </h2>
             </div>
           </div>
-        </div>       
+        </div>
 
         {/* Cooldown Status */}
         {(() => {
@@ -485,7 +487,18 @@ export default function LocationChecker({
             </p>
             {!realCoordinates && (
               <Button
-                onClick={requestPermission}
+                onClick={async () => {
+                  setIsManuallyRequesting(true);
+                  try {
+                    await requestPermission();
+                  } catch (error) {
+                    // Handle error silently or show a specific toast
+                    console.error("Permission request failed:", error);
+                  } finally {
+                    // Reset the flag after a short delay to allow permission state to update
+                    setTimeout(() => setIsManuallyRequesting(false), 1000);
+                  }
+                }}
                 className="px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
               >
                 {permission === "denied"
@@ -519,7 +532,7 @@ export default function LocationChecker({
             ))}
           </div>
         )}
-      </div>      
+      </div>
     </div>
   );
 }
